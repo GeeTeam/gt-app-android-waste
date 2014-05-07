@@ -17,20 +17,20 @@
             android:src="@drawable/dwef" />
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imgv_slip_big"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/slip_big" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imgv_slip_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/slip_small" />
     </LinearLayout>
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/seekbar_def"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
