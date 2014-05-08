@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.geetest.gtapp.utils.GtLogger;
@@ -31,7 +32,11 @@ public class ImageMoveActivity extends Activity {
 		setContentView(R.layout.image_move);
 		super.onCreate(savedInstanceState);
 
-		final ImageView switcherView = (ImageView) this.findViewById(R.id.img);
+		RelativeLayout reLayoutView =(RelativeLayout) this.findViewById(R.id.ll_viewArea22);
+		
+//		TextView tv = (TextView) ll.findViewById(R.id.contents); // get the child text view
+		
+		final ImageView switcherView = (ImageView) reLayoutView.findViewById(R.id.img);
 
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();

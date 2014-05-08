@@ -3,46 +3,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView
-        android:id="@+id/imgv_slip_big"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/slip_big" />
+    <!-- <SeekBar -->
+    <!-- android:id="@+id/seekbar_def1" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_below="@id/img" /> -->
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/ll_viewArea1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:scaleType="matrix"
-        android:src="@drawable/slip_small" />
+        android:layout_margin="4dp"
+        android:background="#00ffff"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/ll_viewArea22"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="4dp"
+            android:background="#0f0ff0" >
+
+            <!-- android:layout_alignTop="@+id/ll_viewArea1" -->
+
+            <ImageView
+                android:id="@+id/imgv_slip_big"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/slip_big" />
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:scaleType="matrix"
+                android:src="@drawable/slip_small" />
+
+            <!-- <ImageView -->
+            <!-- android:id="@+id/img" -->
+            <!-- android:layout_width="match_parent" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_alignParentLeft="true" -->
+            <!-- android:layout_alignParentRight="true" -->
+            <!-- android:gravity="right" -->
+            <!-- android:scaleType="matrix" -->
+            <!-- android:src="@drawable/slip_small" /> -->
+        </RelativeLayout>
+        <!-- 图片区 -->
+
+        <LinearLayout
+            android:id="@+id/ll_viewArea23"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/ll_viewArea22"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="#00ff00"
+            android:orientation="vertical" >
+        </LinearLayout>
+        <!-- 状态区 -->
+
+        <LinearLayout
+            android:id="@+id/ll_viewArea24"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/ll_viewArea23"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="#fff000"
+            android:orientation="vertical" >
+        </LinearLayout>
+        <!-- 工具区 -->
+    </LinearLayout>
+    <!-- 最大外边框 -->
 
     <SeekBar
         android:id="@+id/seekbar_def"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgv_slip_big" />
+        android:layout_below="@id/ll_viewArea1" />
+    <!-- 拖动条 -->
 
-<!--     <EditText -->
-<!--         android:id="@+id/edit_text" -->
-<!--         android:layout_width="wrap_content" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_alignParentLeft="true" -->
-<!--         android:layout_alignParentRight="true" -->
-<!--         android:maxLength="2000" -->
-<!--         android:maxLines="5" /> -->
 
-<!--     <TextView -->
-<!--         android:id="@+id/text_view" -->
-<!--         android:layout_width="wrap_content" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_alignBottom="@id/edit_text" -->
-<!--         android:layout_alignParentRight="true" -->
-<!--         android:textColor="#ffff0000" /> -->
+    <!-- <EditText -->
+    <!-- android:id="@+id/edit_text" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentRight="true" -->
+    <!-- android:maxLength="2000" -->
+    <!-- android:maxLines="5" /> -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/text_view" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignBottom="@id/edit_text" -->
+    <!-- android:layout_alignParentRight="true" -->
+    <!-- android:textColor="#ffff0000" /> -->
+
 
     <!-- <LinearLayout -->
     <!-- android:layout_width="match_parent" -->
