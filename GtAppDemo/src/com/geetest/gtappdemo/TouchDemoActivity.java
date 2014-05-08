@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-public class ImageMoveActivity extends Activity {
+public class TouchDemoActivity extends Activity {
 
 	// “系统默认SeekBar”
 	private SeekBar mSeekBarDef;
@@ -84,7 +84,7 @@ public class ImageMoveActivity extends Activity {
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
 						Log.v("seekbar", ("当前进度：" + progress + "%"));
-						switcherView.scrollTo((int) (-10*progress), (int) (0));// 进行偏移
+						switcherView.scrollTo((int) (-5*progress), (int) (0));// 进行偏移
 
 						// image.layout(5*progress, image.getPaddingTop(),
 						// image.getPaddingRight()+5*progress,
