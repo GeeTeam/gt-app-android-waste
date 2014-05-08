@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="#00ffff"
+        android:background="#c0c59e"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -24,7 +24,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="4dp"
-            android:background="#0f0ff0" >
+            android:background="#104D56" >
 
             <!-- android:layout_alignTop="@+id/ll_viewArea1" -->
 
@@ -65,8 +65,26 @@
             android:layout_below="@+id/ll_viewArea22"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:background="#00ff00"
-            android:orientation="vertical" >
+            android:background="#7CB391"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:background="#7C0090" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:background="#0C0091" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:background="#7C0000" >
+            </LinearLayout>
         </LinearLayout>
         <!-- 状态区 -->
 
@@ -78,7 +96,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:background="#fff000"
+            android:background="#D8D0A9"
             android:orientation="vertical" >
         </LinearLayout>
         <!-- 工具区 -->
