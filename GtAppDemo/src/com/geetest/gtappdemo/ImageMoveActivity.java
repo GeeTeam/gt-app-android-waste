@@ -29,7 +29,10 @@ public class ImageMoveActivity extends Activity {
 	// “系统默认SeekBar”
 	private SeekBar mSeekBarDef;
 
-	private ImageView switcherView;
+	
+	private ImageView switcherView;//用于拖动的小切片图
+	private ImageView igv_gt_ads_bg;//被切掉后的切图背景
+	private ImageView igv_gt_ads;//被完整的背景
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
@@ -55,7 +58,10 @@ public class ImageMoveActivity extends Activity {
 		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
 		// child text view
 
-		switcherView = (ImageView) reLayoutView.findViewById(R.id.img);
+		switcherView = (ImageView) reLayoutView.findViewById(R.id.img);		
+		igv_gt_ads_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_slip_big);
+		
+		
 
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();
@@ -179,9 +185,27 @@ public class ImageMoveActivity extends Activity {
 
 		
 		
+		//切掉后的大的背景图
+		ImageRequest bg_imageRequest = new ImageRequest(  
+		        "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/bg/63328333.jpg",  
+		        new Response.Listener<Bitmap>() {  
+		            @Override  
+		            public void onResponse(Bitmap response) {  
+		            	igv_gt_ads_bg.setImageBitmap(response);  
+		            }  
+		        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+		            @Override  
+		            public void onErrorResponse(VolleyError error) {  
+		            	switcherView.setImageResource(R.drawable.ic_launcher);  
+		            }  
+		        });  
 		
-		ImageRequest imageRequest = new ImageRequest(  
-		        "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/cc93c732.png",  
+		mQueue.add(bg_imageRequest); 
+		
+		
+		//小切图
+		ImageRequest slip_imageRequest = new ImageRequest(  
+		        "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/63328333.png",  
 		        new Response.Listener<Bitmap>() {  
 		            @Override  
 		            public void onResponse(Bitmap response) {  
@@ -194,7 +218,12 @@ public class ImageMoveActivity extends Activity {
 		            }  
 		        });  
 		
-		mQueue.add(imageRequest); 
+		mQueue.add(slip_imageRequest); 
+		
+		
+		
+		
+		
 	}
 
 	// /**
