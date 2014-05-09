@@ -1,6 +1,9 @@
 package com.geetest.gtappdemo;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -10,12 +13,23 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.utils.GtLogger;
 
 public class ImageMoveActivity extends Activity {
 
+	private Context context = this;
+
+	
+
 	// “系统默认SeekBar”
 	private SeekBar mSeekBarDef;
+
+	private ImageView switcherView;
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
@@ -32,11 +46,16 @@ public class ImageMoveActivity extends Activity {
 		setContentView(R.layout.image_move);
 		super.onCreate(savedInstanceState);
 
-		RelativeLayout reLayoutView =(RelativeLayout) this.findViewById(R.id.ll_viewArea22);
 		
-//		TextView tv = (TextView) ll.findViewById(R.id.contents); // get the child text view
+		RequestQueue mQueue = Volley.newRequestQueue(context);
 		
-		final ImageView switcherView = (ImageView) reLayoutView.findViewById(R.id.img);
+		RelativeLayout reLayoutView = (RelativeLayout) this
+				.findViewById(R.id.ll_viewArea22);
+
+		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
+		// child text view
+
+		switcherView = (ImageView) reLayoutView.findViewById(R.id.img);
 
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();
@@ -87,8 +106,6 @@ public class ImageMoveActivity extends Activity {
 		// “系统默认SeekBar”
 		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def);
 
-		
-
 		mSeekBarDef
 				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 					/**
@@ -105,7 +122,7 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onStartTrackingTouch(SeekBar seekBar) {
 						Log.v("seekbar", "开始拖动");
-						
+
 						int[] location = new int[2];
 						mSeekBarDef.getLocationOnScreen(location);
 						int mSeekBarDef_X = location[0];
@@ -114,7 +131,8 @@ public class ImageMoveActivity extends Activity {
 						GtLogger.v("ImageView Width:" + switcherView.getWidth());
 						// 输出 seekbar的位置：长度
 						GtLogger.v("Seekbar Width:" + mSeekBarDef.getWidth());
-						GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:" + mSeekBarDef_Y);
+						GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:"
+								+ mSeekBarDef_Y);
 
 					}
 
@@ -159,7 +177,54 @@ public class ImageMoveActivity extends Activity {
 					}
 				});
 
+		
+		
+		
+		ImageRequest imageRequest = new ImageRequest(  
+		        "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/cc93c732.png",  
+		        new Response.Listener<Bitmap>() {  
+		            @Override  
+		            public void onResponse(Bitmap response) {  
+		            	switcherView.setImageBitmap(response);  
+		            }  
+		        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+		            @Override  
+		            public void onErrorResponse(VolleyError error) {  
+		            	switcherView.setImageResource(R.drawable.ic_launcher);  
+		            }  
+		        });  
+		
+		mQueue.add(imageRequest); 
 	}
+
+	// /**
+	// * 利用Volley异步加载图片
+	// *
+	// * 注意方法参数: getImageListener(ImageView view, int defaultImageResId, int
+	// * errorImageResId) 第一个参数:显示图片的ImageView 第二个参数:默认显示的图片资源
+	// 第三个参数:加载错误时显示的图片资源
+	// */
+	// private void loadImageByVolley() {
+	// String imageUrl = "http://avatar.csdn.net/6/6/D/1_lfdfhl.jpg";
+	// RequestQueue requestQueue = Volley.newRequestQueue(this);
+	// final LruCache<String, Bitmap> lruCache = new LruCache<String, Bitmap>(
+	// 20);
+	// ImageCache imageCache = new ImageCache() {
+	// @Override
+	// public void putBitmap(String key, Bitmap value) {
+	// lruCache.put(key, value);
+	// }
+	//
+	// @Override
+	// public Bitmap getBitmap(String key) {
+	// return lruCache.get(key);
+	// }
+	// };
+	// ImageLoader imageLoader = new ImageLoader(requestQueue, imageCache);
+	// ImageListener listener = ImageLoader.getImageListener(switcherView,
+	// R.drawable.ic_launcher, R.drawable.ic_launcher);
+	// imageLoader.get(imageUrl, listener);
+	// }
 
 	/* 移动图片的方法 */
 	private void picMove(float x, float y) {
