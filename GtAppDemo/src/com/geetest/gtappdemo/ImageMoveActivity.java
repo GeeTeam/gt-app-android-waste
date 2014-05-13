@@ -17,22 +17,24 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.geetest.gtapp.utils.GtLogger;
+import com.geetest.gtapp.logger.GtLogger;
 
 public class ImageMoveActivity extends Activity {
 
-	private Context context = this;
+	// 数据区
 
-	
+	// 界面控件区
+
+	private Context context = this;
 
 	// “系统默认SeekBar”
 	private SeekBar mSeekBarDef;
 
-	
-	private ImageView switcherView;//用于拖动的小切片图
-	private ImageView igv_gt_ads_bg;//被切掉后的切图背景
-	private ImageView igv_gt_ads;//被完整的背景
+	private ImageView switcherView;// 用于拖动的小切片图
+	private ImageView igv_gt_ads_bg;// 被切掉后的切图背景
+	private ImageView igv_gt_ads;// 完整的背景
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
@@ -43,25 +45,25 @@ public class ImageMoveActivity extends Activity {
 	private float mX;
 	private float mY;
 
+	RequestQueue mQueue;// 用于Volley的通讯内容
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.image_move);
 		super.onCreate(savedInstanceState);
 
-		
-		RequestQueue mQueue = Volley.newRequestQueue(context);
-		
+		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+
 		RelativeLayout reLayoutView = (RelativeLayout) this
 				.findViewById(R.id.ll_viewArea22);
 
 		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
 		// child text view
 
-		switcherView = (ImageView) reLayoutView.findViewById(R.id.img);		
-		igv_gt_ads_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_slip_big);
-		
-		
+		switcherView = (ImageView) reLayoutView.findViewById(R.id.img);
+		igv_gt_ads_bg = (ImageView) reLayoutView
+				.findViewById(R.id.imgv_slip_big);
 
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();
@@ -183,47 +185,89 @@ public class ImageMoveActivity extends Activity {
 					}
 				});
 
+		// 切掉后的大的背景图
+		ImageRequest bg_imageRequest = new ImageRequest(
+				"http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/bg/63328333.jpg",
+				new Response.Listener<Bitmap>() {
+					@Override
+					public void onResponse(Bitmap response) {
+						igv_gt_ads_bg.setImageBitmap(response);
+					}
+				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						switcherView.setImageResource(R.drawable.ic_launcher);
+					}
+				});
+
+		mQueue.add(bg_imageRequest);
+
+		String staticserver = "http://geetest-jordan2.b0.upaiyun.com/";
+		// 小切图
+		String url_fullbg = "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/63328333.png";
+		ImageRequest slip_imageRequest = new ImageRequest(url_fullbg,
+				new Response.Listener<Bitmap>() {
+					@Override
+					public void onResponse(Bitmap response) {
+						switcherView.setImageBitmap(response);
+					}
+				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						switcherView.setImageResource(R.drawable.ic_launcher);
+					}
+				});
+
+		mQueue.add(slip_imageRequest);
+
+		// TODO 1.根据get内容生成URL，请求URL，返回值
+		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
+
+		GtLogger.v(url);
 		
+		StringRequest option_Request = new StringRequest(url,
+				new Response.Listener<String>() {
+
+					@Override
+					public void onResponse(String response) {
+						GtLogger.v("response:" + response);
+						System.out.println("response:" + response);
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+
+					}
+				});
 		
-		//切掉后的大的背景图
-		ImageRequest bg_imageRequest = new ImageRequest(  
-		        "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/bg/63328333.jpg",  
-		        new Response.Listener<Bitmap>() {  
-		            @Override  
-		            public void onResponse(Bitmap response) {  
-		            	igv_gt_ads_bg.setImageBitmap(response);  
-		            }  
-		        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
-		            @Override  
-		            public void onErrorResponse(VolleyError error) {  
-		            	switcherView.setImageResource(R.drawable.ic_launcher);  
-		            }  
-		        });  
-		
-		mQueue.add(bg_imageRequest); 
-		
-		
-		//小切图
-		ImageRequest slip_imageRequest = new ImageRequest(  
-		        "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/63328333.png",  
-		        new Response.Listener<Bitmap>() {  
-		            @Override  
-		            public void onResponse(Bitmap response) {  
-		            	switcherView.setImageBitmap(response);  
-		            }  
-		        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
-		            @Override  
-		            public void onErrorResponse(VolleyError error) {  
-		            	switcherView.setImageResource(R.drawable.ic_launcher);  
-		            }  
-		        });  
-		
-		mQueue.add(slip_imageRequest); 
-		
-		
-		
-		
-		
+		mQueue.add(option_Request);
+
+	}
+
+	public void testStringRequest() {
+		// String url = "http://www.baidu.com";
+		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
+		// 编码
+
+		// TODO 1.根据get内容生成URL，请求URL，返回值
+		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
+
+		StringRequest option_Request = new StringRequest(url,
+				new Response.Listener<String>() {
+
+					@Override
+					public void onResponse(String response) {
+						GtLogger.v("response:" + response);
+						System.out.println("response:" + response);
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+
+					}
+				});
 	}
 
 	// /**
