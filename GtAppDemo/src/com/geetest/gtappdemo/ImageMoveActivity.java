@@ -20,9 +20,14 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.google.gson.Gson;
 
+/**
+ * @author Zheng
+ * 
+ */
 public class ImageMoveActivity extends Activity {
 
 	// 数据区
@@ -102,6 +107,10 @@ public class ImageMoveActivity extends Activity {
 					mY = curY;
 					break;
 				case MotionEvent.ACTION_UP:
+					GtLogger.v("Images Change Action_Up");
+
+					captchaInitialOption_StringRequest();
+
 					curX = event.getX();
 					curY = event.getY();
 					switcherView.scrollBy((int) (mX - curX), (int) (mY - curY));
@@ -187,27 +196,20 @@ public class ImageMoveActivity extends Activity {
 					}
 				});
 
-		// 切掉后的大的背景图
-		ImageRequest bg_imageRequest = new ImageRequest(
-				"http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/bg/63328333.jpg",
-				new Response.Listener<Bitmap>() {
-					@Override
-					public void onResponse(Bitmap response) {
-						igv_gt_ads_bg.setImageBitmap(response);
-					}
-				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						switcherView.setImageResource(R.drawable.ic_launcher);
-					}
-				});
+	}
 
-		mQueue.add(bg_imageRequest);
+	/**
+	 * 小切图
+	 */
+	private void slice_ImageRequest(String relativeUrl) {
 
-		String staticserver = "http://geetest-jordan2.b0.upaiyun.com/";
-		// 小切图
-		String url_fullbg = "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/63328333.png";
-		ImageRequest slip_imageRequest = new ImageRequest(url_fullbg,
+		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
+
+		GtLogger.v(imgUrl);
+
+		// String url_fullbg =
+		// "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/63328333.png";
+		ImageRequest slip_imageRequest = new ImageRequest(imgUrl,
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
@@ -221,47 +223,37 @@ public class ImageMoveActivity extends Activity {
 				});
 
 		mQueue.add(slip_imageRequest);
-
-		// TODO 1.根据get内容生成URL，请求URL，返回值
-		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
-
-		GtLogger.v(url);
-		
-		StringRequest option_Request = new StringRequest(url,
-				new Response.Listener<String>() {
-
-					@Override
-					public void onResponse(String response) {
-						GtLogger.v("response:" + response);
-						
-						//硬解码
-						String webJsFunction[] = response.split("=");
-						String optionValues[] = webJsFunction[1].split(";");
-						String optionValue = optionValues[0];
-						GtLogger.v(optionValue);
-						
-						
-						//解析成对象
-						Gson gson = new Gson();
-						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
-						CaptchaOption daoVauleObject = gson.fromJson(optionValue, CaptchaOption.class);
-						
-						GtLogger.v(daoVauleObject.getFullbg());
-						
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-
-					}
-				});
-		
-		mQueue.add(option_Request);
-
 	}
 
-	public void testStringRequest() {
+	/**
+	 * 切掉后的大的背景图
+	 */
+	private void fullbg_ImageRequest(String relativeUrl) {
+
+		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
+
+		GtLogger.v(imgUrl);
+
+		ImageRequest bg_imageRequest = new ImageRequest(imgUrl,
+				new Response.Listener<Bitmap>() {
+					@Override
+					public void onResponse(Bitmap response) {
+						igv_gt_ads_bg.setImageBitmap(response);
+					}
+				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						switcherView.setImageResource(R.drawable.ic_launcher);
+					}
+				});
+
+		mQueue.add(bg_imageRequest);
+	}
+
+	/**
+	 * 初始化实验码内容
+	 */
+	public void captchaInitialOption_StringRequest() {
 		// String url = "http://www.baidu.com";
 		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
 		// 编码
@@ -269,13 +261,34 @@ public class ImageMoveActivity extends Activity {
 		// TODO 1.根据get内容生成URL，请求URL，返回值
 		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
 
+		GtLogger.v(url);
+
 		StringRequest option_Request = new StringRequest(url,
 				new Response.Listener<String>() {
 
 					@Override
 					public void onResponse(String response) {
 						GtLogger.v("response:" + response);
-						System.out.println("response:" + response);
+
+						// 硬解码
+						String webJsFunction[] = response.split("=");
+						String optionValues[] = webJsFunction[1].split(";");
+						String optionValue = optionValues[0];
+						GtLogger.v(optionValue);
+
+						// 解析成对象
+						Gson gson = new Gson();
+						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
+						CaptchaOption daoVauleObject = gson.fromJson(
+								optionValue, CaptchaOption.class);
+
+						GtLogger.v(daoVauleObject.getFullbg());
+
+						// 请求动态图片
+						fullbg_ImageRequest(daoVauleObject.getImgurl());
+
+						slice_ImageRequest(daoVauleObject.getSliceurl());
+
 					}
 				}, new Response.ErrorListener() {
 
@@ -284,6 +297,8 @@ public class ImageMoveActivity extends Activity {
 
 					}
 				});
+
+		mQueue.add(option_Request);
 	}
 
 	// /**
