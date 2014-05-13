@@ -20,6 +20,8 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtappdemo.model.vo.CaptchaOption;
+import com.google.gson.Gson;
 
 public class ImageMoveActivity extends Activity {
 
@@ -231,7 +233,21 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onResponse(String response) {
 						GtLogger.v("response:" + response);
-						System.out.println("response:" + response);
+						
+						//硬解码
+						String webJsFunction[] = response.split("=");
+						String optionValues[] = webJsFunction[1].split(";");
+						String optionValue = optionValues[0];
+						GtLogger.v(optionValue);
+						
+						
+						//解析成对象
+						Gson gson = new Gson();
+						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
+						CaptchaOption daoVauleObject = gson.fromJson(optionValue, CaptchaOption.class);
+						
+						GtLogger.v(daoVauleObject.getFullbg());
+						
 					}
 				}, new Response.ErrorListener() {
 

@@ -10,7 +10,7 @@ import com.geetest.gtapp.utils.WriteMsgToLocalFile;
 
 public abstract class GtLogger  extends Activity{
 	//private Context context;
-	private static final String COMMON_TAG = "MFIMS";// 打的通用的TAG
+	private static final String COMMON_TAG = "GtAppTag";// 打的通用的TAG
 
 	public static boolean DEBUG_STATE = true;
 	
