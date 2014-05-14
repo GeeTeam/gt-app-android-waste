@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -36,12 +37,18 @@ public class ImageMoveActivity extends Activity {
 
 	private Context context = this;
 
+	private Button btn_refresh;// 用于刷新图片的按钮
+
+	private ImageView igv_slice;// 用于拖动的小切片图
+	private ImageView igv_slicebg;// 被切掉后的切图背景
+	private ImageView igv_fullbg;// 完整的背景
+
 	// “系统默认SeekBar”
 	private SeekBar mSeekBarDef;
 
-	private ImageView switcherView;// 用于拖动的小切片图
-	private ImageView igv_gt_ads_bg;// 被切掉后的切图背景
-	private ImageView igv_gt_ads;// 完整的背景
+	private RelativeLayout reLayoutView;// 相框的相对布局
+
+	private RequestQueue mQueue;// 用于Volley的通讯内容
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
@@ -49,10 +56,10 @@ public class ImageMoveActivity extends Activity {
 	/* 声明相关变量作为存储图片宽高,位置使用 */
 	private int intWidth, intHeight, intDefaultX, intDefaultY;
 
-	private float mX;
-	private float mY;
+	private float mX, mY;// 触点的位置
 
-	RequestQueue mQueue;// 用于Volley的通讯内容
+	private float actionDown_X, actionDown_Y;// 产生按下事件时的X,Y
+	private float actionUp_X, actionUp_Y;// 松开时的X,Y
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,18 +67,12 @@ public class ImageMoveActivity extends Activity {
 		setContentView(R.layout.image_move);
 		super.onCreate(savedInstanceState);
 
-		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+		initViews();
+		initViewDisplayParameter();
+		initListeners();
+	}
 
-		RelativeLayout reLayoutView = (RelativeLayout) this
-				.findViewById(R.id.ll_viewArea22);
-
-		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
-		// child text view
-
-		switcherView = (ImageView) reLayoutView.findViewById(R.id.img);
-		igv_gt_ads_bg = (ImageView) reLayoutView
-				.findViewById(R.id.imgv_slip_big);
-
+	private void initViewDisplayParameter() {
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -85,12 +86,17 @@ public class ImageMoveActivity extends Activity {
 		/* 设置图片的宽高 */
 		intWidth = 50;
 		intHeight = 65;
+	}
 
-		switcherView.setOnTouchListener(new View.OnTouchListener() {
+	private void initListeners() {
+		igv_slice.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View arg0, MotionEvent event) {
 
-				float curX, curY;// 当前鼠标的位置
+				float curX, curY;// 鼠标的即时位置
+
+				curX = event.getX();
+				curY = event.getY();
 
 				switch (event.getAction()) {
 
@@ -98,22 +104,41 @@ public class ImageMoveActivity extends Activity {
 					// 获取当前的位置
 					mX = event.getX();
 					mY = event.getY();
+
+					actionDown_X = event.getX();
+					actionDown_Y = event.getY();
+
 					break;
 				case MotionEvent.ACTION_MOVE:
 					curX = event.getX();
 					curY = event.getY();
-					switcherView.scrollBy((int) (mX - curX), (int) (mY - curY));// 进行偏移
+
+					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
+					// curY));// 进行偏移
+					igv_slice.scrollBy((int) (mX - curX), 0);// 只进行水平方向行偏移
 					mX = curX;
 					mY = curY;
 					break;
 				case MotionEvent.ACTION_UP:
 					GtLogger.v("Images Change Action_Up");
 
-					captchaInitialOption_StringRequest();
+					actionUp_X = event.getX();
+					actionUp_Y = event.getY();
+
+					// if (mX != 0 && mY != 0) {
+					// if (mX - actionUp_X > 8) {
+					// GtLogger.v("向左滑动");
+					// }
+					// if (actionUp_X - mX > 8) {
+					// GtLogger.v("向右滑动");
+					// }
+					// }
+
+					// captchaInitialOption_StringRequest();
 
 					curX = event.getX();
 					curY = event.getY();
-					switcherView.scrollBy((int) (mX - curX), (int) (mY - curY));
+					igv_slice.scrollBy((int) (mX - curX), 0);
 					break;
 				}
 
@@ -121,9 +146,12 @@ public class ImageMoveActivity extends Activity {
 			}
 		});
 
-		// 做seekbar的事件
-		// “系统默认SeekBar”
-		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def);
+		// 刷新图片
+		btn_refresh.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				captchaInitialOption_StringRequest();
+			}
+		});
 
 		mSeekBarDef
 				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -147,7 +175,7 @@ public class ImageMoveActivity extends Activity {
 						int mSeekBarDef_X = location[0];
 						int mSeekBarDef_Y = location[1];
 
-						GtLogger.v("ImageView Width:" + switcherView.getWidth());
+						GtLogger.v("ImageView Width:" + igv_slice.getWidth());
 						// 输出 seekbar的位置：长度
 						GtLogger.v("Seekbar Width:" + mSeekBarDef.getWidth());
 						GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:"
@@ -166,8 +194,7 @@ public class ImageMoveActivity extends Activity {
 						float dX = (intScreenX - intWidth) / 100;
 
 						Log.v("seekbar", ("当前进度：" + progress + "%"));
-						switcherView
-								.scrollTo((int) (-dX * progress), (int) (0));// 进行偏移
+						igv_slice.scrollTo((int) (-dX * progress), (int) (0));// 进行偏移
 
 						// image.layout(5*progress, image.getPaddingTop(),
 						// image.getPaddingRight()+5*progress,
@@ -195,7 +222,26 @@ public class ImageMoveActivity extends Activity {
 
 					}
 				});
+	}
 
+	private void initViews() {
+		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+
+		reLayoutView = (RelativeLayout) this.findViewById(R.id.ll_viewArea22);
+
+		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
+		// child text view
+
+		igv_slice = (ImageView) reLayoutView.findViewById(R.id.img);
+		igv_slicebg = (ImageView) reLayoutView.findViewById(R.id.imgv_slip_big);
+
+		
+
+		// 做seekbar的事件
+		// “系统默认SeekBar”
+		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def);
+		
+		btn_refresh = (Button) findViewById(R.id.btn_refresh);
 	}
 
 	/**
@@ -213,12 +259,12 @@ public class ImageMoveActivity extends Activity {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
-						switcherView.setImageBitmap(response);
+						igv_slice.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						switcherView.setImageResource(R.drawable.ic_launcher);
+						igv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -238,12 +284,12 @@ public class ImageMoveActivity extends Activity {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
-						igv_gt_ads_bg.setImageBitmap(response);
+						igv_slicebg.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						switcherView.setImageResource(R.drawable.ic_launcher);
+						igv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
