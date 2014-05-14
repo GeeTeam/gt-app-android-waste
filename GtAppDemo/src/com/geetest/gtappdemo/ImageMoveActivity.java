@@ -50,6 +50,8 @@ public class ImageMoveActivity extends Activity {
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
 
+	private CaptchaOption initCaptchaOption;// 验证码初始化验证数据设置
+
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
 
@@ -235,12 +237,7 @@ public class ImageMoveActivity extends Activity {
 		igv_slice = (ImageView) reLayoutView.findViewById(R.id.img);
 		igv_slicebg = (ImageView) reLayoutView.findViewById(R.id.imgv_slip_big);
 
-		
-
-		// 做seekbar的事件
-		// “系统默认SeekBar”
-		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def);
-		
+		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
 	}
 
@@ -325,15 +322,18 @@ public class ImageMoveActivity extends Activity {
 						// 解析成对象
 						Gson gson = new Gson();
 						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
-						CaptchaOption daoVauleObject = gson.fromJson(
-								optionValue, CaptchaOption.class);
+						initCaptchaOption = gson.fromJson(optionValue,
+								CaptchaOption.class);
 
-						GtLogger.v(daoVauleObject.getFullbg());
+						GtLogger.v(initCaptchaOption.getFullbg());
+
+						// TODO 设置图片控件的y方向位置
+						igv_slice.scrollTo(-50,
+								-1 * initCaptchaOption.getYpos());
 
 						// 请求动态图片
-						fullbg_ImageRequest(daoVauleObject.getImgurl());
-
-						slice_ImageRequest(daoVauleObject.getSliceurl());
+						fullbg_ImageRequest(initCaptchaOption.getImgurl());
+						slice_ImageRequest(initCaptchaOption.getSliceurl());
 
 					}
 				}, new Response.ErrorListener() {
