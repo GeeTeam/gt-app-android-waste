@@ -216,14 +216,13 @@ public class ImageMoveActivity extends Activity {
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
 
-						igv_slice.scrollTo(
-								(int) (-dX * progress),
-								Math.round(-(initCaptchaOption.getYpos()
-										* bm_zoom_scale + igv_slicebg.getTop())));// 进行偏移
+						igv_slice.scrollTo((int) (-dX * progress),
+								getSliceYposAfterSalced());// 进行偏移
 
-//						igv_slice.scrollTo(-50, Math.round(-(initCaptchaOption
-//								.getYpos() * bm_zoom_scale + igv_slicebg
-//								.getTop())));
+						// igv_slice.scrollTo(-50,
+						// Math.round(-(initCaptchaOption
+						// .getYpos() * bm_zoom_scale + igv_slicebg
+						// .getTop())));
 
 						// image.layout(5*progress, image.getPaddingTop(),
 						// image.getPaddingRight()+5*progress,
@@ -292,9 +291,7 @@ public class ImageMoveActivity extends Activity {
 								bm_zoom_scale));
 
 						// TODO 设置图片控件的y方向位置
-						igv_slice.scrollTo(-50, Math.round(-(initCaptchaOption
-								.getYpos() * bm_zoom_scale + igv_slicebg
-								.getTop())));
+						igv_slice.scrollTo(-50, getSliceYposAfterSalced());
 
 						GtLogger.v("initCaptchaOption.getYpos():"
 								+ initCaptchaOption.getYpos()
@@ -314,6 +311,20 @@ public class ImageMoveActivity extends Activity {
 				});
 
 		mQueue.add(slip_imageRequest);
+	}
+
+	
+	/**
+	 * 获取等比例缩放后的切片图的Ypos位置
+	 * @return
+	 */
+	private int getSliceYposAfterSalced() {
+
+		int scaledYpos = Math.round(-(initCaptchaOption.getYpos()
+				* bm_zoom_scale + igv_slicebg.getTop()));
+
+		return scaledYpos;
+
 	}
 
 	/**
@@ -442,6 +453,60 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(option_Request);
 	}
 
+	
+	public void userBehaviourUpload_StringRequest() {
+		// String url = "http://www.baidu.com";
+		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
+		// 编码
+
+		// TODO 1.根据get内容生成URL，请求URL，返回值
+		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
+
+		GtLogger.v(url);
+
+		StringRequest option_Request = new StringRequest(url,
+				new Response.Listener<String>() {
+
+					@Override
+					public void onResponse(String response) {
+						// GtLogger.v("response:" + response);
+
+						// 硬解码
+						String webJsFunction[] = response.split("=");
+						String optionValues[] = webJsFunction[1].split(";");
+						String optionValue = optionValues[0];
+						// GtLogger.v(optionValue);
+
+						// 解析成对象
+						Gson gson = new Gson();
+						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
+						initCaptchaOption = gson.fromJson(optionValue,
+								CaptchaOption.class);
+
+						GtLogger.v("getFullbg : "
+								+ initCaptchaOption.getFullbg());
+
+						// 请求动态图片
+						fullbg_ImageRequest(initCaptchaOption.getImgurl());
+						slice_ImageRequest(initCaptchaOption.getSliceurl());
+
+						// 重置SeekBar
+						skb_dragCaptcha.setProgress(0);
+
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+
+					}
+				});
+
+		mQueue.add(option_Request);
+	}
+	
+	
+	
 	// /**
 	// * 利用Volley异步加载图片
 	// *
@@ -471,42 +536,5 @@ public class ImageMoveActivity extends Activity {
 	// imageLoader.get(imageUrl, listener);
 	// }
 
-	/* 移动图片的方法 */
-	private void picMove(float x, float y) {
-		/* 默认微调图片与指针的相对位置 */
-		mX = x - (intWidth / 2);
-		mY = y - (intHeight / 2);
-
-		/* 防图片超过屏幕的相关处理 */
-		/* 防止屏幕向右超过屏幕 */
-		if ((mX + intWidth) > intScreenX) {
-			mX = intScreenX - intWidth;
-		}
-		/* 防止屏幕向左超过屏幕 */
-		else if (mX < 0) {
-			mX = 0;
-		}
-		/* 防止屏幕向下超过屏幕 */
-		else if ((mY + intHeight) > intScreenY) {
-			mY = intScreenY - intHeight;
-		}
-		/* 防止屏幕向上超过屏幕 */
-		else if (mY < 0) {
-			mY = 0;
-		}
-		/* 通过log 来查看图片位置 */
-		Log.i("jay", Float.toString(mX) + "," + Float.toString(mY));
-		/* 以setLayoutParams方法，重新安排Layout上的位置 */
-		// mImageView01.setLayoutParams(new
-		// AbsoluteLayout.LayoutParams(intWidth,
-		// intHeight, (int) mX, (int) mY));
-	}
-
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {
-	// // Inflate the menu; this adds items to the action bar if it is present.
-	// getMenuInflater().inflate(R.menu.activity_main, menu);
-	// return true;
-	// }
-
+	
 }
