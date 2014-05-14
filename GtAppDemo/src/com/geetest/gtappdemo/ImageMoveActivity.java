@@ -30,6 +30,10 @@ import com.google.gson.Gson;
  * @author Zheng
  * 
  */
+/**
+ * @author Zheng
+ *
+ */
 public class ImageMoveActivity extends Activity {
 
 	// 数据区
@@ -268,13 +272,8 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onResponse(Bitmap response) {
 
-						// 设置图片控件image view的大小
-						LayoutParams para;
-						para = igv_slice.getLayoutParams();
-						para.width = 300;
-						para.height = igv_slicebg.getHeight();
-						igv_slice.setLayoutParams(para);
-
+						setImageViewScale(igv_slice,300,igv_slicebg.getHeight());
+						
 						igv_slice.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
@@ -287,6 +286,27 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(slip_imageRequest);
 	}
 
+	
+	
+	/**
+	 * 设置ImageView的大小（防止图片拖动的时候超过显示范围了）
+	 * @param imgv
+	 * @param imgv_width
+	 * @param imgv_height
+	 */
+	private void setImageViewScale(ImageView imgv,int imgv_width,int imgv_height)
+	{
+		// 设置图片控件image view的大小
+		LayoutParams para;
+		para = imgv.getLayoutParams();
+		para.width = imgv_width;
+		para.height = imgv_height;
+//		para.height = igv_slicebg.getHeight();
+		imgv.setLayoutParams(para);
+	}
+	
+	
+	
 	/**
 	 * 切掉后的大的背景图
 	 */
