@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -43,8 +44,7 @@ public class ImageMoveActivity extends Activity {
 	private ImageView igv_slicebg;// 被切掉后的切图背景
 	private ImageView igv_fullbg;// 完整的背景
 
-	
-	private SeekBar skb_dragCaptcha;//拖动的seekbar
+	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
 	private RelativeLayout reLayoutView;// 相框的相对布局
 
@@ -245,8 +245,8 @@ public class ImageMoveActivity extends Activity {
 		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
 		// child text view
 
-		igv_slice = (ImageView) reLayoutView.findViewById(R.id.img);
-		igv_slicebg = (ImageView) reLayoutView.findViewById(R.id.imgv_slip_big);
+		igv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
+		igv_slicebg = (ImageView) reLayoutView.findViewById(R.id.imgv_slice_bg);
 
 		skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
@@ -267,6 +267,14 @@ public class ImageMoveActivity extends Activity {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
+
+						// 设置图片控件image view的大小
+						LayoutParams para;
+						para = igv_slice.getLayoutParams();
+						para.width = 300;
+						para.height = igv_slicebg.getHeight();
+						igv_slice.setLayoutParams(para);
+
 						igv_slice.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
@@ -340,6 +348,7 @@ public class ImageMoveActivity extends Activity {
 								+ initCaptchaOption.getFullbg());
 
 						// TODO 设置图片控件的y方向位置
+
 						igv_slice.scrollTo(-50,
 								(-(initCaptchaOption.getYpos() + igv_slicebg
 										.getTop())));
@@ -352,8 +361,8 @@ public class ImageMoveActivity extends Activity {
 						// 请求动态图片
 						fullbg_ImageRequest(initCaptchaOption.getImgurl());
 						slice_ImageRequest(initCaptchaOption.getSliceurl());
-						
-						//重置SeekBar
+
+						// 重置SeekBar
 						skb_dragCaptcha.setProgress(0);
 
 					}

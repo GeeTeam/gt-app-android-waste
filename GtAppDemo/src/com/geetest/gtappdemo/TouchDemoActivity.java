@@ -22,7 +22,7 @@ public class TouchDemoActivity extends Activity {
 		setContentView(R.layout.image_move);
 		super.onCreate(savedInstanceState);
 
-		final ImageView switcherView = (ImageView) this.findViewById(R.id.img);
+		final ImageView switcherView = (ImageView) this.findViewById(R.id.imgv_slice);
 
 		switcherView.setOnTouchListener(new View.OnTouchListener() {
 
