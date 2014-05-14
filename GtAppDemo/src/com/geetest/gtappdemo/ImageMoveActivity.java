@@ -43,8 +43,8 @@ public class ImageMoveActivity extends Activity {
 	private ImageView igv_slicebg;// 被切掉后的切图背景
 	private ImageView igv_fullbg;// 完整的背景
 
-	// “系统默认SeekBar”
-	private SeekBar mSeekBarDef;
+	
+	private SeekBar skb_dragCaptcha;//拖动的seekbar
 
 	private RelativeLayout reLayoutView;// 相框的相对布局
 
@@ -88,6 +88,9 @@ public class ImageMoveActivity extends Activity {
 		/* 设置图片的宽高 */
 		intWidth = 50;
 		intHeight = 65;
+
+		captchaInitialOption_StringRequest();
+
 	}
 
 	private void initListeners() {
@@ -155,7 +158,7 @@ public class ImageMoveActivity extends Activity {
 			}
 		});
 
-		mSeekBarDef
+		skb_dragCaptcha
 				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 					/**
 					 * 拖动条停止拖动的时候调用
@@ -173,15 +176,17 @@ public class ImageMoveActivity extends Activity {
 						Log.v("seekbar", "开始拖动");
 
 						int[] location = new int[2];
-						mSeekBarDef.getLocationOnScreen(location);
+						skb_dragCaptcha.getLocationOnScreen(location);
 						int mSeekBarDef_X = location[0];
 						int mSeekBarDef_Y = location[1];
 
-						GtLogger.v("ImageView Width:" + igv_slice.getWidth());
-						// 输出 seekbar的位置：长度
-						GtLogger.v("Seekbar Width:" + mSeekBarDef.getWidth());
-						GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:"
-								+ mSeekBarDef_Y);
+						// GtLogger.v("ImageView Width:" +
+						// igv_slice.getWidth());
+						// // 输出 seekbar的位置：长度
+						// GtLogger.v("Seekbar Width:" +
+						// mSeekBarDef.getWidth());
+						// GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:"
+						// + mSeekBarDef_Y);
 
 					}
 
@@ -195,8 +200,14 @@ public class ImageMoveActivity extends Activity {
 						// 将屏幕的X坐标进行均分
 						float dX = (intScreenX - intWidth) / 100;
 
-						Log.v("seekbar", ("当前进度：" + progress + "%"));
-						igv_slice.scrollTo((int) (-dX * progress), (int) (0));// 进行偏移
+						// Log.v("seekbar", ("当前进度：" + progress + "%"));
+						// TODO 坐标偏移
+						// igv_slice.scrollTo((int) (-dX * progress), (int)
+						// (0));// 进行偏移
+
+						igv_slice.scrollTo((int) (-dX * progress),
+								-(initCaptchaOption.getYpos() + igv_slicebg
+										.getTop()));// 进行偏移
 
 						// image.layout(5*progress, image.getPaddingTop(),
 						// image.getPaddingRight()+5*progress,
@@ -237,7 +248,7 @@ public class ImageMoveActivity extends Activity {
 		igv_slice = (ImageView) reLayoutView.findViewById(R.id.img);
 		igv_slicebg = (ImageView) reLayoutView.findViewById(R.id.imgv_slip_big);
 
-		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
+		skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
 	}
 
@@ -311,13 +322,13 @@ public class ImageMoveActivity extends Activity {
 
 					@Override
 					public void onResponse(String response) {
-						GtLogger.v("response:" + response);
+						// GtLogger.v("response:" + response);
 
 						// 硬解码
 						String webJsFunction[] = response.split("=");
 						String optionValues[] = webJsFunction[1].split(";");
 						String optionValue = optionValues[0];
-						GtLogger.v(optionValue);
+						// GtLogger.v(optionValue);
 
 						// 解析成对象
 						Gson gson = new Gson();
@@ -325,15 +336,25 @@ public class ImageMoveActivity extends Activity {
 						initCaptchaOption = gson.fromJson(optionValue,
 								CaptchaOption.class);
 
-						GtLogger.v(initCaptchaOption.getFullbg());
+						GtLogger.v("getFullbg : "
+								+ initCaptchaOption.getFullbg());
 
 						// TODO 设置图片控件的y方向位置
 						igv_slice.scrollTo(-50,
-								-1 * initCaptchaOption.getYpos());
+								(-(initCaptchaOption.getYpos() + igv_slicebg
+										.getTop())));
+
+						GtLogger.v("initCaptchaOption.getYpos():"
+								+ initCaptchaOption.getYpos()
+								+ "   igv_slicebg.getTop():"
+								+ igv_slicebg.getTop());
 
 						// 请求动态图片
 						fullbg_ImageRequest(initCaptchaOption.getImgurl());
 						slice_ImageRequest(initCaptchaOption.getSliceurl());
+						
+						//重置SeekBar
+						skb_dragCaptcha.setProgress(0);
 
 					}
 				}, new Response.ErrorListener() {
