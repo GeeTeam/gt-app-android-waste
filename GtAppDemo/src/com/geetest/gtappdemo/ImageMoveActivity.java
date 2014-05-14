@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,7 +33,7 @@ import com.google.gson.Gson;
  */
 /**
  * @author Zheng
- *
+ * 
  */
 public class ImageMoveActivity extends Activity {
 
@@ -47,6 +48,12 @@ public class ImageMoveActivity extends Activity {
 	private ImageView igv_slice;// 用于拖动的小切片图
 	private ImageView igv_slicebg;// 被切掉后的切图背景
 	private ImageView igv_fullbg;// 完整的背景
+
+	private Bitmap bm_slice;
+	private Bitmap bm_slicebg;
+	private Bitmap bm_fullbg;
+
+	private float bm_zoom_scale = 1;// 图片缩放比例
 
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
@@ -209,9 +216,14 @@ public class ImageMoveActivity extends Activity {
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
 
-						igv_slice.scrollTo((int) (-dX * progress),
-								-(initCaptchaOption.getYpos() + igv_slicebg
-										.getTop()));// 进行偏移
+						igv_slice.scrollTo(
+								(int) (-dX * progress),
+								Math.round(-(initCaptchaOption.getYpos()
+										* bm_zoom_scale + igv_slicebg.getTop())));// 进行偏移
+
+//						igv_slice.scrollTo(-50, Math.round(-(initCaptchaOption
+//								.getYpos() * bm_zoom_scale + igv_slicebg
+//								.getTop())));
 
 						// image.layout(5*progress, image.getPaddingTop(),
 						// image.getPaddingRight()+5*progress,
@@ -272,9 +284,27 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onResponse(Bitmap response) {
 
-						setImageViewScale(igv_slice,300,igv_slicebg.getHeight());
-						
-						igv_slice.setImageBitmap(response);
+						// 缩放图片数据源
+
+						// bm_zoom_scale = (intScreenX - 80) /
+						// response.getWidth();
+						igv_slice.setImageBitmap(zoomImage(response,
+								bm_zoom_scale));
+
+						// TODO 设置图片控件的y方向位置
+						igv_slice.scrollTo(-50, Math.round(-(initCaptchaOption
+								.getYpos() * bm_zoom_scale + igv_slicebg
+								.getTop())));
+
+						GtLogger.v("initCaptchaOption.getYpos():"
+								+ initCaptchaOption.getYpos()
+								+ "   igv_slicebg.getTop():"
+								+ igv_slicebg.getTop());
+
+						setImageViewScale(igv_slice, 300,
+								igv_slicebg.getHeight());
+
+						// igv_slice.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
@@ -286,27 +316,24 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(slip_imageRequest);
 	}
 
-	
-	
 	/**
 	 * 设置ImageView的大小（防止图片拖动的时候超过显示范围了）
+	 * 
 	 * @param imgv
 	 * @param imgv_width
 	 * @param imgv_height
 	 */
-	private void setImageViewScale(ImageView imgv,int imgv_width,int imgv_height)
-	{
+	private void setImageViewScale(ImageView imgv, int imgv_width,
+			int imgv_height) {
 		// 设置图片控件image view的大小
 		LayoutParams para;
 		para = imgv.getLayoutParams();
 		para.width = imgv_width;
 		para.height = imgv_height;
-//		para.height = igv_slicebg.getHeight();
+		// para.height = igv_slicebg.getHeight();
 		imgv.setLayoutParams(para);
 	}
-	
-	
-	
+
 	/**
 	 * 切掉后的大的背景图
 	 */
@@ -320,7 +347,14 @@ public class ImageMoveActivity extends Activity {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
-						igv_slicebg.setImageBitmap(response);
+
+						// 对图片进行缩放
+						bm_zoom_scale = (intScreenX - 80) / response.getWidth();
+						GtLogger.v("bm_zoom_scale: " + bm_zoom_scale);
+						igv_slicebg.setImageBitmap(zoomImage(response,
+								bm_zoom_scale));
+
+						// igv_slicebg.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
@@ -330,6 +364,28 @@ public class ImageMoveActivity extends Activity {
 				});
 
 		mQueue.add(bg_imageRequest);
+	}
+
+	private Bitmap zoomImage(Bitmap bm, float scale) {
+		// 获得图片的宽高
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		// 设置想要的大小
+		float newWidth = width * scale;
+		float newHeight = height * scale;
+		// int newWidth = 320;
+		// int newHeight = 480;
+		// 计算缩放比例
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
+		// 取得想要缩放的matrix参数
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+		// 得到新的图片
+		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+				true);
+
+		return newbm;
 	}
 
 	/**
@@ -366,17 +422,6 @@ public class ImageMoveActivity extends Activity {
 
 						GtLogger.v("getFullbg : "
 								+ initCaptchaOption.getFullbg());
-
-						// TODO 设置图片控件的y方向位置
-
-						igv_slice.scrollTo(-50,
-								(-(initCaptchaOption.getYpos() + igv_slicebg
-										.getTop())));
-
-						GtLogger.v("initCaptchaOption.getYpos():"
-								+ initCaptchaOption.getYpos()
-								+ "   igv_slicebg.getTop():"
-								+ igv_slicebg.getTop());
 
 						// 请求动态图片
 						fullbg_ImageRequest(initCaptchaOption.getImgurl());
