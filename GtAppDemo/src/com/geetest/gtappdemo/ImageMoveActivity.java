@@ -23,12 +23,14 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -45,6 +47,7 @@ import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.gres.AjaxPhp_GresVo;
+import com.geetest.gtappdemo.model.vo.preq.GtCustomerSubmit;
 import com.google.gson.Gson;
 
 /**
@@ -72,6 +75,8 @@ public class ImageMoveActivity extends Activity {
 	private Bitmap bm_slice;
 	private Bitmap bm_slicebg;
 	private Bitmap bm_fullbg;
+
+	private TextView tv_validateStatus;// 验证码的状态栏
 
 	private float bm_zoom_scale = 1;// 图片缩放比例
 
@@ -290,6 +295,8 @@ public class ImageMoveActivity extends Activity {
 
 		skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
+		tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
+
 	}
 
 	/**
@@ -465,6 +472,7 @@ public class ImageMoveActivity extends Activity {
 
 						// 重置SeekBar
 						skb_dragCaptcha.setProgress(0);
+						tv_validateStatus.setText("等待验证");
 
 					}
 				}, new Response.ErrorListener() {
@@ -613,13 +621,15 @@ public class ImageMoveActivity extends Activity {
 							GtLogger.v("验证成功！    " + "TODO秒的速度超过"
 									+ (100 - Integer.parseInt(actionRank))
 									+ "%的用户");
+							
+							tv_validateStatus.setText("验证成功");
 
 							// TODO 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 							postCaptchaInfoToCustomServer();
-							
 
 						} else {
 							GtLogger.v("验证失败");
+							tv_validateStatus.setText("验证失败");
 						}
 
 						GtLogger.v(" messageResult: " + messageResult
@@ -652,7 +662,8 @@ public class ImageMoveActivity extends Activity {
 							try {
 
 								// TODO 安卓客户端接收到消息后进行相应的处理
-								GtLogger.v("postCaptchaInfoToCustomServer:  " + response);
+								GtLogger.v("postCaptchaInfoToCustomServer:  "
+										+ response);
 
 							} catch (Exception e) {
 								GtLogger.v(LoggerString.getFileLineMethod()
@@ -673,9 +684,20 @@ public class ImageMoveActivity extends Activity {
 				protected Map<String, String> getParams() {
 					Map<String, String> params = new HashMap<String, String>();
 
-					// TODO 将客户端的信息编码成一个Json串，然后上传到客户服务器
-					params.put("captcha_info", "android post infomation");
-
+					GtCustomerSubmit gtCustomerSubmit =  new GtCustomerSubmit();
+					//TODO  构造的假数据
+					gtCustomerSubmit.setGeetest_challenge("ad7ba4518b5ed270268bf736c723f935cz");
+					gtCustomerSubmit.setGeetest_validate("30f58f0de5faa14dc78ffe6c067969fc");
+					gtCustomerSubmit.setGeetest_seccode("30f58f0de5faa14dc78ffe6c067969fc|jordan");
+										
+					Gson gson = new Gson();					
+					String postJsonString = gson.toJson(gtCustomerSubmit);  
+					
+					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
+					params.put("captcha_info", postJsonString);
+					
+					GtLogger.v("postJsonString: "+ postJsonString);
+					
 					return params;
 				}
 

@@ -241,11 +241,11 @@ int id action_context_bar 0x7f05001d
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024
-int id action_settings 0x7f050047
+int id action_settings 0x7f050048
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
-int id btn_refresh 0x7f050046
+int id btn_refresh 0x7f050047
 int id checkbox 0x7f05002d
 int id collapseActionView 0x7f05000d
 int id container 0x7f05003c
@@ -271,7 +271,7 @@ int id list_item 0x7f050029
 int id ll_viewArea1 0x7f050041
 int id ll_viewArea22 0x7f050042
 int id ll_viewArea23 0x7f050044
-int id ll_viewArea24 0x7f050045
+int id ll_viewArea24 0x7f050046
 int id middle 0x7f050012
 int id never 0x7f050009
 int id none 0x7f050010
@@ -299,6 +299,7 @@ int id submit_area 0x7f050039
 int id tabMode 0x7f050002
 int id title 0x7f05002b
 int id top_action_bar 0x7f050020
+int id tv_validateStatus 0x7f050045
 int id up 0x7f050021
 int id useLogo 0x7f050003
 int id withText 0x7f05000c
