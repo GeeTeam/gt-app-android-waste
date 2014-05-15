@@ -8,13 +8,14 @@ package com.geetest.gtappdemo.model.vo.greq;
  */
 public class AjaxPhp_GreqVo {
 	
-	private String api;// 调用的函数名称:
+	private String api = "jordan";// 调用的函数名称:
 	private String challenge;// 验证行为的一个流水号:
 	private String userresponse;// 编码后用户答案（仅仅只是在视觉上混淆）:
-	private String passtime;// 客户端交互使用的时间（不是从服务器端传回）:
-	private String imgload;// 背景图的加载时间:
+	private float passtime;// 客户端交互使用的时间（不是从服务器端传回）:
+	private float imgload;// 背景图的加载时间:
 	private String a;// 经过编码后的行为数据。:
 	
+		
 	
 	public String getApi() {
 		return api;
@@ -34,16 +35,17 @@ public class AjaxPhp_GreqVo {
 	public void setUserresponse(String userresponse) {
 		this.userresponse = userresponse;
 	}
-	public String getPasstime() {
+
+	public float getPasstime() {
 		return passtime;
 	}
-	public void setPasstime(String passtime) {
+	public void setPasstime(float passtime) {
 		this.passtime = passtime;
 	}
-	public String getImgload() {
+	public float getImgload() {
 		return imgload;
 	}
-	public void setImgload(String imgload) {
+	public void setImgload(float imgload) {
 		this.imgload = imgload;
 	}
 	public String getA() {

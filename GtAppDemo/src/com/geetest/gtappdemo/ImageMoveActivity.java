@@ -1,5 +1,19 @@
 package com.geetest.gtappdemo;
 
+import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import org.apache.http.client.utils.URIUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,8 +39,12 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.utils.LoggerString;
+import com.geetest.gtapp.utils.data.LoggerTag;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
+import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
+import com.geetest.gtappdemo.model.vo.gres.AjaxPhp_GresVo;
 import com.google.gson.Gson;
 
 /**
@@ -61,7 +81,9 @@ public class ImageMoveActivity extends Activity {
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
 
+	// 验证通讯数据对象
 	private CaptchaOption initCaptchaOption;// 验证码初始化验证数据设置
+	private AjaxPhp_GreqVo ajaxPhp_GreqVo;// 上传行为数据的API参数
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
@@ -177,6 +199,9 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						Log.v("seekbar", "拖动停止");
+
+						// TODO 向服务器提交行为数据
+						userBehaviourUpload_StringRequest();
 					}
 
 					/**
@@ -313,9 +338,9 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(slip_imageRequest);
 	}
 
-	
 	/**
 	 * 获取等比例缩放后的切片图的Ypos位置
+	 * 
 	 * @return
 	 */
 	private int getSliceYposAfterSalced() {
@@ -453,45 +478,152 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(option_Request);
 	}
 
-	
+	/**
+	 * Map转url的参数
+	 * 
+	 * @param map
+	 * @return
+	 */
+	private String cdtParams(Map<String, Object> map) {
+		// 处理参数
+		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+		Set<String> keys = map.keySet();
+		for (String key : keys) {
+			params.add(new BasicNameValuePair(key, map.get(key).toString()));
+		}
+		// 将参数转换
+		return URLEncodedUtils.format(params, "UTF-8");
+	}
+
+	/**
+	 * 将对象转成Map
+	 * 
+	 * @return
+	 */
+	private Map<String, Object> cdtObjectToMap(Object getParaObj) {
+
+		Map<String, Object> mapPara = new HashMap<String, Object>();
+
+		try {
+			Class<?> cla = getParaObj.getClass();
+
+			Field[] f = cla.getDeclaredFields();
+			for (Field field : f) {
+				field.setAccessible(true);
+				mapPara.put(field.getName(), field.get(getParaObj));
+
+				// GtLogger.v(field.getName() + " : " + field.get(getParaObj));
+
+			}
+			// System.out.println("属性="+field.toString());
+			// System.out.println("数据类型＝"+field.getType());
+			// System.out.println("属性名＝"+field.getName());
+			// int mod=field.getModifiers();
+			// System.out.println("属性修饰符＝"+Modifier.toString(mod));
+			//
+			// for (int i = 0; i < m.length; i++) {
+			// if (m[i].getName().indexOf("get")==0) {
+			// //System.out.println("方法名："+m[i].getName());
+			// // System.out.println("值："+ m[i].invoke(obj, new Object[0]));
+			// hashMap.put(m[i].getName(), m[i].invoke(obj, new Object[0]));
+			// }
+			// }
+		} catch (Throwable e) {
+			System.err.println(e);
+		}
+
+		return mapPara;
+
+	}
+
+	private String genernateApiUrl(String relApiPath, String param) {
+		try {
+
+			URI url = URIUtils.createURI(GtApiEnv.httpType,
+					GtApiEnv.gtApiBaseUrl, GtApiEnv.gtApiPort, relApiPath,
+					param, null);
+
+			return url.toString();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * 上传用户的行为数据
+	 */
 	public void userBehaviourUpload_StringRequest() {
-		// String url = "http://www.baidu.com";
-		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
-		// 编码
 
-		// TODO 1.根据get内容生成URL，请求URL，返回值
-		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
+		ajaxPhp_GreqVo = new AjaxPhp_GreqVo();
 
-		GtLogger.v(url);
+		// TODO 使用的假数据
+		ajaxPhp_GreqVo.setApi("jordan");
+		ajaxPhp_GreqVo.setChallenge(initCaptchaOption.getChallenge());
+		ajaxPhp_GreqVo.setUserresponse("22b222dd48");
+		ajaxPhp_GreqVo.setPasstime(2702);
+		ajaxPhp_GreqVo.setImgload(117);
+		// ajaxPhp_GreqVo
+		// .setA("s$adcdefg");
+		ajaxPhp_GreqVo
+				.setA("s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6");
 
-		StringRequest option_Request = new StringRequest(url,
+		GtLogger.v(ajaxPhp_GreqVo.getA());
+
+		// 对象转Map
+
+		// Map编码成List
+
+		String relApiPath = "/ajax.php";
+		String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
+
+		// GtLogger.v(param);
+
+		String optionApiUrl = genernateApiUrl(relApiPath, param);
+
+		GtLogger.v(optionApiUrl);
+
+		StringRequest option_Request = new StringRequest(optionApiUrl,
 				new Response.Listener<String>() {
 
 					@Override
 					public void onResponse(String response) {
-						// GtLogger.v("response:" + response);
+						GtLogger.v("userBehaviourUpload_StringRequest   response:"
+								+ response);
 
-						// 硬解码
-						String webJsFunction[] = response.split("=");
-						String optionValues[] = webJsFunction[1].split(";");
-						String optionValue = optionValues[0];
-						// GtLogger.v(optionValue);
+						// TODO 先使用假的数据 来做测试接口 2014年5月15日 12:39:42
+						AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
 
-						// 解析成对象
-						Gson gson = new Gson();
-						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
-						initCaptchaOption = gson.fromJson(optionValue,
-								CaptchaOption.class);
+						// String messageString = ajaxPhp_GresVo.getMessage();
 
-						GtLogger.v("getFullbg : "
-								+ initCaptchaOption.getFullbg());
+						// GtLogger.v(messageString);
+						// 对验证结果硬解码
+						String resultArray[] = ajaxPhp_GresVo.getMessage()
+								.split("\\|");
 
-						// 请求动态图片
-						fullbg_ImageRequest(initCaptchaOption.getImgurl());
-						slice_ImageRequest(initCaptchaOption.getSliceurl());
+						// String webJsFunction[] = response.split("=");
 
-						// 重置SeekBar
-						skb_dragCaptcha.setProgress(0);
+						String messageResult = resultArray[0];// 验证结果值
+						String actionRank = resultArray[1];// 验证行为排名
+
+						if (ajaxPhp_GresVo.getSuccess().equals("1")) {
+							GtLogger.v("验证成功！    " + "TODO秒的速度超过"
+									+ (100 - Integer.parseInt(actionRank))
+									+ "%的用户");
+
+							// TODO 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
+							postCaptchaInfoToCustomServer();
+							
+
+						} else {
+							GtLogger.v("验证失败");
+						}
+
+						GtLogger.v(" messageResult: " + messageResult
+								+ " actionRank: " + actionRank);
 
 					}
 				}, new Response.ErrorListener() {
@@ -504,37 +636,60 @@ public class ImageMoveActivity extends Activity {
 
 		mQueue.add(option_Request);
 	}
-	
-	
-	
-	// /**
-	// * 利用Volley异步加载图片
-	// *
-	// * 注意方法参数: getImageListener(ImageView view, int defaultImageResId, int
-	// * errorImageResId) 第一个参数:显示图片的ImageView 第二个参数:默认显示的图片资源
-	// 第三个参数:加载错误时显示的图片资源
-	// */
-	// private void loadImageByVolley() {
-	// String imageUrl = "http://avatar.csdn.net/6/6/D/1_lfdfhl.jpg";
-	// RequestQueue requestQueue = Volley.newRequestQueue(this);
-	// final LruCache<String, Bitmap> lruCache = new LruCache<String, Bitmap>(
-	// 20);
-	// ImageCache imageCache = new ImageCache() {
-	// @Override
-	// public void putBitmap(String key, Bitmap value) {
-	// lruCache.put(key, value);
-	// }
-	//
-	// @Override
-	// public Bitmap getBitmap(String key) {
-	// return lruCache.get(key);
-	// }
-	// };
-	// ImageLoader imageLoader = new ImageLoader(requestQueue, imageCache);
-	// ImageListener listener = ImageLoader.getImageListener(switcherView,
-	// R.drawable.ic_launcher, R.drawable.ic_launcher);
-	// imageLoader.get(imageUrl, listener);
-	// }
 
-	
+	public void postCaptchaInfoToCustomServer() {
+
+		try {
+
+			String customServerGtApiUrl = "http://192.168.2.66:8000/gtapp_submit/";
+
+			StringRequest stringRequest = new StringRequest(
+					Request.Method.POST, customServerGtApiUrl,
+					new Response.Listener<String>() {
+
+						public void onResponse(String response) {
+
+							try {
+
+								// TODO 安卓客户端接收到消息后进行相应的处理
+								GtLogger.v("postCaptchaInfoToCustomServer:  " + response);
+
+							} catch (Exception e) {
+								GtLogger.v(LoggerString.getFileLineMethod()
+										+ e.getMessage());
+							}
+
+						}
+					}, new Response.ErrorListener() {
+
+						public void onErrorResponse(VolleyError arg0) {
+
+							GtLogger.v(LoggerString.getFileLineMethod()
+									+ arg0.getMessage());
+						}
+					}) {
+
+				@Override
+				protected Map<String, String> getParams() {
+					Map<String, String> params = new HashMap<String, String>();
+
+					// TODO 将客户端的信息编码成一个Json串，然后上传到客户服务器
+					params.put("captcha_info", "android post infomation");
+
+					return params;
+				}
+
+			};
+
+			// 设置请求超时时间5s：http://blog.csdn.net/xyz_lmn/article/details/12177005
+			stringRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1,
+					1.0f));
+			mQueue.add(stringRequest);
+
+		} catch (Exception e) {
+			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
+		}
+
+	}
+
 }

@@ -1,7 +1,7 @@
 package com.geetest.gtappdemo.model.vo.greq;
 
 /**
- * 内容初始化
+ * 内容初始化的请求参数
  * @author Zheng
  *
  */
