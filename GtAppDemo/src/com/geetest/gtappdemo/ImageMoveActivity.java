@@ -41,6 +41,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.data.LoggerTag;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
@@ -566,6 +567,13 @@ public class ImageMoveActivity extends Activity {
 	 */
 	public void userBehaviourUpload_StringRequest() {
 
+		// TODO 行为数据的视觉上混淆工作
+		int userXpos = 23;
+
+		GtLogger.v("userXpos:  "
+				+ GtDataConvert.EnCryptUserResponse("" + userXpos));
+		
+
 		ajaxPhp_GreqVo = new AjaxPhp_GreqVo();
 
 		// TODO 使用的假数据
@@ -621,7 +629,7 @@ public class ImageMoveActivity extends Activity {
 							GtLogger.v("验证成功！    " + "TODO秒的速度超过"
 									+ (100 - Integer.parseInt(actionRank))
 									+ "%的用户");
-							
+
 							tv_validateStatus.setText("验证成功");
 
 							// TODO 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
@@ -684,20 +692,23 @@ public class ImageMoveActivity extends Activity {
 				protected Map<String, String> getParams() {
 					Map<String, String> params = new HashMap<String, String>();
 
-					GtCustomerSubmit gtCustomerSubmit =  new GtCustomerSubmit();
-					//TODO  构造的假数据
-					gtCustomerSubmit.setGeetest_challenge("ad7ba4518b5ed270268bf736c723f935cz");
-					gtCustomerSubmit.setGeetest_validate("30f58f0de5faa14dc78ffe6c067969fc");
-					gtCustomerSubmit.setGeetest_seccode("30f58f0de5faa14dc78ffe6c067969fc|jordan");
-										
-					Gson gson = new Gson();					
-					String postJsonString = gson.toJson(gtCustomerSubmit);  
-					
+					GtCustomerSubmit gtCustomerSubmit = new GtCustomerSubmit();
+					// TODO 构造的假数据
+					gtCustomerSubmit
+							.setGeetest_challenge("ad7ba4518b5ed270268bf736c723f935cz");
+					gtCustomerSubmit
+							.setGeetest_validate("30f58f0de5faa14dc78ffe6c067969fc");
+					gtCustomerSubmit
+							.setGeetest_seccode("30f58f0de5faa14dc78ffe6c067969fc|jordan");
+
+					Gson gson = new Gson();
+					String postJsonString = gson.toJson(gtCustomerSubmit);
+
 					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
 					params.put("captcha_info", postJsonString);
-					
-					GtLogger.v("postJsonString: "+ postJsonString);
-					
+
+					GtLogger.v("postJsonString: " + postJsonString);
+
 					return params;
 				}
 
