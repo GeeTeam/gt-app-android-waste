@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -43,9 +42,10 @@ import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
-import com.geetest.gtapp.utils.data.LoggerTag;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
+import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
+import com.geetest.gtappdemo.model.vo.DecodedChallenge;
 import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.gres.AjaxPhp_GresVo;
 import com.geetest.gtappdemo.model.vo.preq.GtCustomerSubmit;
@@ -90,6 +90,10 @@ public class ImageMoveActivity extends Activity {
 	// 验证通讯数据对象
 	private CaptchaOption initCaptchaOption;// 验证码初始化验证数据设置
 	private AjaxPhp_GreqVo ajaxPhp_GreqVo;// 上传行为数据的API参数
+
+	// 用户行为数据
+	private int sliderOffsetX = 4;// 滑块x方向偏移量
+	private ArrayList<CaptchaUserAction> userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
@@ -568,11 +572,31 @@ public class ImageMoveActivity extends Activity {
 	public void userBehaviourUpload_StringRequest() {
 
 		// TODO 行为数据的视觉上混淆工作
+		String challenge = "0accdbb7cda7c8a11f182cd28f6c2c245v";
+
+		// 用户交互的x坐标答案
+		DecodedChallenge decodedChallenge = new DecodedChallenge(challenge);// 解码challenge
+
 		int userXpos = 23;
 
-		GtLogger.v("userXpos:  "
-				+ GtDataConvert.EnCryptUserResponse("" + userXpos));
-		
+		GtLogger.v("userResponse:  "
+				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
+
+		// TODO 制造假数据： 用户行为数据
+		for (int i = 0; i < 10; i++) {
+			CaptchaUserAction userAction = new CaptchaUserAction();
+
+			userAction.setxPos(2 * i);
+
+			Random random = new Random(2);
+			userAction.setyPos(random.nextInt());// 产生随机数
+
+			userAction.setTimeIncrement(10 * i);
+
+			userActions.add(userAction);
+		}
+
+		GtLogger.v("a:  " + GtDataConvert.EncryptUserAction(userActions));
 
 		ajaxPhp_GreqVo = new AjaxPhp_GreqVo();
 
