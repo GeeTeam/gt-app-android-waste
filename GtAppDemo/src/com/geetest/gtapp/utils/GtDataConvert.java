@@ -1,6 +1,7 @@
 package com.geetest.gtapp.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
@@ -66,7 +67,33 @@ public class GtDataConvert {
 			// 按照序列进行编码--以5为周期进行排布
 			ArrayList<ArrayList<Character>> charValueMap = getCharValueMap(nonRepeatChallenge);
 
-			return "aaaaaa";
+			int num = response;
+			int ran2, rest = 4;
+			String finalResponse = "";
+
+			@SuppressWarnings("unchecked")
+			ArrayList<Integer> cash = new ArrayList(Arrays.asList(1, 2, 5, 10,
+					50));//用于字符替换的编码方式
+			// int cash[] = { 1, 2, 5, 10, 50 };// 字符替换码
+
+			while (num > 0) {
+				if ((num - cash.get(rest)) >= 0) {
+					ran2 = (int) (Math.random() * (charValueMap.get(rest)
+							.size()));
+					finalResponse = finalResponse
+							+ charValueMap.get(rest).get(ran2);
+					num = num - cash.get(rest);
+				} else {
+					charValueMap.remove(rest);
+					// charValueMap.splice(rest, 1);//删除从rest开始后的1个元素
+					// cash.splice(rest, 1);// 删除cash里面的rest开始后的1个元素
+					cash.remove(rest);
+					rest = rest - 1;
+				}
+			}
+			return finalResponse;
+
+			// return "aaaaaa";
 		} catch (Exception e) {
 			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
 		}

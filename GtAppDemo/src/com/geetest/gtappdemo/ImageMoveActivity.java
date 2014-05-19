@@ -577,7 +577,7 @@ public class ImageMoveActivity extends Activity {
 		// 用户交互的x坐标答案
 		DecodedChallenge decodedChallenge = new DecodedChallenge(challenge);// 解码challenge
 
-		int userXpos = 23;
+		int userXpos = 12;
 
 		GtLogger.v("userResponse:  "
 				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
