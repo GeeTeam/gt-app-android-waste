@@ -170,7 +170,9 @@ public class GtDataConvert {
 
 		try {
 			// TODO 参考ZCX的JS代码
-			return "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
+			return encode(null);
+			// return
+			// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
 		} catch (Exception e) {
 			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
 		}
@@ -178,8 +180,53 @@ public class GtDataConvert {
 
 	}
 
-	private ArrayList<CaptchaUserAction> getOffsetData() {
-		return null;
+	/**
+	 * 对行为数据进行压缩编码
+	 * 
+	 * @param userActions
+	 * @return
+	 */
+	private static String encode(ArrayList<CaptchaUserAction> userActions) {
+		// TODO
+
+		return "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
+
+		// return null;
+	}
+
+	/**
+	 * 获取输入数据的差分量
+	 * 
+	 * @param userActions
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private static ArrayList<CaptchaUserAction> getOffsetData(
+			ArrayList<CaptchaUserAction> userActions) {
+
+		ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
+
+		for (int i = 0; i < userActions.size() - 1; i++) {
+			CaptchaUserAction diffAction = new CaptchaUserAction();
+
+			// 相邻求差
+			diffAction.setxPos(userActions.get(i + 1).getxPos()
+					- userActions.get(i).getxPos());
+			diffAction.setyPos(userActions.get(i + 1).getyPos()
+					- userActions.get(i).getyPos());
+			diffAction
+					.setTimeIncrement(userActions.get(i + 1).getTimeIncrement()
+							- userActions.get(i).getTimeIncrement());
+
+			// 剔除重复项 进行存储
+			if ((diffAction.getxPos() != 0) || (diffAction.getyPos() != 0)
+					|| (diffAction.getTimeIncrement() != 0)) {
+				diffCaptchaUserActions.add(diffAction);
+			}
+
+		}
+
+		return diffCaptchaUserActions;
 	}
 
 	/**
@@ -188,21 +235,35 @@ public class GtDataConvert {
 	 * @param num
 	 * @return
 	 */
-	private Character getChar(int num) {
+	private static Character getChar(int num) {
 		String list = "!$'()*+,-./0123456789:;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~";
 		return list.charAt(num);
 	}
 
-	private Character to77(int e) {
-		//TODO
-		
-		return null;
-	}
-	
-	private Character encode(int e) {
-		//TODO
-		
-		return null;
+	/**
+	 * 使用78进制来压缩存储数据
+	 * 
+	 * @param e
+	 * @return
+	 */
+	private static String to77(int temp) {
+		// TODO
+		String result = "";
+
+		while (temp != 0) {
+			result = result.toString() + getChar(temp % 77 + 2);
+			temp = (temp - temp % 77) / 77;
+		}
+
+		// 通过特殊保留符号位来区分压缩类别。
+		if (result.equals(null)) {
+			return getChar(2) + "";
+		} else {
+			return result;
+		}
+
+		// return result.equals(null) ? result : getChar(2);
+		// return null;
 	}
 
 	// /**
