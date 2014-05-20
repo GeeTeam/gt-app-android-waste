@@ -311,7 +311,7 @@ public class GtDataConvert {
 		}
 
 		// 通过特殊保留符号位来区分压缩类别。
-		if (result.equals(null)) {
+		if (result.equals("")) {
 			return getChar(2) + "";
 		} else {
 			return result;

@@ -582,16 +582,25 @@ public class ImageMoveActivity extends Activity {
 		GtLogger.v("userResponse:  "
 				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
 
-		// TODO 制造假数据： 用户行为数据
-		for (int i = 0; i < 10; i++) {
+		// 第一组数据，比较特殊，时间起点必须为0
+		CaptchaUserAction fistAction = new CaptchaUserAction(-30, -20, 0);
+		userActions.add(fistAction);
+
+		// TODO 制造随机假数据： 用户行为数据
+		for (int i = 1; i < 11; i++) {
 			CaptchaUserAction userAction = new CaptchaUserAction();
 
 			userAction.setxPos(2 * i);
 
-			Random random = new Random(2);
-			userAction.setyPos(random.nextInt());// 产生随机数
+			// Random random = new Random(2);
+			// userAction.setyPos(random.nextInt());// 产生随机数
 
-			userAction.setTimeIncrement(10 * i);
+			userAction.setyPos(1);
+
+			userAction.setTimeIncrement(10 * (i + 1));
+
+			GtLogger.v(userAction.getxPos() + "," + userAction.getyPos() + ","
+					+ userAction.getTimeIncrement());
 
 			userActions.add(userAction);
 		}

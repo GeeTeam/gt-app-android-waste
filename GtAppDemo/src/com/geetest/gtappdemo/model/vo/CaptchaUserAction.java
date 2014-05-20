@@ -14,6 +14,17 @@ public class CaptchaUserAction {
 
 	private int timeIncrement = 20;// 时间增量（s）
 
+	public CaptchaUserAction() {
+
+	}
+
+	public CaptchaUserAction(int xPos, int yPos, int timeIncrement) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.timeIncrement = timeIncrement;
+
+	}
+
 	public int getxPos() {
 		return xPos;
 	}
@@ -37,7 +48,5 @@ public class CaptchaUserAction {
 	public void setTimeIncrement(int timeIncrement) {
 		this.timeIncrement = timeIncrement;
 	}
-
-	
 
 }
