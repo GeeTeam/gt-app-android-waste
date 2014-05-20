@@ -91,6 +91,15 @@ public class ImageMoveActivity extends Activity {
 	private CaptchaOption initCaptchaOption;// 验证码初始化验证数据设置
 	private AjaxPhp_GreqVo ajaxPhp_GreqVo;// 上传行为数据的API参数
 
+	// 滑块的初始化位置
+	private int seekbarX = 0;
+	private int seekbarY = 0;
+
+	/**
+	 * 当前的用户行为
+	 */
+	private CaptchaUserAction curUserAction = new CaptchaUserAction();
+
 	// 用户行为数据
 	private int sliderOffsetX = 4;// 滑块x方向偏移量
 	private ArrayList<CaptchaUserAction> userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组
@@ -158,8 +167,8 @@ public class ImageMoveActivity extends Activity {
 
 					break;
 				case MotionEvent.ACTION_MOVE:
-					curX = event.getX();
-					curY = event.getY();
+					curX = event.getX();// 当前x
+					curY = event.getY();// 当前y
 
 					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
 					// curY));// 进行偏移
@@ -198,6 +207,66 @@ public class ImageMoveActivity extends Activity {
 		btn_refresh.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				captchaInitialOption_StringRequest();
+			}
+		});
+
+		// 拖动条的touch事件
+		skb_dragCaptcha.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				float curX, curY;// 鼠标的即时位置
+
+				curX = event.getX();
+				curY = event.getY();
+
+				switch (event.getAction()) {
+
+				case MotionEvent.ACTION_DOWN:
+					// 获取当前的位置
+					mX = event.getX();
+					mY = event.getY();
+
+					actionDown_X = event.getX();
+					actionDown_Y = event.getY();
+
+					// TODO 如果seekbar状态是按下，则开始记录第一组行为数据
+
+					// 鼠标开始拖动时，产生第一组行为数据
+					curUserAction.bindMemData((int) (seekbarX - mX),
+							(int) (seekbarY - mY), 0);
+					curUserAction.v();
+					userActions.add(curUserAction);
+
+					break;
+				case MotionEvent.ACTION_MOVE:
+					curX = event.getX();// 当前x
+					curY = event.getY();// 当前y
+
+					mX = curX;
+					mY = curY;
+
+					long curTimeTag = System.currentTimeMillis();// 当前时间标记
+					// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
+
+					curUserAction.bindMemData((int) curX, (int) curY,
+							(int) curTimeTag);
+					curUserAction.v();
+					userActions.add(curUserAction);
+
+					break;
+				case MotionEvent.ACTION_UP:
+					GtLogger.v("Images Change Action_Up");
+
+					actionUp_X = event.getX();
+					actionUp_Y = event.getY();
+
+					curX = event.getX();
+					curY = event.getY();
+
+					break;
+				}
+				return false;
 			}
 		});
 
@@ -303,6 +372,45 @@ public class ImageMoveActivity extends Activity {
 		tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 
 	}
+
+	// @Override
+	// public boolean onTouchEvent(MotionEvent event) {
+	// // 重写的onTouchEvent回调方法--监测鼠标的移动轨迹
+	//
+	// float curX = event.getX();
+	// float curY = event.getY();
+	//
+	// switch (event.getAction()) {
+	//
+	// case MotionEvent.ACTION_DOWN:
+	// GtLogger.v("屏幕按下");
+	// // TODO 如果seekbar状态是按下，则开始记录第一组行为数据
+	//
+	// // 鼠标开始拖动时，产生第一组行为数据
+	// curUserAction.bindMemData((int) (seekbarX - mX),
+	// (int) (seekbarY - mY), 0);
+	// curUserAction.v();
+	// userActions.add(curUserAction);
+	//
+	// break;
+	// case MotionEvent.ACTION_MOVE:
+	// GtLogger.v("屏幕按下并滑动");
+	// // TODO 如果seekbar状态是按下，则记录后续的行为数据
+	//
+	// long curTimeTag = System.currentTimeMillis();// 当前时间标记
+	// // TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
+	//
+	// curUserAction.bindMemData((int) curX, (int) curY, (int) curTimeTag);
+	// curUserAction.v();
+	// userActions.add(curUserAction);
+	//
+	// break;
+	// case MotionEvent.ACTION_UP:
+	// GtLogger.v("从屏幕上移走");
+	// break;
+	// }
+	// return super.onTouchEvent(event);
+	// }
 
 	/**
 	 * 小切图
@@ -509,7 +617,7 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
-	 * 将对象转成Map
+	 * 将对象转成Map,以实现对url参数的编码
 	 * 
 	 * @return
 	 */

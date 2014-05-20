@@ -1,5 +1,7 @@
 package com.geetest.gtappdemo.model.vo;
 
+import com.geetest.gtapp.logger.GtLogger;
+
 /**
  * 用户在使用验证码时的交互行为
  * 
@@ -18,11 +20,39 @@ public class CaptchaUserAction {
 
 	}
 
+	/**
+	 * 有输入参数的构造函数
+	 * 
+	 * @param xPos
+	 * @param yPos
+	 * @param timeIncrement
+	 */
 	public CaptchaUserAction(int xPos, int yPos, int timeIncrement) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.timeIncrement = timeIncrement;
 
+	}
+
+	/**
+	 * 设置成员数据
+	 * @param xPos
+	 * @param yPos
+	 * @param timeIncrement
+	 */
+	public void bindMemData(int xPos, int yPos, int timeIncrement) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.timeIncrement = timeIncrement;
+
+	}
+
+	/**
+	 * 调试函数进行参数的LogCat输出
+	 */
+	public void v() {
+		GtLogger.v("" + this.getxPos() + " " + this.getyPos() + " "
+				+ this.getTimeIncrement());
 	}
 
 	public int getxPos() {
