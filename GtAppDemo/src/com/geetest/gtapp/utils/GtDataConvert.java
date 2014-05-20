@@ -169,8 +169,9 @@ public class GtDataConvert {
 			ArrayList<CaptchaUserAction> userActions) {
 
 		try {
+
 			// TODO 参考ZCX的JS代码
-			return encode(null);
+			return encode(userActions);
 			// return
 			// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
 		} catch (Exception e) {
@@ -189,7 +190,61 @@ public class GtDataConvert {
 	private static String encode(ArrayList<CaptchaUserAction> userActions) {
 		// TODO
 
-		return "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
+		ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
+		diffCaptchaUserActions = getOffsetData(userActions);
+
+		String rx = "", ry = "", rt = "";
+		for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
+			String rxi = "", ryi = "", rti = "";
+
+			int xi = (int) (diffCaptchaUserActions.get(i).getxPos());
+			int yi = (int) (diffCaptchaUserActions.get(i).getyPos());
+			int ti = (int) (diffCaptchaUserActions.get(i).getTimeIncrement());
+
+			if (yi == -2 && xi >= 1 && xi <= 4) {
+				ryi = getChar(1 + xi);
+			} else if (yi == -1 && xi >= -2 && xi <= 6) {
+				ryi = getChar(8 + xi);
+			} else if (yi == 0 && xi >= -5 && xi <= 10) {
+				ryi = getChar(20 + xi);
+			} else if (yi == 1 && xi >= -2 && xi <= 7) {
+				ryi = getChar(33 + xi);
+			} else {
+				if (yi >= -17 && yi <= 20) {
+					ryi = getChar(58 + yi);
+				} else if (yi < -17) {
+					ryi = getChar(1) + to77(-18 - yi) + getChar(0);
+				} else if (yi > 20) {
+					ryi = getChar(0) + to77(yi - 21) + getChar(1);
+				}
+				if (xi >= -21 && xi <= 55) {
+					rxi = getChar(23 + xi);
+				} else if (xi < -21) {
+					rxi = getChar(1) + to77(-22 - xi) + getChar(0);
+				} else if (xi > 55) {
+					rxi = getChar(0) + to77(xi - 56) + getChar(1);
+				}
+			}
+			String tempTi = to77(ti);
+			if (tempTi.length() <= 1) {
+				rti = tempTi;
+			} else if (tempTi.length() == 2) {
+				rti = getChar(0) + tempTi;
+			} else {
+				rti = getChar(0) + getChar(0);
+			}
+
+			rx = rx + rxi;
+			ry = ry + ryi;
+			rt = rt + rti;
+		}
+		
+		String finalString = rx + getChar(1) + getChar(1) + getChar(1) + ry
+				+ getChar(1) + getChar(1) + getChar(1) + rt;
+		return finalString;
+
+		// return
+		// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
 
 		// return null;
 	}
@@ -235,9 +290,9 @@ public class GtDataConvert {
 	 * @param num
 	 * @return
 	 */
-	private static Character getChar(int num) {
+	private static String getChar(int num) {
 		String list = "!$'()*+,-./0123456789:;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~";
-		return list.charAt(num);
+		return list.charAt(num) + "";
 	}
 
 	/**
