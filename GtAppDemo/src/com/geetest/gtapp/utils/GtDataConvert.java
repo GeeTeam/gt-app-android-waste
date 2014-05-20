@@ -73,7 +73,7 @@ public class GtDataConvert {
 
 			@SuppressWarnings("unchecked")
 			ArrayList<Integer> cash = new ArrayList(Arrays.asList(1, 2, 5, 10,
-					50));//用于字符替换的编码方式
+					50));// 用于字符替换的编码方式
 			// int cash[] = { 1, 2, 5, 10, 50 };// 字符替换码
 
 			while (num > 0) {
@@ -100,6 +100,12 @@ public class GtDataConvert {
 		return null;
 	}
 
+	/**
+	 * 以5为周期来排布字符串
+	 * 
+	 * @param nonRepeatChallenge
+	 * @return
+	 */
 	private static ArrayList<ArrayList<Character>> getCharValueMap(
 			String nonRepeatChallenge) {
 
@@ -118,8 +124,11 @@ public class GtDataConvert {
 		return charValueMap;
 	}
 
-	/*
+	/**
 	 * 清除字符串中重复字母算法
+	 * 
+	 * @param s
+	 * @return
 	 */
 	private static String rmRepeated(String s) {
 		int len = s.length();
@@ -169,29 +178,56 @@ public class GtDataConvert {
 
 	}
 
+	private ArrayList<CaptchaUserAction> getOffsetData() {
+		return null;
+	}
+
 	/**
-	 * 获取字符的16进制的unicode编码
+	 * 根据位置获取编码串
 	 * 
-	 * @param str
+	 * @param num
 	 * @return
 	 */
-	public static String toUnicode(String str) {
-		// 存放返回值
-		String restr = "";
-		System.out.print("字符串\"" + str + "\"的unicode码:");
-		for (char a : str.toCharArray()) {
-			// 十六进制显示
-			String ch = Integer.toHexString((int) a);
-			// 用0补齐四位
-			for (int i = ch.length(); i < 4; i++) {
-				ch = "0" + ch;
-			}
-			// 全部转换成大写 不转换也无所谓
-			ch = ch.toUpperCase();
-			restr += "\\u" + ch;
-		}
-		System.out.println(restr);
-		return restr;
+	private Character getChar(int num) {
+		String list = "!$'()*+,-./0123456789:;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~";
+		return list.charAt(num);
 	}
+
+	private Character to77(int e) {
+		//TODO
+		
+		return null;
+	}
+	
+	private Character encode(int e) {
+		//TODO
+		
+		return null;
+	}
+
+	// /**
+	// * 获取字符的16进制的unicode编码
+	// *
+	// * @param str
+	// * @return
+	// */
+	// public static String toUnicode(String str) {
+	// // 存放返回值
+	// String restr = "";
+	// System.out.print("字符串\"" + str + "\"的unicode码:");
+	// for (char a : str.toCharArray()) {
+	// // 十六进制显示
+	// String ch = Integer.toHexString((int) a);
+	// // 用0补齐四位
+	// for (int i = ch.length(); i < 4; i++) {
+	// ch = "0" + ch;
+	// }
+	// // 全部转换成大写 不转换也无所谓
+	// ch = ch.toUpperCase();
+	// restr += "\\u" + ch;
+	// }
+	// System.out.println(restr);
+	// return restr;
+	// }
 
 }
