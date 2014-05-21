@@ -47,6 +47,7 @@ import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
 import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
+import com.geetest.gtappdemo.model.vo.greq.GetPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.gres.AjaxPhp_GresVo;
 import com.geetest.gtappdemo.model.vo.preq.GtCustomerSubmit;
 import com.google.gson.Gson;
@@ -230,9 +231,7 @@ public class ImageMoveActivity extends Activity {
 					actionDown_X = event.getX();
 					actionDown_Y = event.getY();
 
-					// TODO 如果seekbar状态是按下，则开始记录第一组行为数据
-
-					// 鼠标开始拖动时，产生第一组行为数据
+					// 如果seekbar状态是按下，则开始记录第一组行为数据
 					curUserAction.bindMemData((int) (seekbarX - mX),
 							(int) (seekbarY - mY), 0);
 					curUserAction.v();
@@ -552,10 +551,19 @@ public class ImageMoveActivity extends Activity {
 		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
 		// 编码
 
-		// TODO 1.根据get内容生成URL，请求URL，返回值
-		String url = "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
+		// TODO 这里是一切数据的源头：
+		// 1.根据get内容生成URL，请求URL，返回值
 
-		GtLogger.v(url);
+		GetPhp_GreqVo getPhp_GreqVo = new GetPhp_GreqVo();
+		getPhp_GreqVo.setGt("a40fd3b0d712165c5d13e6f747e948d4");
+		getPhp_GreqVo.setProduct("embed");
+
+		String relApiPath = "/get.php";
+		String param = cdtParams(cdtObjectToMap(getPhp_GreqVo));
+		String url = genernateApiUrl(relApiPath, param);
+
+		// String url =
+		// "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
 
 		StringRequest option_Request = new StringRequest(url,
 				new Response.Listener<String>() {
@@ -564,7 +572,7 @@ public class ImageMoveActivity extends Activity {
 					public void onResponse(String response) {
 						// GtLogger.v("response:" + response);
 
-						// 硬解码
+						// 硬解码抽取出JSON格式
 						String webJsFunction[] = response.split("=");
 						String optionValues[] = webJsFunction[1].split(";");
 						String optionValue = optionValues[0];
@@ -612,8 +620,13 @@ public class ImageMoveActivity extends Activity {
 		for (String key : keys) {
 			params.add(new BasicNameValuePair(key, map.get(key).toString()));
 		}
+
 		// 将参数转换
-		return URLEncodedUtils.format(params, "UTF-8");
+		String paramString = URLEncodedUtils.format(params, "UTF-8");
+
+		GtLogger.v(paramString);
+
+		return paramString;
 	}
 
 	/**
@@ -657,6 +670,13 @@ public class ImageMoveActivity extends Activity {
 
 	}
 
+	/**
+	 * 生成带参数的完整的API的URL
+	 * 
+	 * @param relApiPath
+	 * @param param
+	 * @return
+	 */
 	private String genernateApiUrl(String relApiPath, String param) {
 		try {
 
@@ -664,37 +684,25 @@ public class ImageMoveActivity extends Activity {
 					GtApiEnv.gtApiBaseUrl, GtApiEnv.gtApiPort, relApiPath,
 					param, null);
 
+			GtLogger.v("ApiFullUrl: " + url.toString());
+
 			return url.toString();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return null;
-
 	}
 
 	/**
-	 * 上传用户的行为数据
+	 * 生成的固定的用于测试的数据--在正常发布时没有什么用。
 	 */
-	public void userBehaviourUpload_StringRequest() {
-
-		// TODO 行为数据的视觉上混淆工作
-		String challenge = "0accdbb7cda7c8a11f182cd28f6c2c245v";
-
-		// 用户交互的x坐标答案
-		DecodedChallenge decodedChallenge = new DecodedChallenge(challenge);// 解码challenge
-
-		int userXpos = 12;
-
-		GtLogger.v("userResponse:  "
-				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
-
-		// 第一组数据，比较特殊，时间起点必须为0
+	private void generateUserActionsBehaviour() {
+		// // 第一组数据，比较特殊，时间起点必须为0
 		CaptchaUserAction fistAction = new CaptchaUserAction(-30, -20, 0);
 		userActions.add(fistAction);
 
-		// TODO 制造随机假数据： 用户行为数据
+		// 制造随机假数据： 用户行为数据
 		for (int i = 1; i < 11; i++) {
 			CaptchaUserAction userAction = new CaptchaUserAction();
 
@@ -712,6 +720,24 @@ public class ImageMoveActivity extends Activity {
 
 			userActions.add(userAction);
 		}
+	}
+
+	/**
+	 * 上传用户的行为数据
+	 */
+	public void userBehaviourUpload_StringRequest() {
+
+		// 行为数据的视觉上混淆工作
+		// String challenge = "0accdbb7cda7c8a11f182cd28f6c2c245v";
+		String challenge = initCaptchaOption.getChallenge();
+
+		// 用户交互的x坐标答案
+		DecodedChallenge decodedChallenge = new DecodedChallenge(challenge);// 解码challenge
+
+		int userXpos = 12;
+
+		GtLogger.v("userResponse:  "
+				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
 
 		GtLogger.v("a:  " + GtDataConvert.EncryptUserAction(userActions));
 
@@ -731,14 +757,9 @@ public class ImageMoveActivity extends Activity {
 		GtLogger.v(ajaxPhp_GreqVo.getA());
 
 		// 对象转Map
-
 		// Map编码成List
-
 		String relApiPath = "/ajax.php";
 		String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
-
-		// GtLogger.v(param);
-
 		String optionApiUrl = genernateApiUrl(relApiPath, param);
 
 		GtLogger.v(optionApiUrl);

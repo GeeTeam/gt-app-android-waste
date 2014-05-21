@@ -19,12 +19,14 @@ public class GtApiEnv {
 
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式
-	public static String gtApiBaseUrl ="api.geetest.com";// 基本路径
-	public static int gtApiPort = 80;//端口
-	
+	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径
+	public static int gtApiPort = 80;// 端口
 
 	// 又拍云 的根路径
 	public static String imgServerBase = "http://geetest-jordan2.b0.upaiyun.com/";
+
+	// // Gt的地址
+	// public static String gtApiBase = "http://api.geetest.com/";
 
 	/**
 	 * @param apiRelativePath
