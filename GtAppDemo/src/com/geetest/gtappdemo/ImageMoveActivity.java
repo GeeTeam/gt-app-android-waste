@@ -96,13 +96,21 @@ public class ImageMoveActivity extends Activity {
 	private int seekbarX = 0;
 	private int seekbarY = 0;
 
+	// 滑块交互用的时间
+	private long seekbarStartTime = 0;// 按下时
+	private long seekbarEndTime = 0;// 放开时
+
+	// 图片加载的起始时间
+	private long bgImgLoadStartTime = 0;
+	private long bgImgLoadEndTime = 0;
+
 	/**
 	 * 当前的用户行为
 	 */
 	private CaptchaUserAction curUserAction = new CaptchaUserAction();
 
 	// 用户行为数据
-	private int sliderOffsetX = 4;// 滑块x方向偏移量
+	private int sliderOffsetX = 12;// 滑块x方向偏移量
 	private ArrayList<CaptchaUserAction> userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组
 
 	/* 声明存储屏幕的分辨率变量 */
@@ -228,6 +236,8 @@ public class ImageMoveActivity extends Activity {
 					mX = event.getX();
 					mY = event.getY();
 
+					seekbarStartTime = System.currentTimeMillis();
+
 					actionDown_X = event.getX();
 					actionDown_Y = event.getY();
 
@@ -255,6 +265,9 @@ public class ImageMoveActivity extends Activity {
 
 					break;
 				case MotionEvent.ACTION_UP:
+
+					seekbarEndTime = System.currentTimeMillis();
+
 					GtLogger.v("Images Change Action_Up");
 
 					actionUp_X = event.getX();
@@ -318,6 +331,8 @@ public class ImageMoveActivity extends Activity {
 						// TODO 坐标偏移
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
+
+						sliderOffsetX = (int) dX * progress;
 
 						igv_slice.scrollTo((int) (-dX * progress),
 								getSliceYposAfterSalced());// 进行偏移
@@ -427,6 +442,8 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onResponse(Bitmap response) {
 
+						bgImgLoadEndTime = System.currentTimeMillis();// 背景图加载截止时间
+
 						// 缩放图片数据源
 
 						// bm_zoom_scale = (intScreenX - 80) /
@@ -509,6 +526,7 @@ public class ImageMoveActivity extends Activity {
 						igv_slicebg.setImageBitmap(zoomImage(response,
 								bm_zoom_scale));
 
+						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
 						// igv_slicebg.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
@@ -517,6 +535,8 @@ public class ImageMoveActivity extends Activity {
 						igv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
+
+		bgImgLoadStartTime = System.currentTimeMillis();// 图片开始请求时记录一个时间节点。
 
 		mQueue.add(bg_imageRequest);
 	}
@@ -589,7 +609,6 @@ public class ImageMoveActivity extends Activity {
 
 						// 请求动态图片
 						fullbg_ImageRequest(initCaptchaOption.getImgurl());
-						slice_ImageRequest(initCaptchaOption.getSliceurl());
 
 						// 重置SeekBar
 						skb_dragCaptcha.setProgress(0);
@@ -723,18 +742,32 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
+	 * 获取鼠标放开时，滑块的偏移量
+	 * 
+	 * @return
+	 */
+	private int getSliderBarOffset() {
+
+		// sliderOffsetX = 12;
+		// TODO 使用的假数据：需要获取鼠标放开时，滑块相对产生的对初始位置的偏移量,可能需要做一些修改工作
+		return sliderOffsetX;
+
+	}
+
+	/**
 	 * 上传用户的行为数据
 	 */
 	public void userBehaviourUpload_StringRequest() {
 
 		// 行为数据的视觉上混淆工作
 		// String challenge = "0accdbb7cda7c8a11f182cd28f6c2c245v";
-		String challenge = initCaptchaOption.getChallenge();
+		// String challenge = initCaptchaOption.getChallenge();
 
 		// 用户交互的x坐标答案
-		DecodedChallenge decodedChallenge = new DecodedChallenge(challenge);// 解码challenge
+		DecodedChallenge decodedChallenge = new DecodedChallenge(
+				initCaptchaOption.getChallenge());// 解码原始的challenge
 
-		int userXpos = 12;
+		int userXpos = getSliderBarOffset();
 
 		GtLogger.v("userResponse:  "
 				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
@@ -746,13 +779,12 @@ public class ImageMoveActivity extends Activity {
 		// TODO 使用的假数据
 		ajaxPhp_GreqVo.setApi("jordan");
 		ajaxPhp_GreqVo.setChallenge(initCaptchaOption.getChallenge());
-		ajaxPhp_GreqVo.setUserresponse("22b222dd48");
-		ajaxPhp_GreqVo.setPasstime(2702);
-		ajaxPhp_GreqVo.setImgload(117);
-		// ajaxPhp_GreqVo
-		// .setA("s$adcdefg");
+		ajaxPhp_GreqVo.setUserresponse(GtDataConvert.EnCryptUserResponse(
+				userXpos, decodedChallenge));
+		ajaxPhp_GreqVo.setPasstime((int) (seekbarEndTime - seekbarStartTime));
 		ajaxPhp_GreqVo
-				.setA("s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6");
+				.setImgload((int) (bgImgLoadEndTime - bgImgLoadStartTime));
+		ajaxPhp_GreqVo.setA(GtDataConvert.EncryptUserAction(userActions));
 
 		GtLogger.v(ajaxPhp_GreqVo.getA());
 
