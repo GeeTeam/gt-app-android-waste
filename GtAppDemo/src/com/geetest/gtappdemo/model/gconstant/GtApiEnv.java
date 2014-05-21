@@ -11,6 +11,12 @@ import com.geetest.gtapp.utils.LoggerString;
  */
 public class GtApiEnv {
 
+	// TODO 公钥和私钥 都是需要SDK外部初始化
+	public static String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+	public static String gt_private_key = "";// 私钥
+
+	public static String gt_product_type = "embed";// 嵌入式的
+
 	public static int slice_img_width = 48;// 切片图宽
 	public static int slice_img_height = 64;// 切片图高
 
@@ -22,18 +28,21 @@ public class GtApiEnv {
 	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径
 	public static int gtApiPort = 80;// 端口
 
+	// GtApp主要使用的Api的服务器端
+	public static final String getOptionApi = "/get.php";
+	public static final String ajaxSubmitApi = "/ajax.php";
+	
+	
+
 	// 又拍云 的根路径
 	public static String imgServerBase = "http://geetest-jordan2.b0.upaiyun.com/";
 
-	
-	//提交验证的服务器的API名称
+	// Gt提交验证的服务器的API名称
 	public static String ajaxApiName = "jordan";
-	
-	
-	//验证码的版本类型
+
+	// 验证码的版本类型--在向客户服务器提交时使用
 	public static String captChaType = "jordan";
-	
-	
+
 	// // Gt的地址
 	// public static String gtApiBase = "http://api.geetest.com/";
 

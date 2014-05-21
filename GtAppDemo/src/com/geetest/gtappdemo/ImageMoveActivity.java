@@ -293,7 +293,7 @@ public class ImageMoveActivity extends Activity {
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						Log.v("seekbar", "拖动停止");
 
-						// TODO 向服务器提交行为数据
+						// 向服务器提交行为数据
 						userBehaviourUpload_StringRequest();
 					}
 
@@ -330,7 +330,7 @@ public class ImageMoveActivity extends Activity {
 						float dX = (intScreenX - intWidth) / 100;
 
 						// Log.v("seekbar", ("当前进度：" + progress + "%"));
-						// TODO 坐标偏移
+						// 坐标偏移
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
 
@@ -389,45 +389,6 @@ public class ImageMoveActivity extends Activity {
 
 	}
 
-	// @Override
-	// public boolean onTouchEvent(MotionEvent event) {
-	// // 重写的onTouchEvent回调方法--监测鼠标的移动轨迹
-	//
-	// float curX = event.getX();
-	// float curY = event.getY();
-	//
-	// switch (event.getAction()) {
-	//
-	// case MotionEvent.ACTION_DOWN:
-	// GtLogger.v("屏幕按下");
-	// // TODO 如果seekbar状态是按下，则开始记录第一组行为数据
-	//
-	// // 鼠标开始拖动时，产生第一组行为数据
-	// curUserAction.bindMemData((int) (seekbarX - mX),
-	// (int) (seekbarY - mY), 0);
-	// curUserAction.v();
-	// userActions.add(curUserAction);
-	//
-	// break;
-	// case MotionEvent.ACTION_MOVE:
-	// GtLogger.v("屏幕按下并滑动");
-	// // TODO 如果seekbar状态是按下，则记录后续的行为数据
-	//
-	// long curTimeTag = System.currentTimeMillis();// 当前时间标记
-	// // TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
-	//
-	// curUserAction.bindMemData((int) curX, (int) curY, (int) curTimeTag);
-	// curUserAction.v();
-	// userActions.add(curUserAction);
-	//
-	// break;
-	// case MotionEvent.ACTION_UP:
-	// GtLogger.v("从屏幕上移走");
-	// break;
-	// }
-	// return super.onTouchEvent(event);
-	// }
-
 	/**
 	 * 小切图
 	 */
@@ -453,7 +414,7 @@ public class ImageMoveActivity extends Activity {
 						igv_slice.setImageBitmap(zoomImage(response,
 								bm_zoom_scale));
 
-						// TODO 设置图片控件的y方向位置
+						// 设置图片控件的y方向位置
 						igv_slice.scrollTo(-50, getSliceYposAfterSalced());
 
 						GtLogger.v("initCaptchaOption.getYpos():"
@@ -573,14 +534,14 @@ public class ImageMoveActivity extends Activity {
 		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
 		// 编码
 
-		// TODO 这里是一切数据的源头：
+		// 这里是一切数据的源头：
 		// 1.根据get内容生成URL，请求URL，返回值
 
 		GetPhp_GreqVo getPhp_GreqVo = new GetPhp_GreqVo();
-		getPhp_GreqVo.setGt("a40fd3b0d712165c5d13e6f747e948d4");
-		getPhp_GreqVo.setProduct("embed");
+		getPhp_GreqVo.setGt(GtApiEnv.gt_public_key);
+		getPhp_GreqVo.setProduct(GtApiEnv.gt_product_type);
 
-		String relApiPath = "/get.php";
+		String relApiPath = GtApiEnv.getOptionApi;
 		String param = cdtParams(cdtObjectToMap(getPhp_GreqVo));
 		String url = genernateApiUrl(relApiPath, param);
 
@@ -709,7 +670,6 @@ public class ImageMoveActivity extends Activity {
 
 			return url.toString();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -790,7 +750,7 @@ public class ImageMoveActivity extends Activity {
 		GtLogger.v(ajaxPhp_GreqVo.getA());
 
 		// 对象转Map,Map编码成List
-		String relApiPath = "/ajax.php";
+		String relApiPath = GtApiEnv.ajaxSubmitApi;
 		String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
 		String optionApiUrl = genernateApiUrl(relApiPath, param);
 
@@ -804,7 +764,7 @@ public class ImageMoveActivity extends Activity {
 						GtLogger.v("userBehaviourUpload_StringRequest   response:"
 								+ response);
 
-						// TODO 先使用假的数据 来做测试接口 2014年5月15日 12:39:42
+						// 先使用假的数据 来做测试接口 2014年5月15日 12:39:42
 						AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
 
 						// 对验证结果硬解码
@@ -821,7 +781,7 @@ public class ImageMoveActivity extends Activity {
 
 							tv_validateStatus.setText("验证成功");
 
-							// TODO 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
+							// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 							postCaptchaInfoToCustomServer();
 
 						} else {
