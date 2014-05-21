@@ -70,9 +70,9 @@ public class ImageMoveActivity extends Activity {
 
 	private Button btn_refresh;// 用于刷新图片的按钮
 
-	private ImageView igv_slice;// 用于拖动的小切片图
-	private ImageView igv_slicebg;// 被切掉后的切图背景
-	private ImageView igv_fullbg;// 完整的背景
+	private ImageView imgv_full_bg;// 完整的背景
+	private ImageView imgv_slice;// 用于拖动的小切片图
+	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 
 	private Bitmap bm_slice;
 	private Bitmap bm_slicebg;
@@ -157,7 +157,7 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	private void initListeners() {
-		igv_slice.setOnTouchListener(new View.OnTouchListener() {
+		imgv_slice.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View arg0, MotionEvent event) {
 
@@ -183,7 +183,7 @@ public class ImageMoveActivity extends Activity {
 
 					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
 					// curY));// 进行偏移
-					igv_slice.scrollBy((int) (mX - curX), 0);// 只进行水平方向行偏移
+					imgv_slice.scrollBy((int) (mX - curX), 0);// 只进行水平方向行偏移
 					mX = curX;
 					mY = curY;
 					break;
@@ -206,7 +206,7 @@ public class ImageMoveActivity extends Activity {
 
 					curX = event.getX();
 					curY = event.getY();
-					igv_slice.scrollBy((int) (mX - curX), 0);
+					imgv_slice.scrollBy((int) (mX - curX), 0);
 					break;
 				}
 
@@ -336,7 +336,7 @@ public class ImageMoveActivity extends Activity {
 
 						sliderOffsetX = (int) dX * progress;
 
-						igv_slice.scrollTo((int) (-dX * progress),
+						imgv_slice.scrollTo((int) (-dX * progress),
 								getSliceYposAfterSalced());// 进行偏移
 
 						// igv_slice.scrollTo(-50,
@@ -380,14 +380,90 @@ public class ImageMoveActivity extends Activity {
 		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
 		// child text view
 
-		igv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
-		igv_slicebg = (ImageView) reLayoutView.findViewById(R.id.imgv_slice_bg);
+		imgv_full_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_full_bg);
+		imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
+		imgv_slice_bg = (ImageView) reLayoutView
+				.findViewById(R.id.imgv_slice_bg);
 
 		skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
 		tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 
 	}
+
+	/**
+	 * 向服务器请求完整的图片
+	 * 
+	 * @param relativeUrl
+	 */
+	private void fullbg_ImageRequest(String relativeUrl) {
+
+		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
+
+		GtLogger.v(imgUrl);
+
+		ImageRequest bg_imageRequest = new ImageRequest(imgUrl,
+				new Response.Listener<Bitmap>() {
+					@Override
+					public void onResponse(Bitmap response) {
+
+						// 对图片进行缩放
+						bm_zoom_scale = (intScreenX - 80) / response.getWidth();
+						GtLogger.v("bm_zoom_scale: " + bm_zoom_scale);
+						imgv_full_bg.setImageBitmap(zoomImage(response,
+								bm_zoom_scale));
+
+						slice_bg_ImageRequest(initCaptchaOption.getImgurl());// 再请求切图背景
+						// igv_slicebg.setImageBitmap(response);
+					}
+				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						imgv_full_bg.setImageResource(R.drawable.ic_launcher);
+					}
+				});
+
+		bgImgLoadStartTime = System.currentTimeMillis();// 图片开始请求时记录一个时间节点。
+
+		mQueue.add(bg_imageRequest);
+	}
+
+	/**
+	 * 切掉后的大的背景图
+	 */
+	private void slice_bg_ImageRequest(String relativeUrl) {
+
+		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
+
+		GtLogger.v(imgUrl);
+
+		ImageRequest bg_imageRequest = new ImageRequest(imgUrl,
+				new Response.Listener<Bitmap>() {
+					@Override
+					public void onResponse(Bitmap response) {
+
+						// 对图片进行缩放
+						bm_zoom_scale = (intScreenX - 80) / response.getWidth();
+						GtLogger.v("bm_zoom_scale: " + bm_zoom_scale);
+						imgv_slice_bg.setImageBitmap(zoomImage(response,
+								bm_zoom_scale));
+
+						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
+						// igv_slicebg.setImageBitmap(response);
+					}
+				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						imgv_slice.setImageResource(R.drawable.ic_launcher);
+					}
+				});	
+
+		mQueue.add(bg_imageRequest);
+	}
+
+	/**
+	 * 切掉后的大的背景图
+	 */
 
 	/**
 	 * 小切图
@@ -411,26 +487,26 @@ public class ImageMoveActivity extends Activity {
 
 						// bm_zoom_scale = (intScreenX - 80) /
 						// response.getWidth();
-						igv_slice.setImageBitmap(zoomImage(response,
+						imgv_slice.setImageBitmap(zoomImage(response,
 								bm_zoom_scale));
 
 						// 设置图片控件的y方向位置
-						igv_slice.scrollTo(-50, getSliceYposAfterSalced());
+						imgv_slice.scrollTo(-50, getSliceYposAfterSalced());
 
 						GtLogger.v("initCaptchaOption.getYpos():"
 								+ initCaptchaOption.getYpos()
 								+ "   igv_slicebg.getTop():"
-								+ igv_slicebg.getTop());
+								+ imgv_slice_bg.getTop());
 
-						setImageViewScale(igv_slice, 300,
-								igv_slicebg.getHeight());
+						setImageViewScale(imgv_slice, 300,
+								imgv_slice_bg.getHeight());
 
 						// igv_slice.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						igv_slice.setImageResource(R.drawable.ic_launcher);
+						imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -445,7 +521,7 @@ public class ImageMoveActivity extends Activity {
 	private int getSliceYposAfterSalced() {
 
 		int scaledYpos = Math.round(-(initCaptchaOption.getYpos()
-				* bm_zoom_scale + igv_slicebg.getTop()));
+				* bm_zoom_scale + imgv_slice_bg.getTop()));
 
 		return scaledYpos;
 
@@ -467,41 +543,6 @@ public class ImageMoveActivity extends Activity {
 		para.height = imgv_height;
 		// para.height = igv_slicebg.getHeight();
 		imgv.setLayoutParams(para);
-	}
-
-	/**
-	 * 切掉后的大的背景图
-	 */
-	private void fullbg_ImageRequest(String relativeUrl) {
-
-		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
-
-		GtLogger.v(imgUrl);
-
-		ImageRequest bg_imageRequest = new ImageRequest(imgUrl,
-				new Response.Listener<Bitmap>() {
-					@Override
-					public void onResponse(Bitmap response) {
-
-						// 对图片进行缩放
-						bm_zoom_scale = (intScreenX - 80) / response.getWidth();
-						GtLogger.v("bm_zoom_scale: " + bm_zoom_scale);
-						igv_slicebg.setImageBitmap(zoomImage(response,
-								bm_zoom_scale));
-
-						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
-						// igv_slicebg.setImageBitmap(response);
-					}
-				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						igv_slice.setImageResource(R.drawable.ic_launcher);
-					}
-				});
-
-		bgImgLoadStartTime = System.currentTimeMillis();// 图片开始请求时记录一个时间节点。
-
-		mQueue.add(bg_imageRequest);
 	}
 
 	private Bitmap zoomImage(Bitmap bm, float scale) {
@@ -571,7 +612,8 @@ public class ImageMoveActivity extends Activity {
 								+ initCaptchaOption.getFullbg());
 
 						// 请求动态图片
-						fullbg_ImageRequest(initCaptchaOption.getImgurl());
+						fullbg_ImageRequest(initCaptchaOption.getFullbg());
+						// slice_bg_ImageRequest(initCaptchaOption.getImgurl());
 
 						// 重置SeekBar
 						skb_dragCaptcha.setProgress(0);

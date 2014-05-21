@@ -29,13 +29,25 @@
             <!-- android:layout_alignTop="@+id/ll_viewArea1" -->
 
             <ImageView
+                android:id="@+id/imgv_full_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/full_bg" />
+            <!-- 完整背景图 -->
+
+            <ImageView
                 android:id="@+id/imgv_slice_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/slip_big" />
+                android:src="@drawable/slip_big"
+                android:visibility="invisible" />
+            <!-- 切图背景 -->
 
             <ImageView
                 android:id="@+id/imgv_slice"
@@ -45,7 +57,10 @@
                 android:layout_alignParentRight="true"
                 android:gravity="right"
                 android:scaleType="matrix"
-                android:src="@drawable/slip_small" />
+                android:src="@drawable/slip_small"
+                android:visibility="invisible" />
+            <!-- 切片小图 -->
+
 
             <!-- <ImageView -->
             <!-- android:id="@+id/img" -->
@@ -78,8 +93,8 @@
                 <TextView
                     android:id="@+id/tv_validateStatus"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" 
-                    android:text="pass">
+                    android:layout_height="fill_parent"
+                    android:text="pass" >
                 </TextView>
             </LinearLayout>
 
