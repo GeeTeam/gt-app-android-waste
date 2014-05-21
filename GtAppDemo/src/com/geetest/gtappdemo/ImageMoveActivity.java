@@ -764,34 +764,47 @@ public class ImageMoveActivity extends Activity {
 						GtLogger.v("userBehaviourUpload_StringRequest   response:"
 								+ response);
 
-						// 先使用假的数据 来做测试接口 2014年5月15日 12:39:42
+						// 对response 硬解码成Json
+						// var GeeTest_tempData={success: 0,message:"fail"}
+						String resultAry[] = response.split("=");
+
 						AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
 
-						// 对验证结果硬解码
-						String resultArray[] = ajaxPhp_GresVo.getMessage()
-								.split("\\|");
-
-						messageResult = resultArray[0];// 验证结果值
-						String actionRank = resultArray[1];// 验证行为排名占比
+						Gson gson = new Gson();
+						ajaxPhp_GresVo = gson.fromJson(resultAry[1],
+								AjaxPhp_GresVo.class);
 
 						if (ajaxPhp_GresVo.getSuccess().equals("1")) {
-							GtLogger.v("验证成功！    " + "TODO秒的速度超过"
+
+							// 对验证结果硬解码
+							String resultArray[] = ajaxPhp_GresVo.getMessage()
+									.split("\\|");
+
+							messageResult = resultArray[0];// 验证结果值
+							String actionRank = resultArray[1];// 验证行为排名占比
+
+							double orginActionTime = (seekbarEndTime - seekbarStartTime) / 1000.0;
+							// 四舍五入保留一位小数
+							float convertActionTime = (float) (Math
+									.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
+
+							GtLogger.v("验证成功！    " + convertActionTime
+									+ "秒的速度超过"
 									+ (100 - Integer.parseInt(actionRank))
 									+ "%的用户");
 
-							tv_validateStatus.setText("验证成功");
+							GtLogger.v(" messageResult: " + messageResult
+									+ " actionRank: " + actionRank);
 
+							tv_validateStatus.setText("验证成功");
 							// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 							postCaptchaInfoToCustomServer();
 
 						} else {
 							// 验证失败后，就不需要向客户机发起请求二次验证了
-							GtLogger.v("验证失败");
-							tv_validateStatus.setText("验证失败");
+							GtLogger.v("验证错误");
+							tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
 						}
-
-						GtLogger.v(" messageResult: " + messageResult
-								+ " actionRank: " + actionRank);
 
 					}
 				}, new Response.ErrorListener() {
