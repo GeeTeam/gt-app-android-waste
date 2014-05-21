@@ -104,6 +104,8 @@ public class ImageMoveActivity extends Activity {
 	private long bgImgLoadStartTime = 0;
 	private long bgImgLoadEndTime = 0;
 
+	private String messageResult = "";// Gt服务器返回的验证结果
+
 	/**
 	 * 当前的用户行为
 	 */
@@ -776,8 +778,7 @@ public class ImageMoveActivity extends Activity {
 
 		ajaxPhp_GreqVo = new AjaxPhp_GreqVo();
 
-		// TODO 使用的假数据
-		ajaxPhp_GreqVo.setApi("jordan");
+		ajaxPhp_GreqVo.setApi(GtApiEnv.ajaxApiName);
 		ajaxPhp_GreqVo.setChallenge(initCaptchaOption.getChallenge());
 		ajaxPhp_GreqVo.setUserresponse(GtDataConvert.EnCryptUserResponse(
 				userXpos, decodedChallenge));
@@ -788,8 +789,7 @@ public class ImageMoveActivity extends Activity {
 
 		GtLogger.v(ajaxPhp_GreqVo.getA());
 
-		// 对象转Map
-		// Map编码成List
+		// 对象转Map,Map编码成List
 		String relApiPath = "/ajax.php";
 		String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
 		String optionApiUrl = genernateApiUrl(relApiPath, param);
@@ -807,17 +807,12 @@ public class ImageMoveActivity extends Activity {
 						// TODO 先使用假的数据 来做测试接口 2014年5月15日 12:39:42
 						AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
 
-						// String messageString = ajaxPhp_GresVo.getMessage();
-
-						// GtLogger.v(messageString);
 						// 对验证结果硬解码
 						String resultArray[] = ajaxPhp_GresVo.getMessage()
 								.split("\\|");
 
-						// String webJsFunction[] = response.split("=");
-
-						String messageResult = resultArray[0];// 验证结果值
-						String actionRank = resultArray[1];// 验证行为排名
+						messageResult = resultArray[0];// 验证结果值
+						String actionRank = resultArray[1];// 验证行为排名占比
 
 						if (ajaxPhp_GresVo.getSuccess().equals("1")) {
 							GtLogger.v("验证成功！    " + "TODO秒的速度超过"
@@ -830,6 +825,7 @@ public class ImageMoveActivity extends Activity {
 							postCaptchaInfoToCustomServer();
 
 						} else {
+							// 验证失败后，就不需要向客户机发起请求二次验证了
 							GtLogger.v("验证失败");
 							tv_validateStatus.setText("验证失败");
 						}
@@ -849,6 +845,9 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(option_Request);
 	}
 
+	/**
+	 * 向客户机的服务器发起 二重验证提醒
+	 */
 	public void postCaptchaInfoToCustomServer() {
 
 		try {
@@ -887,13 +886,19 @@ public class ImageMoveActivity extends Activity {
 					Map<String, String> params = new HashMap<String, String>();
 
 					GtCustomerSubmit gtCustomerSubmit = new GtCustomerSubmit();
-					// TODO 构造的假数据
-					gtCustomerSubmit
-							.setGeetest_challenge("ad7ba4518b5ed270268bf736c723f935cz");
-					gtCustomerSubmit
-							.setGeetest_validate("30f58f0de5faa14dc78ffe6c067969fc");
-					gtCustomerSubmit
-							.setGeetest_seccode("30f58f0de5faa14dc78ffe6c067969fc|jordan");
+					// 构造的假数据
+					// gtCustomerSubmit
+					// .setGeetest_challenge("ad7ba4518b5ed270268bf736c723f935cz");
+					// gtCustomerSubmit
+					// .setGeetest_validate("30f58f0de5faa14dc78ffe6c067969fc");
+					// gtCustomerSubmit
+					// .setGeetest_seccode("30f58f0de5faa14dc78ffe6c067969fc|jordan");
+
+					gtCustomerSubmit.setGeetest_challenge(ajaxPhp_GreqVo
+							.getChallenge());
+					gtCustomerSubmit.setGeetest_validate(messageResult);
+					gtCustomerSubmit.setGeetest_seccode(messageResult + "\\|"
+							+ GtApiEnv.captChaType);
 
 					Gson gson = new Gson();
 					String postJsonString = gson.toJson(gtCustomerSubmit);

@@ -25,6 +25,15 @@ public class GtApiEnv {
 	// 又拍云 的根路径
 	public static String imgServerBase = "http://geetest-jordan2.b0.upaiyun.com/";
 
+	
+	//提交验证的服务器的API名称
+	public static String ajaxApiName = "jordan";
+	
+	
+	//验证码的版本类型
+	public static String captChaType = "jordan";
+	
+	
 	// // Gt的地址
 	// public static String gtApiBase = "http://api.geetest.com/";
 
