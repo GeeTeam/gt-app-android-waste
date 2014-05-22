@@ -60,6 +60,7 @@
                 android:src="@drawable/slip_small"
                 android:visibility="invisible" />
             <!-- 切片小图 -->
+            <!-- android:visibility="invisible" -->
 
 
             <!-- <ImageView -->

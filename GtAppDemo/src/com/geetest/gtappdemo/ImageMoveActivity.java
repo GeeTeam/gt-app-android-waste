@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -106,6 +108,9 @@ public class ImageMoveActivity extends Activity {
 
 	private String messageResult = "";// Gt服务器返回的验证结果
 
+	private final int MSG_FULL_BG_DISPLAY = 1;// 完整图片显示
+	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
+
 	/**
 	 * 当前的用户行为
 	 */
@@ -154,6 +159,24 @@ public class ImageMoveActivity extends Activity {
 
 		captchaInitialOption_StringRequest();
 
+	}
+
+	/**
+	 * 按下滑块时，设置背景图片的原始图片的显示
+	 */
+	private void setImageViewDisplayWhenDragSlider() {
+		imgv_full_bg.setVisibility(View.GONE);
+		imgv_slice_bg.setVisibility(View.VISIBLE);
+		imgv_slice.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * 按初始化或者点击刷新时:设置背景图片的原始图片的显示
+	 */
+	private void setImageViewDisplayWhenRefresh() {
+		imgv_full_bg.setVisibility(View.VISIBLE);
+		imgv_slice_bg.setVisibility(View.GONE);
+		imgv_slice.setVisibility(View.GONE);
 	}
 
 	private void initListeners() {
@@ -238,6 +261,8 @@ public class ImageMoveActivity extends Activity {
 					mX = event.getX();
 					mY = event.getY();
 
+					setImageViewDisplayWhenDragSlider();
+
 					seekbarStartTime = System.currentTimeMillis();
 
 					actionDown_X = event.getX();
@@ -268,9 +293,9 @@ public class ImageMoveActivity extends Activity {
 					break;
 				case MotionEvent.ACTION_UP:
 
-					seekbarEndTime = System.currentTimeMillis();
-
 					GtLogger.v("Images Change Action_Up");
+
+					seekbarEndTime = System.currentTimeMillis();
 
 					actionUp_X = event.getX();
 					actionUp_Y = event.getY();
@@ -456,7 +481,7 @@ public class ImageMoveActivity extends Activity {
 					public void onErrorResponse(VolleyError error) {
 						imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
-				});	
+				});
 
 		mQueue.add(bg_imageRequest);
 	}
@@ -588,6 +613,8 @@ public class ImageMoveActivity extends Activity {
 
 		// String url =
 		// "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
+
+		setImageViewDisplayWhenRefresh();
 
 		StringRequest option_Request = new StringRequest(url,
 				new Response.Listener<String>() {
@@ -816,6 +843,7 @@ public class ImageMoveActivity extends Activity {
 						ajaxPhp_GresVo = gson.fromJson(resultAry[1],
 								AjaxPhp_GresVo.class);
 
+						// 如果返回的是成功的验证结果
 						if (ajaxPhp_GresVo.getSuccess().equals("1")) {
 
 							// 对验证结果硬解码
@@ -846,6 +874,12 @@ public class ImageMoveActivity extends Activity {
 							// 验证失败后，就不需要向客户机发起请求二次验证了
 							GtLogger.v("验证错误");
 							tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
+
+							// TODO 在界面上交替闪烁--后面采用线程的方式进行
+							SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
+							Thread demo = new Thread(he, "A");
+							demo.start();
+
 						}
 
 					}
@@ -858,6 +892,73 @@ public class ImageMoveActivity extends Activity {
 				});
 
 		mQueue.add(option_Request);
+	}
+
+	@SuppressLint("HandlerLeak")
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+
+			switch (msg.what) {
+			case MSG_FULL_BG_DISPLAY:
+				// TODO 做更新界面的内容
+				// 交替闪烁
+				GtLogger.v("背景");
+				setImageViewDisplayWhenRefresh();
+				break;
+
+			case MSG_SLICE_BG_DISPLAY:
+
+				GtLogger.v("切图");
+				setImageViewDisplayWhenDragSlider();
+				break;
+
+			default:
+				break;
+			}
+
+			super.handleMessage(msg);
+		}
+	};
+
+	/**
+	 * 设置 验证失败后的图片显示设置的线程
+	 * 
+	 * @author Zheng 2014年5月22日 上午9:34:39
+	 */
+	class SetImgStatusAfterFailed implements Runnable {
+		public void run() {
+			try {
+
+				int gapTime = 100;
+
+				// 交替闪烁
+				Message msg = mHandler.obtainMessage();
+				msg.what = 1;
+				msg.sendToTarget();
+				Thread.sleep(gapTime);
+
+				msg = mHandler.obtainMessage();
+				msg.what = 2;
+				msg.sendToTarget();
+				Thread.sleep(gapTime);
+
+				msg = mHandler.obtainMessage();
+				msg.what = 1;
+				msg.sendToTarget();
+				Thread.sleep(gapTime);
+
+				msg = mHandler.obtainMessage();
+				msg.what = 2;
+				msg.sendToTarget();
+				Thread.sleep(gapTime);
+
+				GtLogger.v("验证失败后的图片线程");
+				System.out.println(Thread.currentThread().getName());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
