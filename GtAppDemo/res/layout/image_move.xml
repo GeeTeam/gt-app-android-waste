@@ -21,8 +21,8 @@
             android:id="@+id/ll_viewArea22"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="4dp"
             android:background="#104D56" >
 
@@ -79,8 +79,8 @@
             android:layout_width="fill_parent"
             android:layout_height="20dp"
             android:layout_below="@+id/ll_viewArea22"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="#7CB391"
             android:orientation="horizontal" >
 
@@ -120,8 +120,8 @@
             android:layout_height="20dp"
             android:layout_below="@+id/ll_viewArea23"
             android:layout_marginBottom="4dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="#D8D0A9"
             android:orientation="horizontal" >
 
@@ -176,8 +176,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_viewArea1"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp" />
+        android:max="100"
+        android:maxHeight="32dp"
+        android:minHeight="32dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:progressDrawable="@drawable/seekbar_define_color_style"
+        android:thumb="@drawable/seekbar_thumb"
+        android:thumbOffset="-2dp" />
     <!-- 拖动条 -->
 
 

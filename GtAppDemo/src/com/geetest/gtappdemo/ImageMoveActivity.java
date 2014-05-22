@@ -124,8 +124,8 @@ public class ImageMoveActivity extends Activity {
 	private int intScreenX, intScreenY;
 
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
-	private int leftMargin = 1;
-	private int rightMargin = 1;
+	private int leftMargin = 20;//dp
+	private int rightMargin = 20;//dp
 
 	/* 声明相关变量作为存储图片宽高,位置使用 */
 	private int intWidth, intHeight, intDefaultX, intDefaultY;
