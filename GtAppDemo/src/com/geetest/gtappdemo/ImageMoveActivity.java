@@ -70,23 +70,23 @@ public class ImageMoveActivity extends Activity {
 
 	private Context context = this;
 
-	private Button btn_refresh;// 用于刷新图片的按钮
+	private RelativeLayout reLayoutView;// 相框的相对布局
 
 	private ImageView imgv_full_bg;// 完整的背景
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 
-	private Bitmap bm_slice;
-	private Bitmap bm_slicebg;
-	private Bitmap bm_fullbg;
+	// 图片对象
+	// private Bitmap bm_slice;
+	// private Bitmap bm_slicebg;
+	// private Bitmap bm_fullbg;
 
 	private TextView tv_validateStatus;// 验证码的状态栏
 
-	private float bm_zoom_scale = 1;// 图片缩放比例
-
+	private Button btn_refresh;// 用于刷新图片的按钮
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
-	private RelativeLayout reLayoutView;// 相框的相对布局
+	private float bm_zoom_scale = 1;// 图片缩放比例
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
 
@@ -122,6 +122,10 @@ public class ImageMoveActivity extends Activity {
 
 	/* 声明存储屏幕的分辨率变量 */
 	private int intScreenX, intScreenY;
+
+	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
+	private int leftMargin = 1;
+	private int rightMargin = 1;
 
 	/* 声明相关变量作为存储图片宽高,位置使用 */
 	private int intWidth, intHeight, intDefaultX, intDefaultY;
@@ -432,9 +436,9 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onResponse(Bitmap response) {
 
-						// 对图片进行缩放
-						bm_zoom_scale = (intScreenX - 80) / response.getWidth();
-						GtLogger.v("bm_zoom_scale: " + bm_zoom_scale);
+						// TODO 对图片进行缩放--以充斥全屏
+						bm_zoom_scale = getImageZoomScale(response.getWidth());
+
 						imgv_full_bg.setImageBitmap(zoomImage(response,
 								bm_zoom_scale));
 
@@ -453,6 +457,15 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(bg_imageRequest);
 	}
 
+	private float getImageZoomScale(int orginImageWidth) {
+
+		float zoom_scale = ((intScreenX - leftMargin - rightMargin) * 1000)
+				/ (orginImageWidth * 1000.0f);
+		GtLogger.v("zoom_scale: " + zoom_scale);
+
+		return zoom_scale;
+	}
+
 	/**
 	 * 切掉后的大的背景图
 	 */
@@ -466,12 +479,9 @@ public class ImageMoveActivity extends Activity {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
-
 						// 对图片进行缩放
-						bm_zoom_scale = (intScreenX - 80) / response.getWidth();
-						GtLogger.v("bm_zoom_scale: " + bm_zoom_scale);
 						imgv_slice_bg.setImageBitmap(zoomImage(response,
-								bm_zoom_scale));
+								bm_zoom_scale));						
 
 						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
 						// igv_slicebg.setImageBitmap(response);
@@ -631,7 +641,6 @@ public class ImageMoveActivity extends Activity {
 
 						// 解析成对象
 						Gson gson = new Gson();
-						// 收到消息后开始将JOSN字符串解析成VO对象，然后再传回Service层的回调函数
 						initCaptchaOption = gson.fromJson(optionValue,
 								CaptchaOption.class);
 
@@ -640,7 +649,6 @@ public class ImageMoveActivity extends Activity {
 
 						// 请求动态图片
 						fullbg_ImageRequest(initCaptchaOption.getFullbg());
-						// slice_bg_ImageRequest(initCaptchaOption.getImgurl());
 
 						// 重置SeekBar
 						skb_dragCaptcha.setProgress(0);
@@ -901,14 +909,11 @@ public class ImageMoveActivity extends Activity {
 
 			switch (msg.what) {
 			case MSG_FULL_BG_DISPLAY:
-				// TODO 做更新界面的内容
-				// 交替闪烁
 				GtLogger.v("背景");
 				setImageViewDisplayWhenRefresh();
 				break;
 
 			case MSG_SLICE_BG_DISPLAY:
-
 				GtLogger.v("切图");
 				setImageViewDisplayWhenDragSlider();
 				break;
