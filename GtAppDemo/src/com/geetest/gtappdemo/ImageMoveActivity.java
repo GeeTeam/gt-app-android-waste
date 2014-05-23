@@ -108,13 +108,14 @@ public class ImageMoveActivity extends Activity {
 
 	private String messageResult = "";// Gt服务器返回的验证结果
 
+	// handle里面的消息代号
 	private final int MSG_FULL_BG_DISPLAY = 1;// 完整图片显示
 	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
 
 	/**
 	 * 当前的用户行为
 	 */
-	private CaptchaUserAction curUserAction = new CaptchaUserAction();
+	// private CaptchaUserAction curUserAction = new CaptchaUserAction();
 
 	// 用户行为数据
 	private int sliderOffsetX = 12;// 滑块x方向偏移量
@@ -124,8 +125,10 @@ public class ImageMoveActivity extends Activity {
 	private int intScreenX, intScreenY;
 
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
-	private int leftMargin = 20;//dp
-	private int rightMargin = 20;//dp
+	private int leftMargin = 20;// dp
+	private int rightMargin = 20;// dp
+
+	private int seekbar_server_length = 80;// 滑条在服务器端的标准长度px--和背景图一样大
 
 	/* 声明相关变量作为存储图片宽高,位置使用 */
 	private int intWidth, intHeight, intDefaultX, intDefaultY;
@@ -169,18 +172,29 @@ public class ImageMoveActivity extends Activity {
 	 * 按下滑块时，设置背景图片的原始图片的显示
 	 */
 	private void setImageViewDisplayWhenDragSlider() {
-		imgv_full_bg.setVisibility(View.GONE);
+
+		GtLogger.v("bg,bg_slice,slice:gone,visible,visible");
+
+		imgv_full_bg.setVisibility(View.INVISIBLE);
 		imgv_slice_bg.setVisibility(View.VISIBLE);
 		imgv_slice.setVisibility(View.VISIBLE);
+
+		// TODO 在第一次加载的时候会导致切图找不到
+		// GtLogger.v("imgv_slice_bg### " + "xPos: " + imgv_slice_bg.getLeft()
+		// + " yPos: " + imgv_slice_bg.getTop());
+
 	}
 
 	/**
 	 * 按初始化或者点击刷新时:设置背景图片的原始图片的显示
 	 */
 	private void setImageViewDisplayWhenRefresh() {
+
+		GtLogger.v("bg,bg_slice,slice:visible,gone,gone");
+
 		imgv_full_bg.setVisibility(View.VISIBLE);
-		imgv_slice_bg.setVisibility(View.GONE);
-		imgv_slice.setVisibility(View.GONE);
+		imgv_slice_bg.setVisibility(View.INVISIBLE);
+		imgv_slice.setVisibility(View.INVISIBLE);
 	}
 
 	private void initListeners() {
@@ -266,17 +280,24 @@ public class ImageMoveActivity extends Activity {
 					mY = event.getY();
 
 					setImageViewDisplayWhenDragSlider();
+					// TODO 通知界面进行控制显示
+					// Message msg = mHandler.obtainMessage();
+					// msg.what = MSG_SLICE_BG_DISPLAY;
+					// msg.sendToTarget();
 
 					seekbarStartTime = System.currentTimeMillis();
 
 					actionDown_X = event.getX();
 					actionDown_Y = event.getY();
 
+					GtLogger.v("按下拖动条");
 					// 如果seekbar状态是按下，则开始记录第一组行为数据
-					curUserAction.bindMemData((int) (seekbarX - mX),
+
+					CaptchaUserAction firstAction = new CaptchaUserAction();
+					firstAction.bindMemData((int) (seekbarX - mX),
 							(int) (seekbarY - mY), 0);
-					curUserAction.v();
-					userActions.add(curUserAction);
+					firstAction.v();
+					userActions.add(firstAction);
 
 					break;
 				case MotionEvent.ACTION_MOVE:
@@ -286,12 +307,12 @@ public class ImageMoveActivity extends Activity {
 					mX = curX;
 					mY = curY;
 
-					long curTimeTag = System.currentTimeMillis();// 当前时间标记
 					// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
-
+					long curTimeTag = System.currentTimeMillis();// 当前时间标记
+					CaptchaUserAction curUserAction = new CaptchaUserAction();
 					curUserAction.bindMemData((int) curX, (int) curY,
 							(int) curTimeTag);
-					curUserAction.v();
+					// curUserAction.v();
 					userActions.add(curUserAction);
 
 					break;
@@ -355,15 +376,16 @@ public class ImageMoveActivity extends Activity {
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
 
-						// 将屏幕的X坐标进行均分
-						float dX = (intScreenX - intWidth) / 100;
-
+						GtLogger.v("当前进度：" + progress + "%");
 						// Log.v("seekbar", ("当前进度：" + progress + "%"));
 						// 坐标偏移
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
 
-						sliderOffsetX = (int) dX * progress;
+						// 将屏幕的X坐标进行均分
+						float dX = (intScreenX - intWidth) / 100.0f;
+
+						sliderOffsetX = (int) (seekbar_server_length * progress / 100);// 以服务器上的绝对值为准
 
 						imgv_slice.scrollTo((int) (-dX * progress),
 								getSliceYposAfterSalced());// 进行偏移
@@ -439,6 +461,8 @@ public class ImageMoveActivity extends Activity {
 						// TODO 对图片进行缩放--以充斥全屏
 						bm_zoom_scale = getImageZoomScale(response.getWidth());
 
+						seekbar_server_length = response.getWidth();
+
 						imgv_full_bg.setImageBitmap(zoomImage(response,
 								bm_zoom_scale));
 
@@ -457,6 +481,12 @@ public class ImageMoveActivity extends Activity {
 		mQueue.add(bg_imageRequest);
 	}
 
+	/**
+	 * 获取绽放的比例值
+	 * 
+	 * @param orginImageWidth
+	 * @return
+	 */
 	private float getImageZoomScale(int orginImageWidth) {
 
 		float zoom_scale = ((intScreenX - leftMargin - rightMargin) * 1000)
@@ -481,7 +511,7 @@ public class ImageMoveActivity extends Activity {
 					public void onResponse(Bitmap response) {
 						// 对图片进行缩放
 						imgv_slice_bg.setImageBitmap(zoomImage(response,
-								bm_zoom_scale));						
+								bm_zoom_scale));
 
 						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
 						// igv_slicebg.setImageBitmap(response);
@@ -495,10 +525,6 @@ public class ImageMoveActivity extends Activity {
 
 		mQueue.add(bg_imageRequest);
 	}
-
-	/**
-	 * 切掉后的大的背景图
-	 */
 
 	/**
 	 * 小切图
@@ -580,6 +606,13 @@ public class ImageMoveActivity extends Activity {
 		imgv.setLayoutParams(para);
 	}
 
+	/**
+	 * 对位图进行缩放得到新的位图
+	 * 
+	 * @param bm
+	 * @param scale
+	 * @return
+	 */
 	private Bitmap zoomImage(Bitmap bm, float scale) {
 		// 获得图片的宽高
 		int width = bm.getWidth();
@@ -753,6 +786,29 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
+	 * 生成带参数的完整的API的URL
+	 * 
+	 * @param relApiPath
+	 * @param param
+	 * @return
+	 */
+	private String genernateTestApiUrl(String relApiPath, String param) {
+		try {
+
+			String localBaseUrl = "192.168.2.66";
+			URI url = URIUtils.createURI(GtApiEnv.httpType, localBaseUrl,
+					GtApiEnv.gtApiPort, relApiPath, param, null);
+
+			GtLogger.v("ApiFullUrl: " + url.toString());
+
+			return url.toString();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
 	 * 生成的固定的用于测试的数据--在正常发布时没有什么用。
 	 */
 	private void generateUserActionsBehaviour() {
@@ -789,6 +845,7 @@ public class ImageMoveActivity extends Activity {
 
 		// sliderOffsetX = 12;
 		// TODO 使用的假数据：需要获取鼠标放开时，滑块相对产生的对初始位置的偏移量,可能需要做一些修改工作
+		GtLogger.v("sliderOffsetX: " + sliderOffsetX);
 		return sliderOffsetX;
 
 	}
@@ -808,21 +865,22 @@ public class ImageMoveActivity extends Activity {
 
 		int userXpos = getSliderBarOffset();
 
-		GtLogger.v("userResponse:  "
-				+ GtDataConvert.EnCryptUserResponse(userXpos, decodedChallenge));
+		String encodeUserResponse = GtDataConvert.EnCryptUserResponse(userXpos,
+				decodedChallenge);
 
-		GtLogger.v("a:  " + GtDataConvert.EncryptUserAction(userActions));
+		String encodeUserActions = GtDataConvert.EncryptUserAction(userActions);
+
+		GtLogger.v("userResponse:  " + encodeUserResponse);
+		GtLogger.v("a:  " + encodeUserActions);
 
 		ajaxPhp_GreqVo = new AjaxPhp_GreqVo();
-
 		ajaxPhp_GreqVo.setApi(GtApiEnv.ajaxApiName);
 		ajaxPhp_GreqVo.setChallenge(initCaptchaOption.getChallenge());
-		ajaxPhp_GreqVo.setUserresponse(GtDataConvert.EnCryptUserResponse(
-				userXpos, decodedChallenge));
+		ajaxPhp_GreqVo.setUserresponse(encodeUserResponse);
 		ajaxPhp_GreqVo.setPasstime((int) (seekbarEndTime - seekbarStartTime));
 		ajaxPhp_GreqVo
 				.setImgload((int) (bgImgLoadEndTime - bgImgLoadStartTime));
-		ajaxPhp_GreqVo.setA(GtDataConvert.EncryptUserAction(userActions));
+		ajaxPhp_GreqVo.setA(encodeUserActions);
 
 		GtLogger.v(ajaxPhp_GreqVo.getA());
 
@@ -831,63 +889,70 @@ public class ImageMoveActivity extends Activity {
 		String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
 		String optionApiUrl = genernateApiUrl(relApiPath, param);
 
-		GtLogger.v(optionApiUrl);
+		// TODO 使用的是内部的测试数据
+		optionApiUrl = genernateTestApiUrl("/gtapp_ajax", param);
 
 		StringRequest option_Request = new StringRequest(optionApiUrl,
 				new Response.Listener<String>() {
 
 					@Override
 					public void onResponse(String response) {
-						GtLogger.v("userBehaviourUpload_StringRequest   response:"
-								+ response);
 
-						// 对response 硬解码成Json
-						// var GeeTest_tempData={success: 0,message:"fail"}
-						String resultAry[] = response.split("=");
+						try {
+							GtLogger.v("userBehaviourUpload_StringRequest   response:"
+									+ response);
 
-						AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
+							// 对response 硬解码成Json
+							// var GeeTest_tempData={success: 0,message:"fail"}
+							String resultAry[] = response.split("=");
 
-						Gson gson = new Gson();
-						ajaxPhp_GresVo = gson.fromJson(resultAry[1],
-								AjaxPhp_GresVo.class);
+							AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
 
-						// 如果返回的是成功的验证结果
-						if (ajaxPhp_GresVo.getSuccess().equals("1")) {
+							Gson gson = new Gson();
+							ajaxPhp_GresVo = gson.fromJson(resultAry[1],
+									AjaxPhp_GresVo.class);
 
-							// 对验证结果硬解码
-							String resultArray[] = ajaxPhp_GresVo.getMessage()
-									.split("\\|");
+							// 如果返回的是成功的验证结果
+							if (ajaxPhp_GresVo.getSuccess().equals("1")) {
 
-							messageResult = resultArray[0];// 验证结果值
-							String actionRank = resultArray[1];// 验证行为排名占比
+								// 对验证结果硬解码
+								String resultArray[] = ajaxPhp_GresVo
+										.getMessage().split("\\|");
 
-							double orginActionTime = (seekbarEndTime - seekbarStartTime) / 1000.0;
-							// 四舍五入保留一位小数
-							float convertActionTime = (float) (Math
-									.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
+								messageResult = resultArray[0];// 验证结果值
+								String actionRank = resultArray[1];// 验证行为排名占比
 
-							GtLogger.v("验证成功！    " + convertActionTime
-									+ "秒的速度超过"
-									+ (100 - Integer.parseInt(actionRank))
-									+ "%的用户");
+								double orginActionTime = (seekbarEndTime - seekbarStartTime) / 1000.0;
+								// 四舍五入保留一位小数
+								float convertActionTime = (float) (Math
+										.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
 
-							GtLogger.v(" messageResult: " + messageResult
-									+ " actionRank: " + actionRank);
+								GtLogger.v("验证成功！    " + convertActionTime
+										+ "秒的速度超过"
+										+ (100 - Integer.parseInt(actionRank))
+										+ "%的用户");
 
-							tv_validateStatus.setText("验证成功");
-							// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
-							postCaptchaInfoToCustomServer();
+								GtLogger.v(" messageResult: " + messageResult
+										+ " actionRank: " + actionRank);
 
-						} else {
-							// 验证失败后，就不需要向客户机发起请求二次验证了
-							GtLogger.v("验证错误");
-							tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
+								tv_validateStatus.setText("验证成功");
+								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
+								postCaptchaInfoToCustomServer();
 
-							// TODO 在界面上交替闪烁--后面采用线程的方式进行
-							SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
-							Thread demo = new Thread(he, "A");
-							demo.start();
+							} else {
+								// 验证失败后，就不需要向客户机发起请求二次验证了
+								GtLogger.v("验证错误");
+								tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
 
+								// TODO 在界面上交替闪烁--后面采用线程的方式进行
+								SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
+								Thread demo = new Thread(he, "Action");
+								demo.start();
+
+							}
+						} catch (Exception e) {
+							GtLogger.v(LoggerString.getFileLineMethod()
+									+ e.getMessage());
 						}
 
 					}
@@ -939,22 +1004,22 @@ public class ImageMoveActivity extends Activity {
 
 				// 交替闪烁
 				Message msg = mHandler.obtainMessage();
-				msg.what = 1;
+				msg.what = MSG_FULL_BG_DISPLAY;
 				msg.sendToTarget();
 				Thread.sleep(gapTime);
 
 				msg = mHandler.obtainMessage();
-				msg.what = 2;
+				msg.what = MSG_SLICE_BG_DISPLAY;
 				msg.sendToTarget();
 				Thread.sleep(gapTime);
 
 				msg = mHandler.obtainMessage();
-				msg.what = 1;
+				msg.what = MSG_FULL_BG_DISPLAY;
 				msg.sendToTarget();
 				Thread.sleep(gapTime);
 
 				msg = mHandler.obtainMessage();
-				msg.what = 2;
+				msg.what = MSG_SLICE_BG_DISPLAY;
 				msg.sendToTarget();
 				Thread.sleep(gapTime);
 

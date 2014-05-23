@@ -51,6 +51,8 @@ public class GtDataConvert {
 
 			int response = xPos + answerBase;
 
+			GtLogger.v("user_response before encode:" + response);
+
 			// 获取一张映射表---根据字母第一次出现的顺序对字符进行映射编码
 			// 字符去重
 
@@ -171,7 +173,10 @@ public class GtDataConvert {
 		try {
 
 			// TODO 参考ZCX的JS代码
-			return encode(userActions);
+
+			String encodeUserActions = encode(userActions);
+
+			return encodeUserActions;
 			// return
 			// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
 		} catch (Exception e) {
@@ -190,63 +195,71 @@ public class GtDataConvert {
 	private static String encode(ArrayList<CaptchaUserAction> userActions) {
 		// TODO
 
-		ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
-		diffCaptchaUserActions = getOffsetData(userActions);
+		try {
 
-		String rx = "", ry = "", rt = "";
-		for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
-			String rxi = "", ryi = "", rti = "";
+			ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
+			diffCaptchaUserActions = getOffsetData(userActions);
 
-			int xi = (int) (diffCaptchaUserActions.get(i).getxPos());
-			int yi = (int) (diffCaptchaUserActions.get(i).getyPos());
-			int ti = (int) (diffCaptchaUserActions.get(i).getTimeIncrement());
+			String rx = "", ry = "", rt = "";
+			for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
+				String rxi = "", ryi = "", rti = "";
 
-			if (yi == -2 && xi >= 1 && xi <= 4) {
-				ryi = getChar(1 + xi);
-			} else if (yi == -1 && xi >= -2 && xi <= 6) {
-				ryi = getChar(8 + xi);
-			} else if (yi == 0 && xi >= -5 && xi <= 10) {
-				ryi = getChar(20 + xi);
-			} else if (yi == 1 && xi >= -2 && xi <= 7) {
-				ryi = getChar(33 + xi);
-			} else {
-				if (yi >= -17 && yi <= 20) {
-					ryi = getChar(58 + yi);
-				} else if (yi < -17) {
-					ryi = getChar(1) + to77(-18 - yi) + getChar(0);
-				} else if (yi > 20) {
-					ryi = getChar(0) + to77(yi - 21) + getChar(1);
+				int xi = (int) (diffCaptchaUserActions.get(i).getxPos());
+				int yi = (int) (diffCaptchaUserActions.get(i).getyPos());
+				int ti = (int) (diffCaptchaUserActions.get(i)
+						.getTimeIncrement());
+
+				if (yi == -2 && xi >= 1 && xi <= 4) {
+					ryi = getChar(1 + xi);
+				} else if (yi == -1 && xi >= -2 && xi <= 6) {
+					ryi = getChar(8 + xi);
+				} else if (yi == 0 && xi >= -5 && xi <= 10) {
+					ryi = getChar(20 + xi);
+				} else if (yi == 1 && xi >= -2 && xi <= 7) {
+					ryi = getChar(33 + xi);
+				} else {
+					if (yi >= -17 && yi <= 20) {
+						ryi = getChar(58 + yi);
+					} else if (yi < -17) {
+						ryi = getChar(1) + to77(-18 - yi) + getChar(0);
+					} else if (yi > 20) {
+						ryi = getChar(0) + to77(yi - 21) + getChar(1);
+					}
+					if (xi >= -21 && xi <= 55) {
+						rxi = getChar(23 + xi);
+					} else if (xi < -21) {
+						rxi = getChar(1) + to77(-22 - xi) + getChar(0);
+					} else if (xi > 55) {
+						rxi = getChar(0) + to77(xi - 56) + getChar(1);
+					}
 				}
-				if (xi >= -21 && xi <= 55) {
-					rxi = getChar(23 + xi);
-				} else if (xi < -21) {
-					rxi = getChar(1) + to77(-22 - xi) + getChar(0);
-				} else if (xi > 55) {
-					rxi = getChar(0) + to77(xi - 56) + getChar(1);
+				String tempTi = to77(ti);
+				if (tempTi.length() <= 1) {
+					rti = tempTi;
+				} else if (tempTi.length() == 2) {
+					rti = getChar(0) + tempTi;
+				} else {
+					rti = getChar(0) + getChar(0);
 				}
-			}
-			String tempTi = to77(ti);
-			if (tempTi.length() <= 1) {
-				rti = tempTi;
-			} else if (tempTi.length() == 2) {
-				rti = getChar(0) + tempTi;
-			} else {
-				rti = getChar(0) + getChar(0);
+
+				rx = rx + rxi;
+				ry = ry + ryi;
+				rt = rt + rti;
 			}
 
-			rx = rx + rxi;
-			ry = ry + ryi;
-			rt = rt + rti;
+			String finalString = rx + getChar(1) + getChar(1) + getChar(1) + ry
+					+ getChar(1) + getChar(1) + getChar(1) + rt;
+			return finalString;
+
+			// return
+			// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
+
+			// return null;
+		} catch (Exception e) {
+			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
+			return null;
 		}
-		
-		String finalString = rx + getChar(1) + getChar(1) + getChar(1) + ry
-				+ getChar(1) + getChar(1) + getChar(1) + rt;
-		return finalString;
 
-		// return
-		// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
-
-		// return null;
 	}
 
 	/**
@@ -259,29 +272,36 @@ public class GtDataConvert {
 	private static ArrayList<CaptchaUserAction> getOffsetData(
 			ArrayList<CaptchaUserAction> userActions) {
 
-		ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
+		try {
 
-		for (int i = 0; i < userActions.size() - 1; i++) {
-			CaptchaUserAction diffAction = new CaptchaUserAction();
+			ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
 
-			// 相邻求差
-			diffAction.setxPos(userActions.get(i + 1).getxPos()
-					- userActions.get(i).getxPos());
-			diffAction.setyPos(userActions.get(i + 1).getyPos()
-					- userActions.get(i).getyPos());
-			diffAction
-					.setTimeIncrement(userActions.get(i + 1).getTimeIncrement()
-							- userActions.get(i).getTimeIncrement());
+			for (int i = 0; i < userActions.size() - 1; i++) {
+				CaptchaUserAction diffAction = new CaptchaUserAction();
 
-			// 剔除重复项 进行存储
-			if ((diffAction.getxPos() != 0) || (diffAction.getyPos() != 0)
-					|| (diffAction.getTimeIncrement() != 0)) {
-				diffCaptchaUserActions.add(diffAction);
+				// 相邻求差
+				diffAction.setxPos(userActions.get(i + 1).getxPos()
+						- userActions.get(i).getxPos());
+				diffAction.setyPos(userActions.get(i + 1).getyPos()
+						- userActions.get(i).getyPos());
+				diffAction.setTimeIncrement(userActions.get(i + 1)
+						.getTimeIncrement()
+						- userActions.get(i).getTimeIncrement());
+
+				// 剔除重复项 进行存储
+				if ((diffAction.getxPos() != 0) || (diffAction.getyPos() != 0)
+						|| (diffAction.getTimeIncrement() != 0)) {
+					diffCaptchaUserActions.add(diffAction);
+				}
+
 			}
 
+			return diffCaptchaUserActions;
+		} catch (Exception e) {
+			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
+			return null;
 		}
 
-		return diffCaptchaUserActions;
 	}
 
 	/**
@@ -301,25 +321,68 @@ public class GtDataConvert {
 	 * @param e
 	 * @return
 	 */
-	private static String to77(int temp) {
+	private static String to77(int tempara) {
 		// TODO
+
 		String result = "";
+		int temp = tempara;
 
-		while (temp != 0) {
-			result = result.toString() + getChar(temp % 77 + 2);
-			temp = (temp - temp % 77) / 77;
-		}
+		try {
 
-		// 通过特殊保留符号位来区分压缩类别。
-		if (result.equals("")) {
-			return getChar(2) + "";
-		} else {
+			while (temp != 0) {
+				result = result.toString() + getChar(temp % 77 + 2);
+				temp = (temp - temp % 77) / 77;
+			}
+
+			// 通过特殊保留符号位来区分压缩类别。
+			if (result.equals("")) {
+				return getChar(2) + "";
+			} else {
+				return result;
+			}
+
+		} catch (Exception e) {
+			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
 			return result;
 		}
 
 		// return result.equals(null) ? result : getChar(2);
 		// return null;
 	}
+
+	// /**
+	// * 使用78进制来压缩存储数据
+	// *
+	// * @param e
+	// * @return
+	// */
+	// private static String to77(int temp) {
+	// // TODO
+	//
+	// try {
+	//
+	// String result = "";
+	//
+	// while (temp != 0) {
+	// result = result.toString() + getChar(temp % 77 + 2);
+	// temp = (temp - temp % 77) / 77;
+	// }
+	//
+	// // 通过特殊保留符号位来区分压缩类别。
+	// if (result.equals("")) {
+	// return getChar(2) + "";
+	// } else {
+	// return result;
+	// }
+	//
+	// } catch (Exception e) {
+	// GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
+	// }
+	// return null;
+	//
+	// // return result.equals(null) ? result : getChar(2);
+	// // return null;
+	// }
 
 	// /**
 	// * 获取字符的16进制的unicode编码
