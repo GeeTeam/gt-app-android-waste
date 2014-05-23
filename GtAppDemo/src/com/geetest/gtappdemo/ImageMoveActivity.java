@@ -173,7 +173,7 @@ public class ImageMoveActivity extends Activity {
 	 */
 	private void setImageViewDisplayWhenDragSlider() {
 
-		GtLogger.v("bg,bg_slice,slice:gone,visible,visible");
+		// GtLogger.v("bg,bg_slice,slice:gone,visible,visible");
 
 		imgv_full_bg.setVisibility(View.INVISIBLE);
 		imgv_slice_bg.setVisibility(View.VISIBLE);
@@ -190,7 +190,7 @@ public class ImageMoveActivity extends Activity {
 	 */
 	private void setImageViewDisplayWhenRefresh() {
 
-		GtLogger.v("bg,bg_slice,slice:visible,gone,gone");
+		// GtLogger.v("bg,bg_slice,slice:visible,gone,gone");
 
 		imgv_full_bg.setVisibility(View.VISIBLE);
 		imgv_slice_bg.setVisibility(View.INVISIBLE);
@@ -951,7 +951,7 @@ public class ImageMoveActivity extends Activity {
 
 							}
 						} catch (Exception e) {
-							GtLogger.v(LoggerString.getFileLineMethod()
+							GtLogger.expection(LoggerString.getFileLineMethod()
 									+ e.getMessage());
 						}
 
@@ -1053,7 +1053,7 @@ public class ImageMoveActivity extends Activity {
 										+ response);
 
 							} catch (Exception e) {
-								GtLogger.v(LoggerString.getFileLineMethod()
+								GtLogger.expection(LoggerString.getFileLineMethod()
 										+ e.getMessage());
 							}
 
@@ -1105,7 +1105,7 @@ public class ImageMoveActivity extends Activity {
 			mQueue.add(stringRequest);
 
 		} catch (Exception e) {
-			GtLogger.v(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.expection(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
