@@ -224,6 +224,7 @@ public class GtDataConvert {
 				} else if (yi == 1 && xi >= -2 && xi <= 7) {
 					ryi = getChar(33 + xi);
 				} else {
+					// 对yi进行编码
 					if (yi >= -17 && yi <= 20) {
 						ryi = getChar(58 + yi);
 					} else if (yi < -17) {
@@ -231,6 +232,8 @@ public class GtDataConvert {
 					} else if (yi > 20) {
 						ryi = getChar(0) + to77(yi - 21) + getChar(1);
 					}
+
+					// 对区间的x编码
 					if (xi >= -21 && xi <= 55) {
 						rxi = getChar(23 + xi);
 					} else if (xi < -21) {
@@ -239,6 +242,8 @@ public class GtDataConvert {
 						rxi = getChar(0) + to77(xi - 56) + getChar(1);
 					}
 				}
+
+				// 对时间进行编码变换
 				String tempTi = to77(ti);
 				if (tempTi.length() <= 1) {
 					rti = tempTi;
@@ -251,7 +256,12 @@ public class GtDataConvert {
 				rx = rx + rxi;
 				ry = ry + ryi;
 				rt = rt + rti;
+
 			}
+
+			GtLogger.v("rx: " + rx);
+			GtLogger.v("ry: " + ry);
+			GtLogger.v("rt: " + rt);
 
 			String finalString = rx + getChar(1) + getChar(1) + getChar(1) + ry
 					+ getChar(1) + getChar(1) + getChar(1) + rt;
@@ -330,7 +340,6 @@ public class GtDataConvert {
 	 * @return
 	 */
 	private static String to77(int tempara) {
-		
 
 		String result = "";
 		int temp = tempara;

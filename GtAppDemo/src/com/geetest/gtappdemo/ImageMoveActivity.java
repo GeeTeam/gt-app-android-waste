@@ -300,6 +300,10 @@ public class ImageMoveActivity extends Activity {
 							(int) (seekbarY - mY), 0);
 					firstAction.v();
 					userActions.add(firstAction);
+					CaptchaUserAction zeroAction = new CaptchaUserAction();
+					zeroAction.bindMemData(0,0,0);
+					userActions.add(zeroAction);
+					
 
 					break;
 				case MotionEvent.ACTION_MOVE:
