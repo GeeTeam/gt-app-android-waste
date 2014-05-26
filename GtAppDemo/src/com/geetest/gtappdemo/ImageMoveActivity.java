@@ -292,7 +292,9 @@ public class ImageMoveActivity extends Activity {
 
 					GtLogger.v("按下拖动条");
 					// 如果seekbar状态是按下，则开始记录第一组行为数据
-
+					// long mouseDownTimeTag = System.currentTimeMillis();//
+					// 当前时间标记
+					userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
 					CaptchaUserAction firstAction = new CaptchaUserAction();
 					firstAction.bindMemData((int) (seekbarX - mX),
 							(int) (seekbarY - mY), 0);
@@ -311,7 +313,7 @@ public class ImageMoveActivity extends Activity {
 					long curTimeTag = System.currentTimeMillis();// 当前时间标记
 					CaptchaUserAction curUserAction = new CaptchaUserAction();
 					curUserAction.bindMemData((int) curX, (int) curY,
-							(int) curTimeTag);
+							(int) (curTimeTag - seekbarStartTime));
 					// curUserAction.v();
 					userActions.add(curUserAction);
 
@@ -321,6 +323,11 @@ public class ImageMoveActivity extends Activity {
 					GtLogger.v("Images Change Action_Up");
 
 					seekbarEndTime = System.currentTimeMillis();
+					CaptchaUserAction lastAction = new CaptchaUserAction();
+					lastAction.bindMemData((int) curX, (int) curY,
+							(int) (seekbarEndTime - seekbarStartTime));
+					lastAction.v();
+					userActions.add(lastAction);
 
 					actionUp_X = event.getX();
 					actionUp_Y = event.getY();
@@ -376,7 +383,7 @@ public class ImageMoveActivity extends Activity {
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
 
-						GtLogger.v("当前进度：" + progress + "%");
+						// GtLogger.v("当前进度：" + progress + "%");
 						// Log.v("seekbar", ("当前进度：" + progress + "%"));
 						// 坐标偏移
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
@@ -1053,8 +1060,8 @@ public class ImageMoveActivity extends Activity {
 										+ response);
 
 							} catch (Exception e) {
-								GtLogger.expection(LoggerString.getFileLineMethod()
-										+ e.getMessage());
+								GtLogger.expection(LoggerString
+										.getFileLineMethod() + e.getMessage());
 							}
 
 						}
@@ -1105,7 +1112,8 @@ public class ImageMoveActivity extends Activity {
 			mQueue.add(stringRequest);
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.expection(LoggerString.getFileLineMethod()
+					+ e.getMessage());
 		}
 
 	}
