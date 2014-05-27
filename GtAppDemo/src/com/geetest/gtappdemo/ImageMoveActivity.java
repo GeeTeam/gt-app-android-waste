@@ -16,9 +16,13 @@ import org.apache.http.message.BasicNameValuePair;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -125,10 +129,12 @@ public class ImageMoveActivity extends Activity {
 	private int intScreenX, intScreenY;
 
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
-	private int leftMargin = 20;// dp
-	private int rightMargin = 20;// dp
+	private int leftMargin = 0;// dp
+	private int rightMargin = 0;// dp
 
 	private int seekbar_server_length = 80;// 滑条在服务器端的标准长度px--和背景图一样大
+
+	private int slice_img_width = 126;// 切片图的宽度
 
 	/* 声明相关变量作为存储图片宽高,位置使用 */
 	private int intWidth, intHeight, intDefaultX, intDefaultY;
@@ -301,9 +307,8 @@ public class ImageMoveActivity extends Activity {
 					firstAction.v();
 					userActions.add(firstAction);
 					CaptchaUserAction zeroAction = new CaptchaUserAction();
-					zeroAction.bindMemData(0,0,0);
+					zeroAction.bindMemData(0, 0, 0);
 					userActions.add(zeroAction);
-					
 
 					break;
 				case MotionEvent.ACTION_MOVE:
@@ -387,20 +392,59 @@ public class ImageMoveActivity extends Activity {
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
 
-						// GtLogger.v("当前进度：" + progress + "%");
-						// Log.v("seekbar", ("当前进度：" + progress + "%"));
+						GtLogger.v("当前进度：" + progress + "%");
 						// 坐标偏移
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
 
+						// TODO 目前只能采用硬编码的方式来处理图片的大小问题了
+						Resources res = getResources();
+						BitmapDrawable skb_thumb = (BitmapDrawable) res
+								.getDrawable(R.drawable.drag_normal);
+						// GtLogger.v("thumb bitmap width: "
+						// + skb_thumb.getBitmap().getWidth());
+						// GtLogger.v("thumb bitmap height: "
+						// + skb_thumb.getBitmap().getHeight());
+
+						// thumb.
+						// Drawable thumb = res
+						// .getDrawable(R.drawable.seekbar_thumb);
+						// thumb.getCurrent().get
+						// GtLogger.v("thumb width: "
+						// + (thumb.getBounds().right -
+						// thumb.getBounds().left));
+						// GtLogger.v("thumb height: "
+						// + (thumb.getBounds().bottom -
+						// thumb.getBounds().top));
+
 						// 将屏幕的X坐标进行均分
-						float dX = (intScreenX - intWidth) / 100.0f;
+						int seekbar_width = seekBar.getWidth();
+						intWidth = skb_thumb.getBitmap().getWidth();
+						// GtLogger.v("seekbar_width: " + seekbar_width
+						// + "   thumbBitmapWidth: " + intWidth);// 720,171
+						// TODO 需要生成其移动空间
+						// float dX = (intScreenX - intWidth) /
+						// 100.0f;//slice_img_width
+						float scrollXRange = seekbar_width - leftMargin
+								- rightMargin - intWidth;// 减去左右的
+
+						float dX = scrollXRange / 100.0f;
+						// GtLogger.v("滑块的移动范围： " + (scrollXRange));
+						// 边缘值距离值。,减去图片的宽度的一半值。
 
 						sliderOffsetX = (int) (seekbar_server_length * progress / 100);// 以服务器上的绝对值为准
 
-						imgv_slice.scrollTo((int) (-dX * progress),
+						// GtLogger.v("图片移动到： " + (-dX * progress));
+						imgv_slice.scrollTo((int) ((-dX * progress)),// 在前面加一个10即可实现完全一样的同步。
 								getSliceYposAfterSalced());// 进行偏移
 
+						// GtLogger.v("imgv_slice Left: " + imgv_slice.getLeft()
+						// + " Right: " + imgv_slice.getRight());
+						// GtLogger.v("imgv_slice getScrollX: "
+						// + (imgv_slice.getScrollX()));//和(-dX * progress)是一样的
+
+						// GtLogger.v("skb_dragCaptcha.getWidth(): " +
+						// skb_dragCaptcha.getWidth());
 						// igv_slice.scrollTo(-50,
 						// Math.round(-(initCaptchaOption
 						// .getYpos() * bm_zoom_scale + igv_slicebg
@@ -552,6 +596,11 @@ public class ImageMoveActivity extends Activity {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
+
+						GtLogger.v("切片图 Width: " + response.getWidth());
+						GtLogger.v("切片图 放大 后Width: " + response.getWidth()
+								* bm_zoom_scale);
+						slice_img_width = (int) (response.getWidth() * bm_zoom_scale);
 
 						bgImgLoadEndTime = System.currentTimeMillis();// 背景图加载截止时间
 
