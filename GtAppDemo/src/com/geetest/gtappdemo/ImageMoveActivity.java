@@ -124,6 +124,7 @@ public class ImageMoveActivity extends Activity {
 
 	// 大小布局
 	private GtShapeSize thumbBmpSize = new GtShapeSize();// 滑块图片的大小
+	private GtShapeSize screenSize = new GtShapeSize();// 屏幕分辨率大小
 
 	/**
 	 * 当前的用户行为
@@ -135,18 +136,20 @@ public class ImageMoveActivity extends Activity {
 	private ArrayList<CaptchaUserAction> userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组
 
 	/* 声明存储屏幕的分辨率变量 */
-	private int intScreenX, intScreenY;
+	// private int intScreenX, intScreenY;
 
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
 	private int leftMargin = 0;// dp
 	private int rightMargin = 0;// dp
 
-	private int seekbar_server_length = 80;// 滑条在服务器端的标准长度px--和背景图一样大
+	private float seekbar_server_length = 80;
+	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
+	//80/1.3
 
 	private int slice_img_width = 126;// 切片图的宽度
 
 	/* 声明相关变量作为存储图片宽高,位置使用 */
-	private int intWidth, intHeight, intDefaultX, intDefaultY;
+	// private int intWidth, intHeight, intDefaultX, intDefaultY;
 
 	private float mX, mY;// 触点的位置
 
@@ -165,21 +168,29 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	private void initViewDisplayParameter() {
+
+		initialScreenSize();
+
+		/* 设置图片的宽高 */
+		// intWidth = 50;
+		// intHeight = 65;
+
+		captchaInitialOption_StringRequest();
+
+	}
+
+	/**
+	 * 初始化获取屏幕的值
+	 */
+	private void initialScreenSize() {
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 		/* 取得屏幕解析像素 */
-		intScreenX = dm.widthPixels;
-		intScreenY = dm.heightPixels;
 
-		GtLogger.v("Screen   X:" + intScreenX + " Y:" + intScreenY);
-
-		/* 设置图片的宽高 */
-		intWidth = 50;
-		intHeight = 65;
-
-		captchaInitialOption_StringRequest();
+		screenSize.setWidth(dm.widthPixels);
+		screenSize.setHeight(dm.heightPixels);
 
 	}
 
@@ -367,7 +378,7 @@ public class ImageMoveActivity extends Activity {
 					curX = event.getX();// 当前x
 					curY = event.getY();// 当前y
 
-					GtLogger.v("curX: " + curX + "  curY: " + curY);
+					// GtLogger.v("curX: " + curX + "  curY: " + curY);
 
 					mX = curX;
 					mY = curY;
@@ -460,7 +471,7 @@ public class ImageMoveActivity extends Activity {
 
 						// GtLogger.s_v(context, "Hellow On Progress");
 
-						GtLogger.v("当前进度：" + progress + "%");
+						// GtLogger.v("当前进度：" + progress + "%");
 						// 坐标偏移
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
@@ -487,14 +498,14 @@ public class ImageMoveActivity extends Activity {
 
 						// 将屏幕的X坐标进行均分
 						int seekbar_width = seekBar.getWidth();
-						intWidth = skb_thumb.getBitmap().getWidth();
+						// intWidth = skb_thumb.getBitmap().getWidth();
 						// GtLogger.v("seekbar_width: " + seekbar_width
 						// + "   thumbBitmapWidth: " + intWidth);// 720,171
 						// TODO 需要生成其移动空间
 						// float dX = (intScreenX - intWidth) /
 						// 100.0f;//slice_img_width
 						float scrollXRange = seekbar_width - leftMargin
-								- rightMargin - intWidth;// 减去左右的
+								- rightMargin - thumbBmpSize.getWidth();// 减去左右的
 
 						float dX = scrollXRange / 100.0f;
 						// GtLogger.v("滑块的移动范围： " + (scrollXRange));
@@ -665,16 +676,24 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onResponse(Bitmap response) {
 
-						// TODO 对图片进行缩放--以充斥全屏
-						bm_zoom_scale = getImageZoomScale(response.getWidth());
+						try {
+							// TODO 对图片进行缩放--以充斥全屏
+							bm_zoom_scale = getImageZoomScale(response
+									.getWidth());
 
-						seekbar_server_length = response.getWidth();
+							//TODO 服务器上图片的大小和实际获取的有1.3倍差距，这个需要解决。
+							seekbar_server_length = response.getWidth()/1.3f;
 
-						imgv_full_bg.setImageBitmap(zoomImage(response,
-								bm_zoom_scale));
+							imgv_full_bg.setImageBitmap(zoomImage(response,
+									bm_zoom_scale));
 
-						slice_bg_ImageRequest(initCaptchaOption.getImgurl());// 再请求切图背景
-						// igv_slicebg.setImageBitmap(response);
+							slice_bg_ImageRequest(initCaptchaOption.getImgurl());// 再请求切图背景
+							// igv_slicebg.setImageBitmap(response);
+						} catch (Exception e) {
+							GtLogger.expection(LoggerString.getFileLineMethod()
+									+ e.getMessage());
+						}
+
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
@@ -696,7 +715,7 @@ public class ImageMoveActivity extends Activity {
 	 */
 	private float getImageZoomScale(int orginImageWidth) {
 
-		float zoom_scale = ((intScreenX - leftMargin - rightMargin) * 1000)
+		float zoom_scale = ((screenSize.getWidth() - leftMargin - rightMargin) * 1000)
 				/ (orginImageWidth * 1000.0f);
 		GtLogger.v("zoom_scale: " + zoom_scale);
 
@@ -917,7 +936,7 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
-	 * Map转url的参数
+	 * Map转url的参数--进行了中文编码
 	 * 
 	 * @param map
 	 * @return
@@ -936,6 +955,28 @@ public class ImageMoveActivity extends Activity {
 		GtLogger.v(paramString);
 
 		return paramString;
+	}
+
+	/**
+	 * 将map转换成url --没有进行unicode编码
+	 * 
+	 * @param map
+	 * @return
+	 */
+	private String getUrlParamsByMap(Map<String, Object> map) {
+		if (map == null) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			sb.append(entry.getKey() + "=" + entry.getValue());
+			sb.append("&");
+		}
+		String s = sb.toString();
+		// if (s.endsWith("&")) {
+		// s = StringUtils.substringBeforeLast(s, "&");
+		// }
+		return s;
 	}
 
 	/**
@@ -1124,11 +1165,12 @@ public class ImageMoveActivity extends Activity {
 
 		// 对象转Map,Map编码成List
 		String relApiPath = GtApiEnv.ajaxSubmitApi;
-		String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
+		// String param = cdtParams(cdtObjectToMap(ajaxPhp_GreqVo));
+		String param = getUrlParamsByMap((cdtObjectToMap(ajaxPhp_GreqVo)));
 		String optionApiUrl = genernateApiUrl(relApiPath, param);
 
 		// TODO 使用的是内部的测试数据
-		optionApiUrl = genernateTestApiUrl("/gtapp_ajax", param);
+		// optionApiUrl = genernateTestApiUrl("/gtapp_ajax", param);
 
 		StringRequest option_Request = new StringRequest(optionApiUrl,
 				new Response.Listener<String>() {
@@ -1137,7 +1179,7 @@ public class ImageMoveActivity extends Activity {
 					public void onResponse(String response) {
 
 						try {
-							GtLogger.v("userBehaviourUpload_StringRequest   response:"
+							GtLogger.v("userBehaviourUpload_StringRequest   response:   "
 									+ response);
 
 							// 对response 硬解码成Json

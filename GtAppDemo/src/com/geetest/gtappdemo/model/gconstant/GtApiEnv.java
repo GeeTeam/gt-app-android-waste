@@ -25,7 +25,8 @@ public class GtApiEnv {
 
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式
-	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径
+//	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径
+	public static String gtApiBaseUrl = "192.168.1.5";// 基本路径
 	public static int gtApiPort = 80;// 端口
 
 	// GtApp主要使用的Api的服务器端
