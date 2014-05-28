@@ -31,8 +31,6 @@ public class GtApiEnv {
 	// GtApp主要使用的Api的服务器端
 	public static final String getOptionApi = "/get.php";
 	public static final String ajaxSubmitApi = "/ajax.php";
-	
-	
 
 	// 又拍云 的根路径
 	public static String imgServerBase = "http://geetest-jordan2.b0.upaiyun.com/";
@@ -45,6 +43,11 @@ public class GtApiEnv {
 
 	// // Gt的地址
 	// public static String gtApiBase = "http://api.geetest.com/";
+
+	/**
+	 * 用于输出调试信息的服务器API
+	 */
+	public static String debugServerApi = "http://192.168.2.66:80/debug_msg/";;
 
 	/**
 	 * @param apiRelativePath

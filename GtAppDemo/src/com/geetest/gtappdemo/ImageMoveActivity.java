@@ -21,8 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -52,6 +50,8 @@ import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
+import com.geetest.gtappdemo.model.vo.GtPoint;
+import com.geetest.gtappdemo.model.vo.GtShapeSize;
 import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.greq.GetPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.gres.AjaxPhp_GresVo;
@@ -99,8 +99,8 @@ public class ImageMoveActivity extends Activity {
 	private AjaxPhp_GreqVo ajaxPhp_GreqVo;// 上传行为数据的API参数
 
 	// 滑块的初始化位置
-	private int seekbarX = 0;
-	private int seekbarY = 0;
+	// private int seekbarX = 0;
+	// private int seekbarY = 0;
 
 	// 滑块交互用的时间
 	private long seekbarStartTime = 0;// 按下时
@@ -115,6 +115,15 @@ public class ImageMoveActivity extends Activity {
 	// handle里面的消息代号
 	private final int MSG_FULL_BG_DISPLAY = 1;// 完整图片显示
 	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
+
+	// 坐标体系
+	private GtPoint sliderStartLeftTopPosition = new GtPoint();// 滑块左上角坐标
+	private GtPoint sliderStartPressTouchPosition = new GtPoint();// 按下滑块时的触点位置
+	private GtPoint sliderDragMoveTouchPosition = new GtPoint();// 拖动时触点位置
+	private GtPoint sliderUpTouchPosition = new GtPoint();// 放开时触点位置
+
+	// 大小布局
+	private GtShapeSize thumbBmpSize = new GtShapeSize();// 滑块图片的大小
 
 	/**
 	 * 当前的用户行为
@@ -141,8 +150,8 @@ public class ImageMoveActivity extends Activity {
 
 	private float mX, mY;// 触点的位置
 
-	private float actionDown_X, actionDown_Y;// 产生按下事件时的X,Y
-	private float actionUp_X, actionUp_Y;// 松开时的X,Y
+	// private float actionDown_X, actionDown_Y;// 产生按下事件时的X,Y
+	// private float actionUp_X, actionUp_Y;// 松开时的X,Y
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +180,35 @@ public class ImageMoveActivity extends Activity {
 		intHeight = 65;
 
 		captchaInitialOption_StringRequest();
+
+	}
+
+	/**
+	 * 设置 起始点
+	 */
+	private void setSliderStartLeftTopPosition() {
+
+		GtLogger.v("获取滑块起始左上角坐标值： ");
+
+		GtPoint skbPositon = new GtPoint();
+		skbPositon.setX(skb_dragCaptcha.getLeft());
+		skbPositon
+				.setY((skb_dragCaptcha.getBottom() + skb_dragCaptcha.getTop()) / 2);
+
+		GtLogger.v("滑块高度Hieght: "
+				+ (skb_dragCaptcha.getBottom() - skb_dragCaptcha.getTop()));
+
+		GtLogger.v("滑动条Bar坐标--X: " + skbPositon.getX() + " Y: "
+				+ skbPositon.getY());
+
+		// 将滑块的坐标体系从 屏幕坐标体系 转成 seekbar坐标体系
+		sliderStartLeftTopPosition.setX(skbPositon.getX());
+		sliderStartLeftTopPosition.setY(skbPositon.getY()
+				- thumbBmpSize.getHeight() / 2 - skb_dragCaptcha.getTop());
+
+		GtLogger.v("滑动块sliderStartLeftTopPosition--X: "
+				+ sliderStartLeftTopPosition.getX() + " Y: "
+				+ sliderStartLeftTopPosition.getY());
 
 	}
 
@@ -220,8 +258,8 @@ public class ImageMoveActivity extends Activity {
 					mX = event.getX();
 					mY = event.getY();
 
-					actionDown_X = event.getX();
-					actionDown_Y = event.getY();
+					// actionDown_X = event.getX();
+					// actionDown_Y = event.getY();
 
 					break;
 				case MotionEvent.ACTION_MOVE:
@@ -237,8 +275,8 @@ public class ImageMoveActivity extends Activity {
 				case MotionEvent.ACTION_UP:
 					GtLogger.v("Images Change Action_Up");
 
-					actionUp_X = event.getX();
-					actionUp_Y = event.getY();
+					// actionUp_X = event.getX();
+					// actionUp_Y = event.getY();
 
 					// if (mX != 0 && mY != 0) {
 					// if (mX - actionUp_X > 8) {
@@ -253,6 +291,7 @@ public class ImageMoveActivity extends Activity {
 
 					curX = event.getX();
 					curY = event.getY();
+
 					imgv_slice.scrollBy((int) (mX - curX), 0);
 					break;
 				}
@@ -281,39 +320,54 @@ public class ImageMoveActivity extends Activity {
 				switch (event.getAction()) {
 
 				case MotionEvent.ACTION_DOWN:
+					GtLogger.v("按下拖动条");
 					// 获取当前的位置
 					mX = event.getX();
 					mY = event.getY();
 
-					setImageViewDisplayWhenDragSlider();
-					// TODO 通知界面进行控制显示
-					// Message msg = mHandler.obtainMessage();
-					// msg.what = MSG_SLICE_BG_DISPLAY;
-					// msg.sendToTarget();
+					setSliderStartPressTouchPosition(mX, mY);
+					sendMsgToUpdateUI(MSG_SLICE_BG_DISPLAY);// 通知界面进行控制显示
 
 					seekbarStartTime = System.currentTimeMillis();
 
-					actionDown_X = event.getX();
-					actionDown_Y = event.getY();
+					// actionDown_X = event.getX();
+					// actionDown_Y = event.getY();
 
-					GtLogger.v("按下拖动条");
 					// 如果seekbar状态是按下，则开始记录第一组行为数据
 					// long mouseDownTimeTag = System.currentTimeMillis();//
 					// 当前时间标记
 					userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
+
+					// 滑块的左上角值
+					CaptchaUserAction firstActionTag = new CaptchaUserAction();
+					firstActionTag.bindMemData(
+							(int) (sliderStartLeftTopPosition.getX()),
+							(int) (sliderStartLeftTopPosition.getY()), 0);
+					userActions.add(firstActionTag);
+
 					CaptchaUserAction firstAction = new CaptchaUserAction();
-					firstAction.bindMemData((int) (seekbarX - mX),
-							(int) (seekbarY - mY), 0);
+
+					// TODO 可能需要做一些转变，坐标全部使用浮点的，最后的时候再转成整形
+					firstAction.bindMemData(
+							(int) (sliderStartPressTouchPosition.getX()),
+							(int) (sliderStartPressTouchPosition.getY()), 0);
+
+					// firstAction.bindMemData((int) (seekbarX - mX),
+					// (int) (seekbarY - mY), 0);
 					firstAction.v();
 					userActions.add(firstAction);
-					CaptchaUserAction zeroAction = new CaptchaUserAction();
-					zeroAction.bindMemData(0, 0, 0);
-					userActions.add(zeroAction);
+
+					// // 第二组数据也是一个比较特别的数据--全零值
+					// CaptchaUserAction zeroAction = new CaptchaUserAction();
+					// zeroAction.bindMemData(0, 0, 0);
+					// userActions.add(zeroAction);
 
 					break;
 				case MotionEvent.ACTION_MOVE:
 					curX = event.getX();// 当前x
 					curY = event.getY();// 当前y
+
+					GtLogger.v("curX: " + curX + "  curY: " + curY);
 
 					mX = curX;
 					mY = curY;
@@ -321,8 +375,16 @@ public class ImageMoveActivity extends Activity {
 					// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
 					long curTimeTag = System.currentTimeMillis();// 当前时间标记
 					CaptchaUserAction curUserAction = new CaptchaUserAction();
+
+					// setSliderDragMoveTouchPosition(curY, curY);
+
 					curUserAction.bindMemData((int) curX, (int) curY,
 							(int) (curTimeTag - seekbarStartTime));
+
+					// curUserAction.bindMemData(
+					// (int) (sliderDragMoveTouchPosition.getX()),
+					// (int) (sliderDragMoveTouchPosition.getY()),
+					// (int) (curTimeTag - seekbarStartTime));
 					// curUserAction.v();
 					userActions.add(curUserAction);
 
@@ -331,6 +393,11 @@ public class ImageMoveActivity extends Activity {
 
 					GtLogger.v("Images Change Action_Up");
 
+					curX = event.getX();
+					curY = event.getY();
+
+					setSliderUpTouchPosition(curX, curY);
+
 					seekbarEndTime = System.currentTimeMillis();
 					CaptchaUserAction lastAction = new CaptchaUserAction();
 					lastAction.bindMemData((int) curX, (int) curY,
@@ -338,11 +405,8 @@ public class ImageMoveActivity extends Activity {
 					lastAction.v();
 					userActions.add(lastAction);
 
-					actionUp_X = event.getX();
-					actionUp_Y = event.getY();
-
-					curX = event.getX();
-					curY = event.getY();
+					// actionUp_X = event.getX();
+					// actionUp_Y = event.getY();
 
 					break;
 				}
@@ -361,6 +425,8 @@ public class ImageMoveActivity extends Activity {
 
 						// 向服务器提交行为数据
 						userBehaviourUpload_StringRequest();
+
+						// postDebugMsgToServer("Stop drag~!");
 					}
 
 					/**
@@ -391,6 +457,8 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
+
+						// GtLogger.s_v(context, "Hellow On Progress");
 
 						GtLogger.v("当前进度：" + progress + "%");
 						// 坐标偏移
@@ -476,6 +544,90 @@ public class ImageMoveActivity extends Activity {
 
 					}
 				});
+	}
+
+	/**
+	 * 发送消息给 handle去更新界面
+	 * 
+	 * @param msgId
+	 */
+	private void sendMsgToUpdateUI(int msgId) {
+		Message msg = mHandler.obtainMessage();
+		msg.what = msgId;
+		msg.sendToTarget();
+	}
+
+	/**
+	 * 设置初始点
+	 * 
+	 * @param mX
+	 *            当前触点绝对坐标
+	 * @param mY
+	 */
+	private void setSliderStartPressTouchPosition(float mX, float mY) {
+		// sliderStartPressTouchPosition.setX(sliderStartLeftTopPosition.getX()
+		// - mX);
+		// sliderStartPressTouchPosition.setY(sliderStartLeftTopPosition.getY()
+		// - mY);
+
+		// 安卓的坐标体系
+		sliderStartPressTouchPosition.setX(mX);
+		sliderStartPressTouchPosition.setY(mY);
+
+		GtLogger.v("起始↓↓↓触点：- X: " + sliderStartPressTouchPosition.getX()
+				+ " Y: " + sliderStartPressTouchPosition.getY());
+	}
+
+	/**
+	 * 求出移动过程中的相对坐标值
+	 * 
+	 * @param mX
+	 * @param mY
+	 */
+	private void setSliderDragMoveTouchPosition(float mX, float mY) {
+		// sliderDragMoveTouchPosition.setX(mX
+		// - sliderStartPressTouchPosition.getX());
+		// sliderDragMoveTouchPosition.setY(mY
+		// - sliderStartPressTouchPosition.getY());
+
+		sliderDragMoveTouchPosition.setX(mX);
+		sliderDragMoveTouchPosition.setY(mY);
+
+		GtLogger.v("拖动→→→时触点：- X: " + sliderDragMoveTouchPosition.getX()
+				+ " Y: " + sliderDragMoveTouchPosition.getY());
+	}
+
+	/**
+	 * 滑块放开时的坐标值
+	 * 
+	 * @param mX
+	 * @param mY
+	 */
+	private void setSliderUpTouchPosition(float mX, float mY) {
+		// sliderStartPressTouchPosition.setX(sliderStartLeftTopPosition.getX()
+		// - mX);
+		// sliderStartPressTouchPosition.setY(sliderStartLeftTopPosition.getY()
+		// - mY);
+
+		// 安卓的坐标体系
+		sliderUpTouchPosition.setX(mX);
+		sliderUpTouchPosition.setY(mY);
+
+		GtLogger.v("起↑↑↑↑触点：- X: " + sliderUpTouchPosition.getX() + " Y: "
+				+ sliderUpTouchPosition.getY());
+	}
+
+	/**
+	 * 获取按钮图片的大小尺寸
+	 */
+	private void setThumbBmpSize() {
+
+		Resources res = getResources();
+		BitmapDrawable skb_thumb = (BitmapDrawable) res
+				.getDrawable(R.drawable.drag_normal);
+
+		thumbBmpSize.setWidth(skb_thumb.getBitmap().getWidth());
+		thumbBmpSize.setHeight(skb_thumb.getBitmap().getHeight());
 	}
 
 	private void initViews() {
@@ -623,6 +775,11 @@ public class ImageMoveActivity extends Activity {
 								imgv_slice_bg.getHeight());
 
 						// igv_slice.setImageBitmap(response);
+
+						// TODO 在图片全部加载完毕后，获取一些基本的参数值
+						setThumbBmpSize();
+						setSliderStartLeftTopPosition();
+
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
@@ -928,6 +1085,27 @@ public class ImageMoveActivity extends Activity {
 		String encodeUserResponse = GtDataConvert.EnCryptUserResponse(userXpos,
 				decodedChallenge);
 
+		// GtLogger.v("进行一次坐标系统转换");
+
+		GtLogger.v("进行缩放，比例：bm_zoom_scale: " + bm_zoom_scale);
+
+		// TODO 用户行为数据的x,y值都除掉一个放大系数
+		for (int i = 0; i < userActions.size(); i++) {
+
+			CaptchaUserAction temp = userActions.get(i);
+
+			// 进行一次坐标系统转换--原点转换
+			temp.setxPos((int) (temp.getxPos() - sliderStartPressTouchPosition
+					.getX()));
+			temp.setyPos((int) (temp.getyPos() - sliderStartPressTouchPosition
+					.getY()));
+
+			// 坐标刻度缩放
+			temp.setxPos((int) (temp.getxPos() / bm_zoom_scale));
+			temp.setyPos((int) (temp.getyPos() / bm_zoom_scale));
+			// 时间增量是不是缩放的
+		}
+
 		String encodeUserActions = GtDataConvert.EncryptUserAction(userActions);
 
 		GtLogger.v("userResponse:  " + encodeUserResponse);
@@ -1154,6 +1332,67 @@ public class ImageMoveActivity extends Activity {
 
 					GtLogger.v("postJsonString: " + postJsonString);
 
+					return params;
+				}
+
+			};
+
+			// 设置请求超时时间5s：http://blog.csdn.net/xyz_lmn/article/details/12177005
+			stringRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1,
+					1.0f));
+			mQueue.add(stringRequest);
+
+		} catch (Exception e) {
+			GtLogger.expection(LoggerString.getFileLineMethod()
+					+ e.getMessage());
+		}
+
+	}
+
+	// 用于调试的函数区
+
+	/**
+	 * 
+	 */
+	public void postDebugMsgToServer(final String jsonDebugMsg) {
+
+		try {
+
+			String customServerGtApiUrl = GtApiEnv.debugServerApi;
+
+			StringRequest stringRequest = new StringRequest(
+					Request.Method.POST, customServerGtApiUrl,
+					new Response.Listener<String>() {
+
+						public void onResponse(String response) {
+
+							try {
+
+								// TODO 安卓客户端接收到消息后进行相应的处理
+								GtLogger.v("postCaptchaInfoToCustomServer:  "
+										+ response);
+
+							} catch (Exception e) {
+								GtLogger.expection(LoggerString
+										.getFileLineMethod() + e.getMessage());
+							}
+
+						}
+					}, new Response.ErrorListener() {
+
+						public void onErrorResponse(VolleyError arg0) {
+
+							GtLogger.v(LoggerString.getFileLineMethod()
+									+ arg0.getMessage());
+						}
+					}) {
+
+				@Override
+				protected Map<String, String> getParams() {
+					Map<String, String> params = new HashMap<String, String>();
+
+					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
+					params.put("debug_msg", jsonDebugMsg);
 					return params;
 				}
 

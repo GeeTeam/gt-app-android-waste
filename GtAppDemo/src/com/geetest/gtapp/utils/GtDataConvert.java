@@ -193,18 +193,18 @@ public class GtDataConvert {
 
 		try {
 			// TODO 将所有的数据打印出来
-			// GtLogger.v("做差值处理之前");
-			// for (int i = 0; i < userActions.size(); i++) {
-			// userActions.get(i).v();
-			// }
+			 GtLogger.v("做差值处理之前");
+			 for (int i = 0; i < userActions.size(); i++) {
+			 userActions.get(i).v();
+			 }
 
 			ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
 			diffCaptchaUserActions = getOffsetData(userActions);
 
-			// GtLogger.v("做差值处理后");
-			// for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
-			// diffCaptchaUserActions.get(i).v();
-			// }
+			GtLogger.v("做差值处理后");
+			for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
+				diffCaptchaUserActions.get(i).v();
+			}
 
 			String rx = "", ry = "", rt = "";
 			for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
