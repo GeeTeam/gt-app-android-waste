@@ -13,8 +13,6 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.R.bool;
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -92,17 +90,11 @@ public class ImageMoveActivity extends Activity {
 	private Button btn_refresh;// 用于刷新图片的按钮
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
-	private float bm_zoom_scale = 1;// 图片缩放比例
-
 	private RequestQueue mQueue;// 用于Volley的通讯内容
 
 	// 验证通讯数据对象
 	private CaptchaOption initCaptchaOption;// 验证码初始化验证数据设置
 	private AjaxPhp_GreqVo ajaxPhp_GreqVo;// 上传行为数据的API参数
-
-	// 滑块的初始化位置
-	// private int seekbarX = 0;
-	// private int seekbarY = 0;
 
 	// 滑块交互用的时间
 	private long seekbarStartTime = 0;// 按下时
@@ -119,51 +111,45 @@ public class ImageMoveActivity extends Activity {
 	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
 	private final int MSG_SLICE_BG_ALPHA_MISS = 3;// 切片图渐变消失
 
-	// 坐标体系
+	// 坐标位置
 	private GtPoint sliderStartLeftTopPosition = new GtPoint();// 滑块左上角坐标
 	private GtPoint sliderStartPressTouchPosition = new GtPoint();// 按下滑块时的触点位置
 	private GtPoint sliderDragMoveTouchPosition = new GtPoint();// 拖动时触点位置
 	private GtPoint sliderUpTouchPosition = new GtPoint();// 放开时触点位置
 
-	// 大小布局
+	// 形状大小
 	private GtShapeSize thumbBmpSize = new GtShapeSize();// 滑块图片的大小
 	private GtShapeSize screenSize = new GtShapeSize();// 屏幕分辨率大小
+
+	private float bm_zoom_scale = 1;// 图片缩放比例
 
 	// 图片显示控制
 	private int slice_img_alpha = 255;// 切片图的透明度
 	private Boolean isrung = true;
 
-	private float testOffsetX = 0;
-
-	/**
-	 * 当前的用户行为
-	 */
-	// private CaptchaUserAction curUserAction = new CaptchaUserAction();
-
 	// 用户行为数据
 	private int sliderOffsetX = 12;// 滑块x方向偏移量
 	private ArrayList<CaptchaUserAction> userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组
 
-	/* 声明存储屏幕的分辨率变量 */
-	// private int intScreenX, intScreenY;
+	/**
+	 * 客户端的验证结果
+	 */
+	private Boolean clientCaptchaResult = false;
 
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
 	private int leftMargin = 0;// dp
 	private int rightMargin = 0;// dp
 
-	private float seekbar_server_length = 1;
+	// private float seekbar_server_length = 1;
 	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
 	// 80/1.3
 
-	private int slice_img_width = 126;// 切片图的宽度
+	// private int slice_img_width = 126;// 切片图的宽度
 
 	/* 声明相关变量作为存储图片宽高,位置使用 */
 	// private int intWidth, intHeight, intDefaultX, intDefaultY;
 
 	private float mX, mY;// 触点的位置
-
-	// private float actionDown_X, actionDown_Y;// 产生按下事件时的X,Y
-	// private float actionUp_X, actionUp_Y;// 松开时的X,Y
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -177,21 +163,14 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	private void initViewDisplayParameter() {
-
-		initialScreenSize();
-
-		/* 设置图片的宽高 */
-		// intWidth = 50;
-		// intHeight = 65;
-
+		getScreenSize();
 		captchaInitialOption_StringRequest();
-
 	}
 
 	/**
-	 * 初始化获取屏幕的值
+	 * 获取获取屏幕的大小分辨率值
 	 */
-	private void initialScreenSize() {
+	private void getScreenSize() {
 		// 取得屏幕对象
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -204,9 +183,9 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
-	 * 设置 起始点
+	 * 获取滑块左上角的坐标点
 	 */
-	private void setSliderStartLeftTopPosition() {
+	private void getSliderStartLeftTopPosition() {
 
 		GtLogger.v("获取滑块起始左上角坐标值： ");
 
@@ -326,20 +305,6 @@ public class ImageMoveActivity extends Activity {
 				case MotionEvent.ACTION_UP:
 					GtLogger.v("Images Change Action_Up");
 
-					// actionUp_X = event.getX();
-					// actionUp_Y = event.getY();
-
-					// if (mX != 0 && mY != 0) {
-					// if (mX - actionUp_X > 8) {
-					// GtLogger.v("向左滑动");
-					// }
-					// if (actionUp_X - mX > 8) {
-					// GtLogger.v("向右滑动");
-					// }
-					// }
-
-					// captchaInitialOption_StringRequest();
-
 					curX = event.getX();
 					curY = event.getY();
 
@@ -403,22 +368,13 @@ public class ImageMoveActivity extends Activity {
 							(int) (sliderStartPressTouchPosition.getX()),
 							(int) (sliderStartPressTouchPosition.getY()), 0);
 
-					// firstAction.bindMemData((int) (seekbarX - mX),
-					// (int) (seekbarY - mY), 0);
 					firstAction.v();
 					userActions.add(firstAction);
-
-					// // 第二组数据也是一个比较特别的数据--全零值
-					// CaptchaUserAction zeroAction = new CaptchaUserAction();
-					// zeroAction.bindMemData(0, 0, 0);
-					// userActions.add(zeroAction);
 
 					break;
 				case MotionEvent.ACTION_MOVE:
 					curX = event.getX();// 当前x
 					curY = event.getY();// 当前y
-
-					// GtLogger.v("curX: " + curX + "  curY: " + curY);
 
 					mX = curX;
 					mY = curY;
@@ -427,16 +383,9 @@ public class ImageMoveActivity extends Activity {
 					long curTimeTag = System.currentTimeMillis();// 当前时间标记
 					CaptchaUserAction curUserAction = new CaptchaUserAction();
 
-					// setSliderDragMoveTouchPosition(curY, curY);
-
 					curUserAction.bindMemData((int) curX, (int) curY,
 							(int) (curTimeTag - seekbarStartTime));
 
-					// curUserAction.bindMemData(
-					// (int) (sliderDragMoveTouchPosition.getX()),
-					// (int) (sliderDragMoveTouchPosition.getY()),
-					// (int) (curTimeTag - seekbarStartTime));
-					// curUserAction.v();
 					userActions.add(curUserAction);
 
 					break;
@@ -456,9 +405,6 @@ public class ImageMoveActivity extends Activity {
 					lastAction.v();
 					userActions.add(lastAction);
 
-					// actionUp_X = event.getX();
-					// actionUp_Y = event.getY();
-
 					break;
 				}
 				return false;
@@ -473,10 +419,8 @@ public class ImageMoveActivity extends Activity {
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						Log.v("seekbar", "拖动停止");
-
 						// 向服务器提交行为数据
 						userBehaviourUpload_StringRequest();
-
 						// postDebugMsgToServer("Stop drag~!");
 					}
 
@@ -489,8 +433,8 @@ public class ImageMoveActivity extends Activity {
 
 						int[] location = new int[2];
 						skb_dragCaptcha.getLocationOnScreen(location);
-						int mSeekBarDef_X = location[0];
-						int mSeekBarDef_Y = location[1];
+						// int mSeekBarDef_X = location[0];
+						// int mSeekBarDef_Y = location[1];
 
 						// GtLogger.v("ImageView Width:" +
 						// igv_slice.getWidth());
@@ -541,7 +485,7 @@ public class ImageMoveActivity extends Activity {
 						// intWidth = skb_thumb.getBitmap().getWidth();
 						// GtLogger.v("seekbar_width: " + seekbar_width
 						// + "   thumbBitmapWidth: " + intWidth);// 720,171
-						// TODO 需要生成其移动空间
+						// 需要生成其移动空间
 						// float dX = (intScreenX - intWidth) /
 						// 100.0f;//slice_img_width
 						float scrollXRange = seekbar_width - leftMargin
@@ -551,54 +495,16 @@ public class ImageMoveActivity extends Activity {
 						// GtLogger.v("滑块的移动范围： " + (scrollXRange));
 						// 边缘值距离值。,减去图片的宽度的一半值。
 
-						GtLogger.v("seekbar_server_length: "
-								+ seekbar_server_length);
-						sliderOffsetX = (int) (seekbar_server_length * progress / 100);// 以服务器上的绝对值为准
+						// sliderOffsetX = (int) (seekbar_server_length *
+						// progress / 100);// 以服务器上的绝对值为准
 
-						testOffsetX = dX * progress;
+						sliderOffsetX = (int) (dX * progress);
 
 						// GtLogger.v("sliderOffsetX new : " + dX * progress);
 
 						// GtLogger.v("图片移动到： " + (-dX * progress));
 						imgv_slice.scrollTo((int) ((-dX * progress)),// 在前面加一个10即可实现完全一样的同步。
 								getSliceYposAfterSalced());// 进行偏移
-
-						// GtLogger.v("imgv_slice Left: " + imgv_slice.getLeft()
-						// + " Right: " + imgv_slice.getRight());
-						// GtLogger.v("imgv_slice getScrollX: "
-						// + (imgv_slice.getScrollX()));//和(-dX * progress)是一样的
-
-						// GtLogger.v("skb_dragCaptcha.getWidth(): " +
-						// skb_dragCaptcha.getWidth());
-						// igv_slice.scrollTo(-50,
-						// Math.round(-(initCaptchaOption
-						// .getYpos() * bm_zoom_scale + igv_slicebg
-						// .getTop())));
-
-						// image.layout(5*progress, image.getPaddingTop(),
-						// image.getPaddingRight()+5*progress,
-						// image.getPaddingBottom());
-						// image.setPadding( image.getPaddingLeft(),
-						// image.getPaddingTop()+1*progress,
-						// image.getPaddingRight()+0*progress,
-						// image.getPaddingBottom());
-
-						// LayoutParams para;
-						// para = image.getLayoutParams();
-						//
-						// Log.d(TAG, "layout height0: " + para.height);
-						// Log.d(TAG, "layout width0: " + para.width);
-						//
-						// para.height = 5*progress;
-						// para.width = 5*progress;
-						//
-						// image.setLayoutParams(para);
-						//
-						// Log.d(TAG, "layout height: " + para.height);
-						// Log.d(TAG, "layout width: " + para.width);
-
-						// setLayoutX(switcherView, 2 * progress);
-
 					}
 				});
 	}
@@ -687,13 +593,12 @@ public class ImageMoveActivity extends Activity {
 		thumbBmpSize.setHeight(skb_thumb.getBitmap().getHeight());
 	}
 
+	/**
+	 * 界面控件元素的绑定工作
+	 */
 	private void initViews() {
 		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-
 		reLayoutView = (RelativeLayout) this.findViewById(R.id.ll_viewArea22);
-
-		// TextView tv = (TextView) ll.findViewById(R.id.contents); // get the
-		// child text view
 
 		imgv_full_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_full_bg);
 		imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
@@ -723,17 +628,11 @@ public class ImageMoveActivity extends Activity {
 					public void onResponse(Bitmap response) {
 
 						try {
-							// TODO 对图片进行缩放--以充斥全屏
+							// 对图片进行缩放--以充斥全屏
 							bm_zoom_scale = getImageZoomScale(response
 									.getWidth());
 
-							// TODO 服务器上图片的大小和实际获取的有1.3倍差距，这个需要解决。
-							// seekbar_server_length = response.getWidth() /
-							// 1.3f;//720*1280
-
-							// seekbar_server_length = response.getWidth() /
-							// 1.1f;// 1024*600
-							seekbar_server_length = response.getWidth();
+							// seekbar_server_length = response.getWidth();
 							imgv_full_bg.setImageBitmap(zoomImage(response,
 									bm_zoom_scale));
 
@@ -823,7 +722,8 @@ public class ImageMoveActivity extends Activity {
 						GtLogger.v("切片图 Width: " + response.getWidth());
 						GtLogger.v("切片图 放大 后Width: " + response.getWidth()
 								* bm_zoom_scale);
-						slice_img_width = (int) (response.getWidth() * bm_zoom_scale);
+						// slice_img_width = (int) (response.getWidth() *
+						// bm_zoom_scale);
 
 						bgImgLoadEndTime = System.currentTimeMillis();// 背景图加载截止时间
 
@@ -847,9 +747,9 @@ public class ImageMoveActivity extends Activity {
 
 						// igv_slice.setImageBitmap(response);
 
-						// TODO 在图片全部加载完毕后，获取一些基本的参数值
+						// 在图片全部加载完毕后，获取一些基本的参数值
 						setThumbBmpSize();
-						setSliderStartLeftTopPosition();
+						getSliderStartLeftTopPosition();
 
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
@@ -924,7 +824,7 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
-	 * 初始化实验码内容
+	 * 从GT服务器上获取验证码控件初始化的内容元素
 	 */
 	public void captchaInitialOption_StringRequest() {
 		// String url = "http://www.baidu.com";
@@ -968,12 +868,14 @@ public class ImageMoveActivity extends Activity {
 						GtLogger.v("getFullbg : "
 								+ initCaptchaOption.getFullbg());
 
-						// 请求动态图片
+						// 开始连锁的串行向服务器请求图片
 						fullbg_ImageRequest(initCaptchaOption.getFullbg());
 
 						// 重置SeekBar
 						skb_dragCaptcha.setProgress(0);
-						tv_validateStatus.setText("等待验证");
+						tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
+						clientCaptchaResult = false;// 最开始状态是为不通过的。
+						skb_dragCaptcha.setEnabled(true);
 
 					}
 				}, new Response.ErrorListener() {
@@ -1147,18 +1049,18 @@ public class ImageMoveActivity extends Activity {
 	}
 
 	/**
-	 * 获取鼠标放开时，滑块的偏移量
+	 * 获取鼠标放开时，滑块的偏移量--除去一个缩放比例
 	 * 
 	 * @return
 	 */
 	private int getSliderBarOffset() {
 
 		// sliderOffsetX = 12;
-		// TODO 使用的假数据：需要获取鼠标放开时，滑块相对产生的对初始位置的偏移量,可能需要做一些修改工作
+		// 使用的假数据：需要获取鼠标放开时，滑块相对产生的对初始位置的偏移量
 
 		// GtLogger.v("testOffsetX: " + testOffsetX / bm_zoom_scale);
 
-		sliderOffsetX = (int) (testOffsetX / bm_zoom_scale);
+		sliderOffsetX = (int) (sliderOffsetX / bm_zoom_scale);
 		GtLogger.v("sliderOffsetX: " + sliderOffsetX);
 		return sliderOffsetX;
 
@@ -1186,7 +1088,7 @@ public class ImageMoveActivity extends Activity {
 
 		GtLogger.v("进行缩放，比例：bm_zoom_scale: " + bm_zoom_scale);
 
-		// TODO 用户行为数据的x,y值都除掉一个放大系数
+		// 用户行为数据的x,y值都除掉一个放大系数
 		for (int i = 0; i < userActions.size(); i++) {
 
 			CaptchaUserAction temp = userActions.get(i);
@@ -1225,7 +1127,7 @@ public class ImageMoveActivity extends Activity {
 		String param = getUrlParamsByMap((cdtObjectToMap(ajaxPhp_GreqVo)));
 		String optionApiUrl = genernateApiUrl(relApiPath, param);
 
-		// TODO 使用的是内部的测试数据
+		// 使用的是内部的测试数据服务器
 		// optionApiUrl = genernateTestApiUrl("/gtapp_ajax", param);
 
 		StringRequest option_Request = new StringRequest(optionApiUrl,
@@ -1250,6 +1152,9 @@ public class ImageMoveActivity extends Activity {
 
 							// 如果返回的是成功的验证结果
 							if (ajaxPhp_GresVo.getSuccess().equals("1")) {
+
+								clientCaptchaResult = true;// 验证成功
+								skb_dragCaptcha.setEnabled(false);// 禁用
 
 								// 对验证结果硬解码
 								String resultArray[] = ajaxPhp_GresVo
@@ -1284,7 +1189,7 @@ public class ImageMoveActivity extends Activity {
 								GtLogger.v("验证错误");
 								tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
 
-								// // TODO 在界面上交替闪烁--后面采用线程的方式进行
+								// // 在界面上交替闪烁--后面采用线程的方式进行
 								// SetImgStatusAfterFailed he = new
 								// SetImgStatusAfterFailed();
 								// Thread demo = new Thread(he, "Action");
@@ -1328,7 +1233,6 @@ public class ImageMoveActivity extends Activity {
 
 			case MSG_SLICE_BG_ALPHA_MISS:
 				GtLogger.v("渐变消失");
-				// TODO
 				setImageViewDisplayWhenCaptchaSucceed();
 				imgv_slice.setAlpha(slice_img_alpha);
 				// 设置textview显示当前的Alpha值
@@ -1352,7 +1256,7 @@ public class ImageMoveActivity extends Activity {
 	 */
 	private void SetImgStatusAfterCaptchaSucceed() {
 
-		// TODO 在界面上交替闪烁--后面采用线程的方式进行
+		// 在界面上交替闪烁--后面采用线程的方式进行
 		SetImgStatusAfterSucceed he = new SetImgStatusAfterSucceed();
 		Thread demo = new Thread(he, "Action");
 		demo.start();
@@ -1382,27 +1286,6 @@ public class ImageMoveActivity extends Activity {
 					}
 				}
 
-				// 交替闪烁
-				// Message msg = mHandler.obtainMessage();
-				// msg.what = MSG_FULL_BG_DISPLAY;
-				// msg.sendToTarget();
-				// Thread.sleep(gapTime);
-				//
-				// msg = mHandler.obtainMessage();
-				// msg.what = MSG_SLICE_BG_DISPLAY;
-				// msg.sendToTarget();
-				// Thread.sleep(gapTime);
-				//
-				// msg = mHandler.obtainMessage();
-				// msg.what = MSG_FULL_BG_DISPLAY;
-				// msg.sendToTarget();
-				// Thread.sleep(gapTime);
-
-				// msg = mHandler.obtainMessage();
-				// msg.what = MSG_SLICE_BG_DISPLAY;
-				// msg.sendToTarget();
-				// Thread.sleep(gapTime);
-
 				GtLogger.v("验证成功后的图片线程");
 				System.out.println(Thread.currentThread().getName());
 			} catch (Exception e) {
@@ -1431,7 +1314,7 @@ public class ImageMoveActivity extends Activity {
 	 */
 	private void SetImgStatusAfterCaptchaFailed() {
 
-		// TODO 在界面上交替闪烁--后面采用线程的方式进行
+		// 在界面上交替闪烁--后面采用线程的方式进行
 		SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
 		Thread demo = new Thread(he, "Action");
 		demo.start();
