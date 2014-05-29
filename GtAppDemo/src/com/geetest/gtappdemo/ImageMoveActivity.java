@@ -133,6 +133,8 @@ public class ImageMoveActivity extends Activity {
 	private int slice_img_alpha = 255;// 切片图的透明度
 	private Boolean isrung = true;
 
+	private float testOffsetX = 0;
+
 	/**
 	 * 当前的用户行为
 	 */
@@ -149,7 +151,7 @@ public class ImageMoveActivity extends Activity {
 	private int leftMargin = 0;// dp
 	private int rightMargin = 0;// dp
 
-	private float seekbar_server_length = 80;
+	private float seekbar_server_length = 1;
 	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
 	// 80/1.3
 
@@ -241,9 +243,18 @@ public class ImageMoveActivity extends Activity {
 		imgv_slice_bg.setVisibility(View.VISIBLE);
 		imgv_slice.setVisibility(View.VISIBLE);
 
+		// 设置透明度
+		imgv_full_bg.setAlpha(255);
+		imgv_slice_bg.setAlpha(255);
+		imgv_slice.setAlpha(255);
+
 		// TODO 在第一次加载的时候会导致切图找不到
 		// GtLogger.v("imgv_slice_bg### " + "xPos: " + imgv_slice_bg.getLeft()
 		// + " yPos: " + imgv_slice_bg.getTop());
+
+		// 设置透明控制的标志位
+		isrung = true;
+		slice_img_alpha = 255;
 
 	}
 
@@ -257,6 +268,28 @@ public class ImageMoveActivity extends Activity {
 		imgv_full_bg.setVisibility(View.VISIBLE);
 		imgv_slice_bg.setVisibility(View.INVISIBLE);
 		imgv_slice.setVisibility(View.INVISIBLE);
+
+		// 设置透明度
+		imgv_full_bg.setAlpha(255);// 不透明
+		imgv_slice_bg.setAlpha(255);
+		imgv_slice.setAlpha(255);
+	}
+
+	/**
+	 * 按初始化或者点击刷新时:设置背景图片的原始图片的显示
+	 */
+	private void setImageViewDisplayWhenCaptchaSucceed() {
+
+		// GtLogger.v("bg,bg_slice,slice:visible,gone,gone");
+
+		imgv_full_bg.setVisibility(View.VISIBLE);
+		imgv_slice_bg.setVisibility(View.INVISIBLE);
+		// imgv_slice.setVisibility(View.INVISIBLE);
+
+		// // 设置透明度
+		// imgv_full_bg.setAlpha(255);// 不透明
+		// imgv_slice_bg.setAlpha(255);
+		// imgv_slice.setAlpha(255);
 	}
 
 	private void initListeners() {
@@ -518,7 +551,13 @@ public class ImageMoveActivity extends Activity {
 						// GtLogger.v("滑块的移动范围： " + (scrollXRange));
 						// 边缘值距离值。,减去图片的宽度的一半值。
 
+						GtLogger.v("seekbar_server_length: "
+								+ seekbar_server_length);
 						sliderOffsetX = (int) (seekbar_server_length * progress / 100);// 以服务器上的绝对值为准
+
+						testOffsetX = dX * progress;
+
+						// GtLogger.v("sliderOffsetX new : " + dX * progress);
 
 						// GtLogger.v("图片移动到： " + (-dX * progress));
 						imgv_slice.scrollTo((int) ((-dX * progress)),// 在前面加一个10即可实现完全一样的同步。
@@ -689,8 +728,12 @@ public class ImageMoveActivity extends Activity {
 									.getWidth());
 
 							// TODO 服务器上图片的大小和实际获取的有1.3倍差距，这个需要解决。
-							seekbar_server_length = response.getWidth() / 1.3f;
+							// seekbar_server_length = response.getWidth() /
+							// 1.3f;//720*1280
 
+							// seekbar_server_length = response.getWidth() /
+							// 1.1f;// 1024*600
+							seekbar_server_length = response.getWidth();
 							imgv_full_bg.setImageBitmap(zoomImage(response,
 									bm_zoom_scale));
 
@@ -724,7 +767,9 @@ public class ImageMoveActivity extends Activity {
 
 		float zoom_scale = ((screenSize.getWidth() - leftMargin - rightMargin) * 1000)
 				/ (orginImageWidth * 1000.0f);
-		GtLogger.v("zoom_scale: " + zoom_scale);
+
+		GtLogger.v("orginImageWidth : " + orginImageWidth + "  zoom_scale: "
+				+ zoom_scale);
 
 		return zoom_scale;
 	}
@@ -1110,6 +1155,10 @@ public class ImageMoveActivity extends Activity {
 
 		// sliderOffsetX = 12;
 		// TODO 使用的假数据：需要获取鼠标放开时，滑块相对产生的对初始位置的偏移量,可能需要做一些修改工作
+
+		// GtLogger.v("testOffsetX: " + testOffsetX / bm_zoom_scale);
+
+		sliderOffsetX = (int) (testOffsetX / bm_zoom_scale);
 		GtLogger.v("sliderOffsetX: " + sliderOffsetX);
 		return sliderOffsetX;
 
@@ -1280,11 +1329,11 @@ public class ImageMoveActivity extends Activity {
 			case MSG_SLICE_BG_ALPHA_MISS:
 				GtLogger.v("渐变消失");
 				// TODO
-
+				setImageViewDisplayWhenCaptchaSucceed();
 				imgv_slice.setAlpha(slice_img_alpha);
 				// 设置textview显示当前的Alpha值
-				tv_validateStatus.setText("现在的alpha值是:"
-						+ Integer.toString(slice_img_alpha));
+				// tv_validateStatus.setText("现在的alpha值是:"
+				// + Integer.toString(slice_img_alpha));
 				// 刷新视图
 				imgv_slice.invalidate();
 
@@ -1322,6 +1371,7 @@ public class ImageMoveActivity extends Activity {
 				// int gapTime = 300;
 				//
 				//
+
 				while (isrung) {
 					try {
 						Thread.sleep(20);
@@ -1359,6 +1409,21 @@ public class ImageMoveActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	// 更新Alpha
+	public void updateAlpha() {
+		if (slice_img_alpha - 7 >= 0) {
+			slice_img_alpha -= 7;
+		} else {
+			slice_img_alpha = 0;
+			isrung = false;
+		}
+
+		GtLogger.v("alpha: " + slice_img_alpha);
+		// 发送需要更新imageview视图的消息-->这里是发给主线程
+		// mHandler.sendMessage(mHandler.obtainMessage());
+		sendMsgToUpdateUI(MSG_SLICE_BG_ALPHA_MISS);
 	}
 
 	/**
@@ -1411,21 +1476,6 @@ public class ImageMoveActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	// 更新Alpha
-	public void updateAlpha() {
-		if (slice_img_alpha - 7 >= 0) {
-			slice_img_alpha -= 7;
-		} else {
-			slice_img_alpha = 0;
-			isrung = false;
-		}
-
-		GtLogger.v("alpha: " + slice_img_alpha);
-		// 发送需要更新imageview视图的消息-->这里是发给主线程
-		// mHandler.sendMessage(mHandler.obtainMessage());
-		sendMsgToUpdateUI(MSG_SLICE_BG_ALPHA_MISS);
 	}
 
 	/**
