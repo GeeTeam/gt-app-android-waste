@@ -13,6 +13,8 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.R.bool;
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -115,6 +117,7 @@ public class ImageMoveActivity extends Activity {
 	// handle里面的消息代号
 	private final int MSG_FULL_BG_DISPLAY = 1;// 完整图片显示
 	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
+	private final int MSG_SLICE_BG_ALPHA_MISS = 3;// 切片图渐变消失
 
 	// 坐标体系
 	private GtPoint sliderStartLeftTopPosition = new GtPoint();// 滑块左上角坐标
@@ -125,6 +128,10 @@ public class ImageMoveActivity extends Activity {
 	// 大小布局
 	private GtShapeSize thumbBmpSize = new GtShapeSize();// 滑块图片的大小
 	private GtShapeSize screenSize = new GtShapeSize();// 屏幕分辨率大小
+
+	// 图片显示控制
+	private int slice_img_alpha = 255;// 切片图的透明度
+	private Boolean isrung = true;
 
 	/**
 	 * 当前的用户行为
@@ -144,7 +151,7 @@ public class ImageMoveActivity extends Activity {
 
 	private float seekbar_server_length = 80;
 	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
-	//80/1.3
+	// 80/1.3
 
 	private int slice_img_width = 126;// 切片图的宽度
 
@@ -681,8 +688,8 @@ public class ImageMoveActivity extends Activity {
 							bm_zoom_scale = getImageZoomScale(response
 									.getWidth());
 
-							//TODO 服务器上图片的大小和实际获取的有1.3倍差距，这个需要解决。
-							seekbar_server_length = response.getWidth()/1.3f;
+							// TODO 服务器上图片的大小和实际获取的有1.3倍差距，这个需要解决。
+							seekbar_server_length = response.getWidth() / 1.3f;
 
 							imgv_full_bg.setImageBitmap(zoomImage(response,
 									bm_zoom_scale));
@@ -1207,15 +1214,19 @@ public class ImageMoveActivity extends Activity {
 								float convertActionTime = (float) (Math
 										.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
 
-								GtLogger.v("验证成功！    " + convertActionTime
-										+ "秒的速度超过"
+								String succeedTip = "验证成功！    "
+										+ convertActionTime + "秒的速度超过"
 										+ (100 - Integer.parseInt(actionRank))
-										+ "%的用户");
+										+ "%的用户";
+
+								GtLogger.v(succeedTip);
+
+								SetImgStatusAfterCaptchaSucceed();
 
 								GtLogger.v(" messageResult: " + messageResult
 										+ " actionRank: " + actionRank);
 
-								tv_validateStatus.setText("验证成功");
+								tv_validateStatus.setText(succeedTip);
 								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 								postCaptchaInfoToCustomServer();
 
@@ -1224,15 +1235,18 @@ public class ImageMoveActivity extends Activity {
 								GtLogger.v("验证错误");
 								tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
 
-								// TODO 在界面上交替闪烁--后面采用线程的方式进行
-								SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
-								Thread demo = new Thread(he, "Action");
-								demo.start();
+								// // TODO 在界面上交替闪烁--后面采用线程的方式进行
+								// SetImgStatusAfterFailed he = new
+								// SetImgStatusAfterFailed();
+								// Thread demo = new Thread(he, "Action");
+								// demo.start();
+								SetImgStatusAfterCaptchaFailed();
 
 							}
 						} catch (Exception e) {
 							GtLogger.expection(LoggerString.getFileLineMethod()
 									+ e.getMessage());
+							SetImgStatusAfterCaptchaFailed();
 						}
 
 					}
@@ -1263,6 +1277,19 @@ public class ImageMoveActivity extends Activity {
 				setImageViewDisplayWhenDragSlider();
 				break;
 
+			case MSG_SLICE_BG_ALPHA_MISS:
+				GtLogger.v("渐变消失");
+				// TODO
+
+				imgv_slice.setAlpha(slice_img_alpha);
+				// 设置textview显示当前的Alpha值
+				tv_validateStatus.setText("现在的alpha值是:"
+						+ Integer.toString(slice_img_alpha));
+				// 刷新视图
+				imgv_slice.invalidate();
+
+				break;
+
 			default:
 				break;
 			}
@@ -1270,6 +1297,81 @@ public class ImageMoveActivity extends Activity {
 			super.handleMessage(msg);
 		}
 	};
+
+	/**
+	 * 在界面上交替闪烁--后面采用线程的方式进行
+	 */
+	private void SetImgStatusAfterCaptchaSucceed() {
+
+		// TODO 在界面上交替闪烁--后面采用线程的方式进行
+		SetImgStatusAfterSucceed he = new SetImgStatusAfterSucceed();
+		Thread demo = new Thread(he, "Action");
+		demo.start();
+
+	}
+
+	/**
+	 * 设置 验证失败后的图片显示设置的线程
+	 * 
+	 * @author Zheng 2014年5月22日 上午9:34:39
+	 */
+	class SetImgStatusAfterSucceed implements Runnable {
+		public void run() {
+			try {
+
+				// int gapTime = 300;
+				//
+				//
+				while (isrung) {
+					try {
+						Thread.sleep(20);
+						// 更新Alpha值
+						updateAlpha();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+
+				// 交替闪烁
+				// Message msg = mHandler.obtainMessage();
+				// msg.what = MSG_FULL_BG_DISPLAY;
+				// msg.sendToTarget();
+				// Thread.sleep(gapTime);
+				//
+				// msg = mHandler.obtainMessage();
+				// msg.what = MSG_SLICE_BG_DISPLAY;
+				// msg.sendToTarget();
+				// Thread.sleep(gapTime);
+				//
+				// msg = mHandler.obtainMessage();
+				// msg.what = MSG_FULL_BG_DISPLAY;
+				// msg.sendToTarget();
+				// Thread.sleep(gapTime);
+
+				// msg = mHandler.obtainMessage();
+				// msg.what = MSG_SLICE_BG_DISPLAY;
+				// msg.sendToTarget();
+				// Thread.sleep(gapTime);
+
+				GtLogger.v("验证成功后的图片线程");
+				System.out.println(Thread.currentThread().getName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 在界面上交替闪烁--后面采用线程的方式进行
+	 */
+	private void SetImgStatusAfterCaptchaFailed() {
+
+		// TODO 在界面上交替闪烁--后面采用线程的方式进行
+		SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
+		Thread demo = new Thread(he, "Action");
+		demo.start();
+
+	}
 
 	/**
 	 * 设置 验证失败后的图片显示设置的线程
@@ -1309,6 +1411,21 @@ public class ImageMoveActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	// 更新Alpha
+	public void updateAlpha() {
+		if (slice_img_alpha - 7 >= 0) {
+			slice_img_alpha -= 7;
+		} else {
+			slice_img_alpha = 0;
+			isrung = false;
+		}
+
+		GtLogger.v("alpha: " + slice_img_alpha);
+		// 发送需要更新imageview视图的消息-->这里是发给主线程
+		// mHandler.sendMessage(mHandler.obtainMessage());
+		sendMsgToUpdateUI(MSG_SLICE_BG_ALPHA_MISS);
 	}
 
 	/**
