@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
 		// 刷新图片
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				new GtAppDialog(context).setDisplay(R.layout.image_move);
+				new GtAppDialog(context, R.layout.image_move).setDisplay();
 			}
 		});
 
