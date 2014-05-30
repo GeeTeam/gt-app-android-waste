@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,7 +60,11 @@ public class MainActivity extends ActionBarActivity {
 		// 刷新图片
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				new GtAppDialog(context, R.layout.image_move).setDisplay();
+
+				DisplayMetrics dm = new DisplayMetrics();
+				getWindowManager().getDefaultDisplay().getMetrics(dm);
+				new GtAppDialog(context, R.layout.image_move, dm,
+						getResources()).setDisplay();
 			}
 		});
 
