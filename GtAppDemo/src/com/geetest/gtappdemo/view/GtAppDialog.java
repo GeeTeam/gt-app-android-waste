@@ -1510,8 +1510,8 @@ public class GtAppDialog extends Dialog {
 		setContentView(gtAppDlgLayoutResId);
 		initViews();
 
-		// initViewDisplayParameter();
-		// initListeners();
+		initViewDisplayParameter();
+		initListeners();
 
 		// // 刷新图片
 		// btn_refresh.setOnClickListener(new Button.OnClickListener() {
@@ -1531,6 +1531,8 @@ public class GtAppDialog extends Dialog {
 	public void setLocation() {
 		Window window = getWindow();
 		WindowManager.LayoutParams wl = window.getAttributes();
+		wl.width = dm.widthPixels;
+		GtLogger.v("wl.width: " + wl.width);
 		wl.x = 0;// 0为中间
 		wl.y = 100;
 		wl.alpha = 0.9f;
