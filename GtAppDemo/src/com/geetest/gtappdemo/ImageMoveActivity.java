@@ -1330,7 +1330,7 @@ public class ImageMoveActivity extends Activity {
 		public void run() {
 			try {
 
-				int gapTime = 100;
+				int gapTime = 100;// 闪烁交替时间
 
 				// 交替闪烁
 				Message msg = mHandler.obtainMessage();

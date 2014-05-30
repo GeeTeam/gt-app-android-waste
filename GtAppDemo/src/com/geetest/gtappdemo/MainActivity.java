@@ -1,5 +1,6 @@
 package com.geetest.gtappdemo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -9,14 +10,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.geetest.gtappdemo.view.GtAppDialog;
+
 public class MainActivity extends ActionBarActivity {
+
+	private Context context = this;
 
 	// 与“系统默认SeekBar”对应的TextView
 	private TextView mTvDef;
@@ -28,6 +33,8 @@ public class MainActivity extends ActionBarActivity {
 	private SeekBar mSeekBarSelf;
 
 	// private ImageView image;
+
+	private Button btn_gtapp_dlg;
 
 	private final String TAG = "Pictrue Test!!!";
 	private ImageView image;
@@ -46,6 +53,15 @@ public class MainActivity extends ActionBarActivity {
 		// .add(R.id.container, new PlaceholderFragment())
 		// .commit();
 		// }
+
+		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_dlg);
+
+		// 刷新图片
+		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				new GtAppDialog(context).setDisplay(R.layout.image_move);
+			}
+		});
 
 		// “系统默认SeekBar”
 		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def);
@@ -97,9 +113,8 @@ public class MainActivity extends ActionBarActivity {
 						//
 						// Log.d(TAG, "layout height: " + para.height);
 						// Log.d(TAG, "layout width: " + para.width);
-						
-					
-						setLayoutX(image,2*progress);
+
+						// setLayoutX(image,2*progress);
 
 					}
 				});
