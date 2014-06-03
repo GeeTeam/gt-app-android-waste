@@ -337,6 +337,12 @@ public class ImageMoveActivity extends Activity {
 
 				case MotionEvent.ACTION_DOWN:
 					GtLogger.v("按下拖动条");
+
+					GtLogger.v("skb_dragCaptcha.getLeft(): "
+							+ skb_dragCaptcha.getLeft()
+							+ "   skb_dragCaptcha.getRight(): "
+							+ skb_dragCaptcha.getRight());
+
 					// 获取当前的位置
 					mX = event.getX();
 					mY = event.getY();

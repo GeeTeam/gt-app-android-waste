@@ -31,6 +31,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -75,6 +77,8 @@ public class GtAppDialog extends Dialog {
 
 	// 界面元素信息
 	private View dlgView;
+
+	private Animation animation;
 
 	private RelativeLayout reLayoutView;// 相框的相对布局
 
@@ -338,6 +342,12 @@ public class GtAppDialog extends Dialog {
 
 				case MotionEvent.ACTION_DOWN:
 					GtLogger.v("按下拖动条");
+
+					GtLogger.v("skb_dragCaptcha.getLeft(): "
+							+ skb_dragCaptcha.getLeft()
+							+ "   skb_dragCaptcha.getRight(): "
+							+ skb_dragCaptcha.getRight());
+
 					// 获取当前的位置
 					mX = event.getX();
 					mY = event.getY();
@@ -610,6 +620,9 @@ public class GtAppDialog extends Dialog {
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
 		tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 
+		animation = AnimationUtils.loadAnimation(context,
+				R.anim.gtapp_anim_dlg_exit);// 动画
+
 	}
 
 	/**
@@ -665,8 +678,15 @@ public class GtAppDialog extends Dialog {
 	 */
 	private float getImageZoomScale(int orginImageWidth) {
 
-		float zoom_scale = ((screenSize.getWidth() - leftMargin - rightMargin) * 1000)
+		int seekbar_width = skb_dragCaptcha.getRight()
+				- skb_dragCaptcha.getLeft();
+
+		float zoom_scale = ((seekbar_width - leftMargin - rightMargin) * 1000)
 				/ (orginImageWidth * 1000.0f);
+
+		// float zoom_scale = ((screenSize.getWidth() - leftMargin -
+		// rightMargin) * 1000)
+		// / (orginImageWidth * 1000.0f);
 
 		GtLogger.v("orginImageWidth : " + orginImageWidth + "  zoom_scale: "
 				+ zoom_scale);
@@ -1233,7 +1253,7 @@ public class GtAppDialog extends Dialog {
 				break;
 
 			case MSG_SLICE_BG_ALPHA_MISS:
-				GtLogger.v("渐变消失");
+				// GtLogger.v("渐变消失");
 				setImageViewDisplayWhenCaptchaSucceed();
 				imgv_slice.setAlpha(slice_img_alpha);
 				// 设置textview显示当前的Alpha值
@@ -1287,6 +1307,10 @@ public class GtAppDialog extends Dialog {
 					}
 				}
 
+				Thread.sleep(1000);// 停留一段时间，自动关闭
+				dismiss();// 当前对话框关闭
+				// TODO 后面要做一个回调的函数。
+
 				GtLogger.v("验证成功后的图片线程");
 				System.out.println(Thread.currentThread().getName());
 			} catch (Exception e) {
@@ -1302,6 +1326,7 @@ public class GtAppDialog extends Dialog {
 		} else {
 			slice_img_alpha = 0;
 			isrung = false;
+
 		}
 
 		GtLogger.v("alpha: " + slice_img_alpha);
@@ -1507,9 +1532,11 @@ public class GtAppDialog extends Dialog {
 	 * 
 	 */
 	public void setDisplay() {
-		setContentView(gtAppDlgLayoutResId);
-		initViews();
 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
+		setCanceledOnTouchOutside(false);// 在外面点击不会消失
+		setContentView(gtAppDlgLayoutResId);// 设置资源内容
+		initViews();
 		initViewDisplayParameter();
 		initListeners();
 
@@ -1519,10 +1546,11 @@ public class GtAppDialog extends Dialog {
 		// new GtAppDialog(context, R.layout.image_move).setDisplay();
 		// }
 		// });
+		// setTitle("GtDialog");
 
-		// setTitle("继承 Dialog类");
 		setLocation();
 		show();
+
 	}
 
 	/**
@@ -1530,13 +1558,17 @@ public class GtAppDialog extends Dialog {
 	 */
 	public void setLocation() {
 		Window window = getWindow();
+
+		window.setWindowAnimations(R.style.toast_anim);
+
 		WindowManager.LayoutParams wl = window.getAttributes();
-		wl.width = dm.widthPixels;
-		GtLogger.v("wl.width: " + wl.width);
+		wl.width = dm.widthPixels;// 旁边会有一些小距离，可能是
+		GtLogger.v("wl.width: " + wl.width + "   wl.height: " + wl.height);
+
 		wl.x = 0;// 0为中间
-		wl.y = 100;
+		wl.y = dm.heightPixels / 5;// 放在屏幕的1/5处
 		wl.alpha = 0.9f;
-		wl.gravity = Gravity.TOP;
+		wl.gravity = (Gravity.LEFT | Gravity.TOP);
 		window.setAttributes(wl);
 	}
 }
