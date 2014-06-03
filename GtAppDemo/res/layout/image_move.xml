@@ -35,8 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:scaleType="fitCenter"
+                android:scaleType="fitXY"
                 android:src="@drawable/full_bg" />
+            <!-- android:src="@drawable/full_bg" -->
+            <!-- android:background="@drawable/full_bg" -->
+
+
             <!-- 完整背景图 -->
 
             <ImageView
@@ -45,9 +49,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/slip_big"
-                android:visibility="invisible" />
+                android:scaleType="matrix"
+                android:visibility="gone" />
+            <!-- android:src="@drawable/slip_big" -->
+
+
             <!-- 切图背景 -->
 
             <ImageView
@@ -58,8 +64,10 @@
                 android:layout_alignParentRight="true"
                 android:gravity="right"
                 android:scaleType="matrix"
-                android:src="@drawable/slip_small"
-                android:visibility="invisible" />
+                android:visibility="gone" />
+            <!-- android:src="@drawable/slip_small" -->
+
+
             <!-- 切片小图 -->
 
 

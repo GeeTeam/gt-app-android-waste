@@ -26,6 +26,7 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -169,7 +170,49 @@ public class GtAppDialog extends Dialog {
 
 	private void initViewDisplayParameter() {
 		getScreenSize();
+
+		// TODO 设置图片点位 默认长宽
+		setImageViewDefaultDisplay();
 		captchaInitialOption_StringRequest();
+	}
+
+	/**
+	 * 将设置的图片放大到指定的大小，然后占位
+	 */
+	private void setImageViewDefaultDisplay() {
+
+		try {
+			// TODO 做一个宽高比例为29*6的背景图片来占位
+			// 获取图片资源的宽和高
+
+			// BitmapDrawable bm_full_bg_occupy = (BitmapDrawable) res
+			// .getDrawable(R.drawable.full_bg);
+			//
+			// int bm_full_bg_occupy_width = bm_full_bg_occupy.getBitmap()
+			// .getWidth();
+			//
+			// GtLogger.v("bm_full_bg_occupy_width: " + bm_full_bg_occupy_width
+			// + "  height: " + bm_full_bg_occupy.getBitmap().getHeight());
+			//
+			// // 获得占位图片的缩放比例
+			//
+			// // 重新设置imageView的大小
+			// imgv_full_bg.setImageBitmap(zoomImage(
+			// bm_full_bg_occupy.getBitmap(), skb_dragCaptcha.getWidth()
+			// / bm_full_bg_occupy_width));
+
+			// LayoutParams para;
+			// para = imgv_full_bg.getLayoutParams();
+			//
+			// para.height = skb_dragCaptcha.getWidth() * 26 / 9;
+			// para.width = skb_dragCaptcha.getWidth();
+			// imgv_full_bg.setLayoutParams(para);
+
+		} catch (Exception e) {
+			GtLogger.expection(LoggerString.getFileLineMethod()
+					+ e.getMessage());
+		}
+
 	}
 
 	/**
@@ -608,8 +651,16 @@ public class GtAppDialog extends Dialog {
 	 * 界面控件元素的绑定工作
 	 */
 	private void initViews() {
+
+		// 设置通讯值
 		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-		reLayoutView = (RelativeLayout) this.findViewById(R.id.ll_viewArea22);
+
+		// LayoutInflater flater = LayoutInflater.from(context);
+
+		// View paraView = flater.inflate(R.layout.image_move, null);
+		// LayoutInflater paraView = (View) findViewById(R.layout.image_move);
+
+		reLayoutView = (RelativeLayout) findViewById(R.id.ll_viewArea22);
 
 		imgv_full_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_full_bg);
 		imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
@@ -1307,12 +1358,12 @@ public class GtAppDialog extends Dialog {
 					}
 				}
 
-				Thread.sleep(1000);// 停留一段时间，自动关闭
+				Thread.sleep(500);// 停留一段时间，自动关闭
 				dismiss();// 当前对话框关闭
 				// TODO 后面要做一个回调的函数。
 
 				GtLogger.v("验证成功后的图片线程");
-				System.out.println(Thread.currentThread().getName());
+				// System.out.println(Thread.currentThread().getName());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1535,9 +1586,12 @@ public class GtAppDialog extends Dialog {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
 		setCanceledOnTouchOutside(false);// 在外面点击不会消失
+
+		// 向服务器请求
 		setContentView(gtAppDlgLayoutResId);// 设置资源内容
 		initViews();
 		initViewDisplayParameter();
+
 		initListeners();
 
 		// // 刷新图片
