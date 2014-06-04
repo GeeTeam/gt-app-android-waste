@@ -12,16 +12,17 @@ import com.geetest.gtapp.utils.LoggerString;
 public class GtApiEnv {
 
 	// TODO 公钥和私钥 都是需要SDK外部初始化
-	public static String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
-	public static String gt_private_key = "";// 私钥
+	// public static String gt_public_key =
+	// "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+	// public static String gt_private_key = "";// 私钥
 
 	public static String gt_product_type = "embed";// 嵌入式的
 
-	public static int slice_img_width = 48;// 切片图宽
-	public static int slice_img_height = 64;// 切片图高
-
-	public static int bg_img_width = 260;// 背图宽
-	public static int bg_img_height = 90;// 背图高
+	// public static int slice_img_width = 48;// 切片图宽
+	// public static int slice_img_height = 64;// 切片图高
+	//
+	// public static int bg_img_width = 260;// 背图宽
+	// public static int bg_img_height = 90;// 背图高
 
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式

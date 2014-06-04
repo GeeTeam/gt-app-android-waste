@@ -33,6 +33,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -73,12 +74,18 @@ public class GtAppDialog extends Dialog {
 	private DisplayMetrics dm;// 显示屏幕
 	private Resources res;
 
+	private String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+
 	// 界面元素信息
 	private View dlgView;
 
 	// private Animation animation;
 
+	private RelativeLayout firstReLayoutView;// 最外层布局
 	private RelativeLayout reLayoutView;// 相框的相对布局
+
+	private LinearLayout beforeGetImageLineraLayout;
+	private LinearLayout afterGetImageLineraLayout;
 
 	private ImageView imgv_full_bg;// 完整的背景
 	private ImageView imgv_slice;// 用于拖动的小切片图
@@ -159,10 +166,11 @@ public class GtAppDialog extends Dialog {
 
 	private float mX, mY;// 触点的位置
 
-	public GtAppDialog(Context context, int gtAppDlgLayoutResId,
-			DisplayMetrics dm, Resources res) {
+	public GtAppDialog(Context context, String gt_public_key,
+			int gtAppDlgLayoutResId, DisplayMetrics dm, Resources res) {
 		super(context);
 		this.context = context;
+		this.gt_public_key = gt_public_key;
 		this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
 		this.dm = dm;
 		this.res = res;
@@ -190,6 +198,12 @@ public class GtAppDialog extends Dialog {
 
 		setLocation();
 		show();
+
+		// int seekbar_width = skb_dragCaptcha.getRight()
+		// - skb_dragCaptcha.getLeft();
+		//
+		// GtLogger.v("seekbar_width: " + seekbar_width);
+
 	}
 
 	/**
@@ -198,6 +212,9 @@ public class GtAppDialog extends Dialog {
 	private void requestOptionDataFromGtServer() {
 
 		// TODO
+		// 设置通讯值
+		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+		captchaInitialOption_StringRequest();
 	}
 
 	/**
@@ -211,7 +228,12 @@ public class GtAppDialog extends Dialog {
 		imgv_slice.setImageBitmap(bm_slice);
 
 		// 设置图片控件的y方向位置
-		imgv_slice.scrollTo(-50, getSliceYposAfterSalced());
+		// imgv_slice.scrollTo(-50, getSliceYposAfterSalced());
+
+		setImageViewDisplayWhenRefresh();
+
+		beforeGetImageLineraLayout.setVisibility(View.GONE);
+		afterGetImageLineraLayout.setVisibility(View.VISIBLE);
 
 		// 重置SeekBar
 		skb_dragCaptcha.setProgress(0);
@@ -240,7 +262,7 @@ public class GtAppDialog extends Dialog {
 
 		// TODO 设置图片点位 默认长宽
 		setImageViewDefaultDisplay();
-		captchaInitialOption_StringRequest();
+		// captchaInitialOption_StringRequest();
 	}
 
 	/**
@@ -274,6 +296,12 @@ public class GtAppDialog extends Dialog {
 			// para.height = skb_dragCaptcha.getWidth() * 26 / 9;
 			// para.width = skb_dragCaptcha.getWidth();
 			// imgv_full_bg.setLayoutParams(para);
+
+			// TODO 设置默认的初始的画框大小
+			// int seekbar_width = skb_dragCaptcha.getWidth();
+			// setImageViewScale(imgv_full_bg, seekbar_width, seekbar_width * 9
+			// /
+			// 26);
 
 		} catch (Exception e) {
 			GtLogger.expection(LoggerString.getFileLineMethod()
@@ -726,15 +754,21 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void initViews() {
 
-		// 设置通讯值
-		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-
 		// LayoutInflater flater = LayoutInflater.from(context);
 
 		// View paraView = flater.inflate(R.layout.image_move, null);
 		// LayoutInflater paraView = (View) findViewById(R.layout.image_move);
 
-		reLayoutView = (RelativeLayout) findViewById(R.id.ll_viewArea22);
+		firstReLayoutView = (RelativeLayout) findViewById(R.id.ll_viewArea20);
+
+		reLayoutView = (RelativeLayout) firstReLayoutView
+				.findViewById(R.id.ll_viewArea22);
+
+		// 加载前后
+		beforeGetImageLineraLayout = (LinearLayout) firstReLayoutView
+				.findViewById(R.id.ll_viewArea01);
+		afterGetImageLineraLayout = (LinearLayout) firstReLayoutView
+				.findViewById(R.id.ll_viewArea1);
 
 		imgv_full_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_full_bg);
 		imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
@@ -806,6 +840,11 @@ public class GtAppDialog extends Dialog {
 
 		int seekbar_width = skb_dragCaptcha.getRight()
 				- skb_dragCaptcha.getLeft();
+
+		int relWidth = reLayoutView.getRight() - reLayoutView.getLeft();
+
+		GtLogger.v("seekbar_width: " + seekbar_width);
+		GtLogger.v("relWidth: " + relWidth);
 
 		float zoom_scale = ((seekbar_width - leftMargin - rightMargin) * 1000)
 				/ (orginImageWidth * 1000.0f);
@@ -974,7 +1013,7 @@ public class GtAppDialog extends Dialog {
 		// 1.根据get内容生成URL，请求URL，返回值
 
 		GetPhp_GreqVo getPhp_GreqVo = new GetPhp_GreqVo();
-		getPhp_GreqVo.setGt(GtApiEnv.gt_public_key);
+		getPhp_GreqVo.setGt(gt_public_key);
 		getPhp_GreqVo.setProduct(GtApiEnv.gt_product_type);
 
 		String relApiPath = GtApiEnv.getOptionApi;
@@ -984,7 +1023,7 @@ public class GtAppDialog extends Dialog {
 		// String url =
 		// "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
 
-		setImageViewDisplayWhenRefresh();
+		// setImageViewDisplayWhenRefresh();
 
 		StringRequest option_Request = new StringRequest(url,
 				new Response.Listener<String>() {

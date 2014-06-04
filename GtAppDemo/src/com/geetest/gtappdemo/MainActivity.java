@@ -63,8 +63,10 @@ public class MainActivity extends ActionBarActivity {
 
 				DisplayMetrics dm = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(dm);
-				new GtAppDialog(context, R.layout.image_move, dm,
-						getResources()).setDisplay();
+				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+				
+				new GtAppDialog(context, gt_public_key, R.layout.image_move,
+						dm, getResources()).setDisplay();
 			}
 		});
 
