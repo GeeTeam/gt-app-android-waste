@@ -26,14 +26,11 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -79,7 +76,7 @@ public class GtAppDialog extends Dialog {
 	// 界面元素信息
 	private View dlgView;
 
-	private Animation animation;
+	// private Animation animation;
 
 	private RelativeLayout reLayoutView;// 相框的相对布局
 
@@ -87,17 +84,19 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 
-	// 图片对象
-	// private Bitmap bm_slice;
-	// private Bitmap bm_slicebg;
-	// private Bitmap bm_fullbg;
-
 	private TextView tv_validateStatus;// 验证码的状态栏
 
 	private Button btn_refresh;// 用于刷新图片的按钮
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
+
+	// /********************下面是数据区
+
+	// 图片对象
+	private Bitmap bm_full_bg;
+	private Bitmap bm_slice_bg;
+	private Bitmap bm_slice;
 
 	// 验证通讯数据对象
 	private CaptchaOption initCaptchaOption;// 验证码初始化验证数据设置
@@ -143,6 +142,8 @@ public class GtAppDialog extends Dialog {
 	 */
 	private Boolean clientCaptchaResult = false;
 
+	private String logTag = "testImageView";
+
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
 	private int leftMargin = 0;// dp
 	private int rightMargin = 0;// dp
@@ -165,6 +166,72 @@ public class GtAppDialog extends Dialog {
 		this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
 		this.dm = dm;
 		this.res = res;
+
+	}
+
+	/**
+	 * 
+	 */
+	public void setDisplay() {
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
+		setCanceledOnTouchOutside(false);// 在外面点击不会消失
+
+		// 向服务器请求
+		requestOptionDataFromGtServer();
+
+		setContentView(gtAppDlgLayoutResId);// 设置资源内容
+		initViews();
+		initViewDisplayParameter();
+		initListeners();
+
+		// bindOptionDataToLocalViews();
+		// setTitle("GtDialog");
+
+		setLocation();
+		show();
+	}
+
+	/**
+	 * 向Gt服务器请求初始化数据
+	 */
+	private void requestOptionDataFromGtServer() {
+
+		// TODO
+	}
+
+	/**
+	 * 将服务器请求的数据绑定到本地的界面中
+	 */
+	private void bindOptionDataToLocalViews() {
+		// TODO
+
+		imgv_full_bg.setImageBitmap(bm_full_bg);
+		imgv_slice_bg.setImageBitmap(bm_slice_bg);
+		imgv_slice.setImageBitmap(bm_slice);
+
+		// 设置图片控件的y方向位置
+		imgv_slice.scrollTo(-50, getSliceYposAfterSalced());
+
+		// 重置SeekBar
+		skb_dragCaptcha.setProgress(0);
+		tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
+		clientCaptchaResult = false;// 最开始状态是为不通过的。
+		skb_dragCaptcha.setEnabled(true);
+
+		GtLogger.v("initCaptchaOption.getYpos():" + initCaptchaOption.getYpos()
+				+ "   igv_slicebg.getTop():" + imgv_slice_bg.getTop());
+
+		setImageViewScale(imgv_slice, bm_full_bg.getWidth(),
+				bm_full_bg.getHeight());
+
+		// igv_slice.setImageBitmap(response);
+
+		// 在图片全部加载完毕后，获取一些基本的参数值
+		setThumbBmpSize();
+		getSliderStartLeftTopPosition();
+
+		sendMsgToUpdateUI(MSG_FULL_BG_DISPLAY);
 
 	}
 
@@ -266,14 +333,21 @@ public class GtAppDialog extends Dialog {
 
 		// GtLogger.v("bg,bg_slice,slice:gone,visible,visible");
 
-		imgv_full_bg.setVisibility(View.INVISIBLE);
-		imgv_slice_bg.setVisibility(View.VISIBLE);
-		imgv_slice.setVisibility(View.VISIBLE);
+		// imgv_full_bg.setVisibility(View.GONE);
+		// imgv_slice_bg.setVisibility(View.GONE);
+		// imgv_slice.setVisibility(View.VISIBLE);
 
-		// 设置透明度
-		imgv_full_bg.setAlpha(255);
+		// 设置透明度--完全不透明
+		imgv_full_bg.setAlpha(0);
 		imgv_slice_bg.setAlpha(255);
 		imgv_slice.setAlpha(255);
+
+		// imgv_slice.getVisibility();
+		// imgv_slice.getBottom();
+
+		// imgv_full_bg.postInvalidate();
+		// imgv_slice_bg.postInvalidate();
+		// imgv_slice.postInvalidate();
 
 		// TODO 在第一次加载的时候会导致切图找不到
 		// GtLogger.v("imgv_slice_bg### " + "xPos: " + imgv_slice_bg.getLeft()
@@ -292,14 +366,14 @@ public class GtAppDialog extends Dialog {
 
 		// GtLogger.v("bg,bg_slice,slice:visible,gone,gone");
 
-		imgv_full_bg.setVisibility(View.VISIBLE);
-		imgv_slice_bg.setVisibility(View.INVISIBLE);
-		imgv_slice.setVisibility(View.INVISIBLE);
+		// imgv_full_bg.setVisibility(View.VISIBLE);
+		// imgv_slice_bg.setVisibility(View.INVISIBLE);
+		// imgv_slice.setVisibility(View.INVISIBLE);
 
 		// 设置透明度
 		imgv_full_bg.setAlpha(255);// 不透明
-		imgv_slice_bg.setAlpha(255);
-		imgv_slice.setAlpha(255);
+		imgv_slice_bg.setAlpha(0);
+		imgv_slice.setAlpha(0);
 	}
 
 	/**
@@ -314,55 +388,55 @@ public class GtAppDialog extends Dialog {
 		// imgv_slice.setVisibility(View.INVISIBLE);
 
 		// // 设置透明度
-		// imgv_full_bg.setAlpha(255);// 不透明
-		// imgv_slice_bg.setAlpha(255);
+		imgv_full_bg.setAlpha(255);// 不透明
+		imgv_slice_bg.setAlpha(255);
 		// imgv_slice.setAlpha(255);
 	}
 
 	private void initListeners() {
-		imgv_slice.setOnTouchListener(new View.OnTouchListener() {
-
-			public boolean onTouch(View arg0, MotionEvent event) {
-
-				float curX, curY;// 鼠标的即时位置
-
-				curX = event.getX();
-				curY = event.getY();
-
-				switch (event.getAction()) {
-
-				case MotionEvent.ACTION_DOWN:
-					// 获取当前的位置
-					mX = event.getX();
-					mY = event.getY();
-
-					// actionDown_X = event.getX();
-					// actionDown_Y = event.getY();
-
-					break;
-				case MotionEvent.ACTION_MOVE:
-					curX = event.getX();// 当前x
-					curY = event.getY();// 当前y
-
-					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
-					// curY));// 进行偏移
-					imgv_slice.scrollBy((int) (mX - curX), 0);// 只进行水平方向行偏移
-					mX = curX;
-					mY = curY;
-					break;
-				case MotionEvent.ACTION_UP:
-					GtLogger.v("Images Change Action_Up");
-
-					curX = event.getX();
-					curY = event.getY();
-
-					imgv_slice.scrollBy((int) (mX - curX), 0);
-					break;
-				}
-
-				return true;
-			}
-		});
+		// imgv_slice.setOnTouchListener(new View.OnTouchListener() {
+		//
+		// public boolean onTouch(View arg0, MotionEvent event) {
+		//
+		// float curX, curY;// 鼠标的即时位置
+		//
+		// curX = event.getX();
+		// curY = event.getY();
+		//
+		// switch (event.getAction()) {
+		//
+		// case MotionEvent.ACTION_DOWN:
+		// // 获取当前的位置
+		// mX = event.getX();
+		// mY = event.getY();
+		//
+		// // actionDown_X = event.getX();
+		// // actionDown_Y = event.getY();
+		//
+		// break;
+		// case MotionEvent.ACTION_MOVE:
+		// curX = event.getX();// 当前x
+		// curY = event.getY();// 当前y
+		//
+		// // igv_slice.scrollBy((int) (mX - curX), (int) (mY -
+		// // curY));// 进行偏移
+		// imgv_slice.scrollBy((int) (mX - curX), 0);// 只进行水平方向行偏移
+		// mX = curX;
+		// mY = curY;
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// GtLogger.v("Images Change Action_Up");
+		//
+		// curX = event.getX();
+		// curY = event.getY();
+		//
+		// imgv_slice.scrollBy((int) (mX - curX), 0);
+		// break;
+		// }
+		//
+		// return true;
+		// }
+		// });
 
 		// 刷新图片
 		btn_refresh.setOnClickListener(new Button.OnClickListener() {
@@ -671,8 +745,8 @@ public class GtAppDialog extends Dialog {
 		btn_refresh = (Button) findViewById(R.id.btn_refresh);
 		tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 
-		animation = AnimationUtils.loadAnimation(context,
-				R.anim.gtapp_anim_dlg_exit);// 动画
+		// animation = AnimationUtils.loadAnimation(context,
+		// R.anim.gtapp_anim_dlg_exit);// 动画
 
 	}
 
@@ -698,9 +772,8 @@ public class GtAppDialog extends Dialog {
 									.getWidth());
 
 							// seekbar_server_length = response.getWidth();
-							imgv_full_bg.setImageBitmap(zoomImage(response,
-									bm_zoom_scale));
-
+							// 保存放大后的图片资源到本地
+							bm_full_bg = zoomImage(response, bm_zoom_scale);
 							slice_bg_ImageRequest(initCaptchaOption.getImgurl());// 再请求切图背景
 							// igv_slicebg.setImageBitmap(response);
 						} catch (Exception e) {
@@ -712,7 +785,9 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						imgv_full_bg.setImageResource(R.drawable.ic_launcher);
+						GtLogger.expection("volley error: "
+								+ error.getMessage());
+						// imgv_full_bg.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -759,16 +834,16 @@ public class GtAppDialog extends Dialog {
 					@Override
 					public void onResponse(Bitmap response) {
 						// 对图片进行缩放
-						imgv_slice_bg.setImageBitmap(zoomImage(response,
-								bm_zoom_scale));
-
+						bm_slice_bg = zoomImage(response, bm_zoom_scale);
 						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
 						// igv_slicebg.setImageBitmap(response);
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						imgv_slice.setImageResource(R.drawable.ic_launcher);
+						GtLogger.expection("volley error: "
+								+ error.getMessage());
+						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -797,37 +872,25 @@ public class GtAppDialog extends Dialog {
 						// slice_img_width = (int) (response.getWidth() *
 						// bm_zoom_scale);
 
+						bm_slice = zoomImage(response, bm_zoom_scale);
+
 						bgImgLoadEndTime = System.currentTimeMillis();// 背景图加载截止时间
 
 						// 缩放图片数据源
 
 						// bm_zoom_scale = (intScreenX - 80) /
 						// response.getWidth();
-						imgv_slice.setImageBitmap(zoomImage(response,
-								bm_zoom_scale));
-
-						// 设置图片控件的y方向位置
-						imgv_slice.scrollTo(-50, getSliceYposAfterSalced());
-
-						GtLogger.v("initCaptchaOption.getYpos():"
-								+ initCaptchaOption.getYpos()
-								+ "   igv_slicebg.getTop():"
-								+ imgv_slice_bg.getTop());
-
-						setImageViewScale(imgv_slice, 300,
-								imgv_slice_bg.getHeight());
-
-						// igv_slice.setImageBitmap(response);
-
-						// 在图片全部加载完毕后，获取一些基本的参数值
-						setThumbBmpSize();
-						getSliderStartLeftTopPosition();
+						// imgv_slice.setImageBitmap(zoomImage(response,
+						// bm_zoom_scale));
+						bindOptionDataToLocalViews();
 
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						imgv_slice.setImageResource(R.drawable.ic_launcher);
+						GtLogger.expection("volley error: "
+								+ error.getMessage());
+						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -858,6 +921,10 @@ public class GtAppDialog extends Dialog {
 	private void setImageViewScale(ImageView imgv, int imgv_width,
 			int imgv_height) {
 		// 设置图片控件image view的大小
+
+		GtLogger.v("imgv_width: " + imgv_width + "  imgv_height: "
+				+ imgv_height);
+
 		LayoutParams para;
 		para = imgv.getLayoutParams();
 		para.width = imgv_width;
@@ -943,11 +1010,11 @@ public class GtAppDialog extends Dialog {
 						// 开始连锁的串行向服务器请求图片
 						fullbg_ImageRequest(initCaptchaOption.getFullbg());
 
-						// 重置SeekBar
-						skb_dragCaptcha.setProgress(0);
-						tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
-						clientCaptchaResult = false;// 最开始状态是为不通过的。
-						skb_dragCaptcha.setEnabled(true);
+						// // 重置SeekBar
+						// skb_dragCaptcha.setProgress(0);
+						// tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
+						// clientCaptchaResult = false;// 最开始状态是为不通过的。
+						// skb_dragCaptcha.setEnabled(true);
 
 					}
 				}, new Response.ErrorListener() {
@@ -1576,34 +1643,6 @@ public class GtAppDialog extends Dialog {
 			GtLogger.expection(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 		}
-
-	}
-
-	/**
-	 * 
-	 */
-	public void setDisplay() {
-
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
-		setCanceledOnTouchOutside(false);// 在外面点击不会消失
-
-		// 向服务器请求
-		setContentView(gtAppDlgLayoutResId);// 设置资源内容
-		initViews();
-		initViewDisplayParameter();
-
-		initListeners();
-
-		// // 刷新图片
-		// btn_refresh.setOnClickListener(new Button.OnClickListener() {
-		// public void onClick(View v) {
-		// new GtAppDialog(context, R.layout.image_move).setDisplay();
-		// }
-		// });
-		// setTitle("GtDialog");
-
-		setLocation();
-		show();
 
 	}
 

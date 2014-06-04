@@ -50,7 +50,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:scaleType="matrix"
-                android:visibility="gone" />
+                android:visibility="visible" />
             <!-- android:src="@drawable/slip_big" -->
 
 
@@ -64,7 +64,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="right"
                 android:scaleType="matrix"
-                android:visibility="gone" />
+                android:visibility="visible" />
             <!-- android:src="@drawable/slip_small" -->
 
 
@@ -193,7 +193,7 @@
         android:paddingRight="0dp"
         android:progressDrawable="@drawable/seekbar_define_color_style"
         android:thumb="@drawable/seekbar_thumb"
-        android:thumbOffset="-0dp" />
+        android:thumbOffset="-2dp" />
     <!-- 拖动条 -2dp -->
 
 
