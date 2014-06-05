@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 按下状态 -->
+    <item android:layout_width="50dp" android:drawable="@drawable/gtapp_skb_selected" android:state_pressed="true"/>
+    <!-- 普通无焦点状态 -拖动按钮 -->
+    <item android:layout_width="50dp" android:drawable="@drawable/gtapp_skb_drag_normal" android:state_focused="false" android:state_pressed="false"/>
+
+    <!-- 有焦点状态 -->
+    <item android:layout_width="50dp" android:drawable="@drawable/gtapp_skb_drag_normal" android:state_focused="true" android:state_pressed="false"/>
+    <!-- 有焦点 -->
+    <item android:layout_width="50dp" android:drawable="@drawable/gtapp_skb_selected" android:state_focused="true"/>
+
+</selector>
