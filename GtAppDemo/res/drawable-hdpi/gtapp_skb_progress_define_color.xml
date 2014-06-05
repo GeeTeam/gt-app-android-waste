@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>     
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">     
-  
+
+    <!-- 进度条的色彩定义 -->
+
    <item android:id="@android:id/background"
             android:paddingTop="3px" 
          android:paddingBottom="3px">     
