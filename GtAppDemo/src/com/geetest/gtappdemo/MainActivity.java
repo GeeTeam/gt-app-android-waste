@@ -17,36 +17,15 @@ public class MainActivity extends ActionBarActivity {
 
 	private Context context = this;
 
-	// // 与“系统默认SeekBar”对应的TextView
-	// private TextView mTvDef;
-	// // 与“自定义SeekBar”对应的TextView
-	// private TextView mTvSelf;
-	// // “系统默认SeekBar”
-	// private SeekBar mSeekBarDef;
-	// // “自定义SeekBar”
-	// private SeekBar mSeekBarSelf;
-
-	// private ImageView image;
 
 	private Button btn_gtapp_dlg;
 
-	// private final String TAG = "Pictrue Test!!!";
-	// private ImageView image;
-	// private int height = 0;
-	// private int width = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_main);
 		setContentView(R.layout.gtappdemo);
 
-		// image = (ImageView) findViewById(R.id.imgv_slip_small);
-		// if (savedInstanceState == null) {
-		// getSupportFragmentManager().beginTransaction()
-		// .add(R.id.container, new PlaceholderFragment())
-		// .commit();
-		// }
 
 		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_dlg);
 
@@ -58,42 +37,11 @@ public class MainActivity extends ActionBarActivity {
 				getWindowManager().getDefaultDisplay().getMetrics(dm);
 				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
 
-				new GtAppDialog(context, gt_public_key, R.layout.image_move,
+				new GtAppDialog(context, gt_public_key, R.layout.gtapp_main_dlg,
 						dm, getResources()).setDisplay();
 			}
 		});
 
-		// “系统默认SeekBar”
-//		mSeekBarDef = (SeekBar) findViewById(R.id.seekbar_def);
-		// mSeekBarDef
-		// .setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-		// /**
-		// * 拖动条停止拖动的时候调用
-		// */
-		// @Override
-		// public void onStopTrackingTouch(SeekBar seekBar) {
-		// Log.v("seekbar", "拖动停止");
-		// }
-		//
-		// /**
-		// * 拖动条开始拖动的时候调用
-		// */
-		// @Override
-		// public void onStartTrackingTouch(SeekBar seekBar) {
-		// Log.v("seekbar", "开始拖动");
-		//
-		// }
-		//
-		// /**
-		// * 拖动条进度改变的时候调用
-		// */
-		// @Override
-		// public void onProgressChanged(SeekBar seekBar,
-		// int progress, boolean fromUser) {
-		// Log.v("seekbar", ("当前进度：" + progress + "%"));
-		//
-		// }
-		// });
 
 	}
 
@@ -130,21 +78,5 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// /**
-	// * A placeholder fragment containing a simple view.
-	// */
-	// public static class PlaceholderFragment extends Fragment {
-	//
-	// public PlaceholderFragment() {
-	// }
-	//
-	// @Override
-	// public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	// Bundle savedInstanceState) {
-	// View rootView = inflater.inflate(R.layout.fragment_main, container,
-	// false);
-	// return rootView;
-	// }
-	// }
 
 }

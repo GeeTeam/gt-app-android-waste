@@ -9,6 +9,6 @@
         android:id="@+id/btn_gtapp_dlg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="gtapp_dlg" />
+        android:text="验证码对话框" />
 
 </LinearLayout>

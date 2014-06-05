@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 退出时动画效果 -->
+<!-- GtApp 对话框 退出时动画效果 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <scale
