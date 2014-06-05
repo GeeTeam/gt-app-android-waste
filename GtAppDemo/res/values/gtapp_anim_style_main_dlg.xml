@@ -6,6 +6,7 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+
     <style name="toast_anim" mce_bogus="1" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/gtapp_anim_dlg_enter</item> 
         <item name="android:windowExitAnimation">@anim/gtapp_anim_dlg_exit</item>
