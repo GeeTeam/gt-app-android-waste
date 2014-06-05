@@ -242,8 +242,8 @@
                 android:minHeight="50dp"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
-                android:progressDrawable="@drawable/seekbar_define_color_style"
-                android:thumb="@drawable/seekbar_thumb"
+                android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
+                android:thumb="@drawable/gtapp_skb_thumb_state_define"
                 android:thumbOffset="-2dp" />
         </LinearLayout>
         <!-- 最大外边框 -->

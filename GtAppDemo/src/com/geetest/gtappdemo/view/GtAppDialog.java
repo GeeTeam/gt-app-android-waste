@@ -619,7 +619,7 @@ public class GtAppDialog extends Dialog {
 						// TODO 目前只能采用硬编码的方式来处理图片的大小问题了
 						// Resources res = getResources();
 						BitmapDrawable skb_thumb = (BitmapDrawable) res
-								.getDrawable(R.drawable.drag_normal);
+								.getDrawable(R.drawable.gtapp_skb_drag_normal);
 						// GtLogger.v("thumb bitmap width: "
 						// + skb_thumb.getBitmap().getWidth());
 						// GtLogger.v("thumb bitmap height: "
@@ -743,7 +743,7 @@ public class GtAppDialog extends Dialog {
 
 		// Resources res = getResources();
 		BitmapDrawable skb_thumb = (BitmapDrawable) res
-				.getDrawable(R.drawable.drag_normal);
+				.getDrawable(R.drawable.gtapp_skb_drag_normal);
 
 		thumbBmpSize.setWidth(skb_thumb.getBitmap().getWidth());
 		thumbBmpSize.setHeight(skb_thumb.getBitmap().getHeight());
