@@ -49,7 +49,7 @@ import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
-import com.geetest.gtappdemo.R;
+import com.geetest.gtapp.R;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
-
+import com.geetest.gtapp.R;
 import com.geetest.gtappdemo.view.GtAppDialog;
 
 public class MainActivity extends Activity {
