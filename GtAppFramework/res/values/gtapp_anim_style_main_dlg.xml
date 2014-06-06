@@ -1,0 +1,16 @@
+<resources>
+
+    <style name="cus_dlg" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+
+    <style name="toast_anim" mce_bogus="1" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/gtapp_anim_dlg_enter</item> 
+        <item name="android:windowExitAnimation">@anim/gtapp_anim_dlg_exit</item>
+    </style>
+    <!-- 设置对话框进入和出去的动画 -->
+
+</resources>

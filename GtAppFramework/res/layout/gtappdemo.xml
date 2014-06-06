@@ -6,9 +6,9 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/btn_gtapp_sdk_demo_dlg"
+        android:id="@+id/btn_gtapp_dlg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="gtapp_dlg" />
+        android:text="验证码对话框" />
 
 </LinearLayout>

@@ -741,12 +741,19 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void setThumbBmpSize() {
 
-		// Resources res = getResources();
-		BitmapDrawable skb_thumb = (BitmapDrawable) res
-				.getDrawable(R.drawable.gtapp_skb_drag_normal);
+		try {
+			// Resources res = getResources();
+			BitmapDrawable skb_thumb = (BitmapDrawable) res
+					.getDrawable(R.drawable.gtapp_skb_drag_normal);
 
-		thumbBmpSize.setWidth(skb_thumb.getBitmap().getWidth());
-		thumbBmpSize.setHeight(skb_thumb.getBitmap().getHeight());
+			thumbBmpSize.setWidth(skb_thumb.getBitmap().getWidth());
+			thumbBmpSize.setHeight(skb_thumb.getBitmap().getHeight());
+
+		} catch (Exception e) {
+			GtLogger.expection(LoggerString.getFileLineMethod()
+					+ e.getMessage());
+		}
+
 	}
 
 	/**
@@ -754,33 +761,41 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void initViews() {
 
-		// LayoutInflater flater = LayoutInflater.from(context);
+		try {
+			// LayoutInflater flater = LayoutInflater.from(context);
 
-		// View paraView = flater.inflate(R.layout.image_move, null);
-		// LayoutInflater paraView = (View) findViewById(R.layout.image_move);
+			// View paraView = flater.inflate(R.layout.image_move, null);
+			// LayoutInflater paraView = (View)
+			// findViewById(R.layout.image_move);
 
-		firstReLayoutView = (RelativeLayout) findViewById(R.id.ll_viewArea20);
+			firstReLayoutView = (RelativeLayout) findViewById(R.id.ll_viewArea20);
 
-		reLayoutView = (RelativeLayout) firstReLayoutView
-				.findViewById(R.id.ll_viewArea22);
+			reLayoutView = (RelativeLayout) firstReLayoutView
+					.findViewById(R.id.ll_viewArea22);
 
-		// 加载前后
-		beforeGetImageLineraLayout = (LinearLayout) firstReLayoutView
-				.findViewById(R.id.ll_viewArea01);
-		afterGetImageLineraLayout = (LinearLayout) firstReLayoutView
-				.findViewById(R.id.ll_viewArea1);
+			// 加载前后
+			beforeGetImageLineraLayout = (LinearLayout) firstReLayoutView
+					.findViewById(R.id.ll_viewArea01);
+			afterGetImageLineraLayout = (LinearLayout) firstReLayoutView
+					.findViewById(R.id.ll_viewArea1);
 
-		imgv_full_bg = (ImageView) reLayoutView.findViewById(R.id.imgv_full_bg);
-		imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
-		imgv_slice_bg = (ImageView) reLayoutView
-				.findViewById(R.id.imgv_slice_bg);
+			imgv_full_bg = (ImageView) reLayoutView
+					.findViewById(R.id.imgv_full_bg);
+			imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
+			imgv_slice_bg = (ImageView) reLayoutView
+					.findViewById(R.id.imgv_slice_bg);
 
-		skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
-		btn_refresh = (Button) findViewById(R.id.btn_refresh);
-		tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
+			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
+			btn_refresh = (Button) findViewById(R.id.btn_refresh);
+			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 
-		// animation = AnimationUtils.loadAnimation(context,
-		// R.anim.gtapp_anim_dlg_exit);// 动画
+			// animation = AnimationUtils.loadAnimation(context,
+			// R.anim.gtapp_anim_dlg_exit);// 动画
+
+		} catch (Exception e) {
+			GtLogger.expection(LoggerString.getFileLineMethod()
+					+ e.getMessage());
+		}
 
 	}
 
