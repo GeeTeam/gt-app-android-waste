@@ -197,7 +197,7 @@
                         android:id="@+id/btn_help"
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:drawable/ic_menu_help"
+                        android:background="@drawable/gtapp_btn_help"
                         android:text="" />
                     <!-- 使用帮助 -->
 
@@ -213,8 +213,10 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/stat_notify_chat"
-                        android:text="" />
-                    <!-- 用户反馈 -->
+                        android:text=""
+                        android:visibility="gone" />
+
+                    <!-- 用户反馈  上行类的数据暂时不管 -->
 
                 </LinearLayout>
 
@@ -227,9 +229,9 @@
                         android:id="@+id/btn_about"
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:drawable/ic_menu_info_details"
+                        android:background="@drawable/gtapp_btn_about"
                         android:text="" />
-                    <!-- 使用帮助 -->
+                    <!-- SDK信息 -->
 
                 </LinearLayout>
 

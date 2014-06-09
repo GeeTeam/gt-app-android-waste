@@ -17,8 +17,11 @@ public class GtApiEnv {
 	// public static String gt_private_key = "";// 私钥
 
 	// GtApp的版本控制
-	public static final int gtAppSdkVersionCode = 2;
-	public static final String gtAppSdkVersionName = "1.2";
+	public static final int sdkVersionCode = 2;
+	public static final String sdkVersionName = "1.2";
+
+	// 互联网上的Gtapp的操作使用帮助页面
+	public static final String sdkUserHelpLink = "http://www.geetest.com/install/#instruct";
 
 	public static String gt_product_type = "embed";// 嵌入式的
 

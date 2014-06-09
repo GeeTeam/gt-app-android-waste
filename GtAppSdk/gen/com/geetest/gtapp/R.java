@@ -27,12 +27,14 @@ public final class R {
     }
     public static final class drawable {
         public static final int gtapp_before_load=0x7f020000;
-        public static final int gtapp_btn_refresh=0x7f020001;
-        public static final int gtapp_skb_drag_normal=0x7f020002;
-        public static final int gtapp_skb_progress_define_color=0x7f020003;
-        public static final int gtapp_skb_selected=0x7f020004;
-        public static final int gtapp_skb_thumb_state_define=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
+        public static final int gtapp_btn_about=0x7f020001;
+        public static final int gtapp_btn_help=0x7f020002;
+        public static final int gtapp_btn_refresh=0x7f020003;
+        public static final int gtapp_skb_drag_normal=0x7f020004;
+        public static final int gtapp_skb_progress_define_color=0x7f020005;
+        public static final int gtapp_skb_selected=0x7f020006;
+        public static final int gtapp_skb_thumb_state_define=0x7f020007;
+        public static final int ic_launcher=0x7f020008;
     }
     public static final class id {
         public static final int btn_about=0x7f08000e;

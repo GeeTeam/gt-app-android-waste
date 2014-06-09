@@ -16,11 +16,13 @@ import org.apache.http.message.BasicNameValuePair;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -37,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -46,10 +49,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.geetest.gtapp.R;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
-import com.geetest.gtapp.R;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
@@ -70,14 +73,14 @@ import com.google.gson.Gson;
 public class GtAppDialog extends Dialog {
 
 	private Context context;// 父窗口
-	private int gtAppDlgLayoutResId = 0;
+	private int gtAppDlgLayoutResId = 0;// 对话框的而已文件
 	private DisplayMetrics dm;// 显示屏幕
 	private Resources res;
 
 	private String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
 
 	// 界面元素信息
-	private View dlgView;
+	// private View dlgView;
 
 	// private Animation animation;
 
@@ -94,6 +97,8 @@ public class GtAppDialog extends Dialog {
 	private TextView tv_validateStatus;// 验证码的状态栏
 
 	private Button btn_refresh;// 用于刷新图片的按钮
+	private Button btn_help;// 使用帮助按钮
+	private Button btn_about;// "关于"按钮
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
@@ -473,6 +478,33 @@ public class GtAppDialog extends Dialog {
 			}
 		});
 
+		btn_help.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				// 转向使用帮助的页面
+				Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				context.startActivity(intent);
+			}
+		});
+
+		btn_about.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+
+				String toastMsg = "GtAppSdk_Vc" + GtApiEnv.sdkVersionCode
+						+ "_Vn" + GtApiEnv.sdkVersionName;
+				GtLogger.v(toastMsg);
+
+				Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show();
+
+				// TODO 转向使用帮助的页面--后面会做一个Web端的页面，详细记录当前的版本的号码，做一个API的URL
+				// 2014年6月9日 16:46:58
+				// Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
+				// Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				// context.startActivity(intent);
+
+			}
+		});
+
 		// 拖动条的touch事件
 		skb_dragCaptcha.setOnTouchListener(new View.OnTouchListener() {
 
@@ -787,6 +819,8 @@ public class GtAppDialog extends Dialog {
 
 			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 			btn_refresh = (Button) findViewById(R.id.btn_refresh);
+			btn_help = (Button) findViewById(R.id.btn_help);
+			btn_about = (Button) findViewById(R.id.btn_about);
 			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 
 			// animation = AnimationUtils.loadAnimation(context,
@@ -1375,7 +1409,8 @@ public class GtAppDialog extends Dialog {
 
 								tv_validateStatus.setText(succeedTip);
 								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
-								postCaptchaInfoToCustomServer();
+								// postCaptchaInfoToCustomServer();
+								// TODO 在GtApp端好像不需要二次验证，因为源码不可见
 
 							} else {
 								// 验证失败后，就不需要向客户机发起请求二次验证了
