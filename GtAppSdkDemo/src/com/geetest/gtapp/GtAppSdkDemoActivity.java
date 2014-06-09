@@ -25,15 +25,21 @@ public class GtAppSdkDemoActivity extends Activity {
 		// 刷新图片
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-
-				
+		
 
 				Log.v("gtapp", "run here button");
 
-				DisplayMetrics dm = new DisplayMetrics();//获取屏幕信息
+				//获取手机屏幕信息
+				DisplayMetrics dm = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(dm);
-				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+				
+				// 公钥
+				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";
 
+				//创建回调函数
+				
+				
+				//创建一个对话框
 				new GtAppDialog(context, gt_public_key, R.layout.gtapp_main_dlg,
 						dm, getResources()).setDisplay();
 
