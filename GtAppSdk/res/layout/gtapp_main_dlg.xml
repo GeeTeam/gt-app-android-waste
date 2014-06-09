@@ -24,7 +24,7 @@
             android:layout_margin="0dp"
             android:background="#c0c00e"
             android:orientation="vertical"
-            android:visibility="visible" >
+            android:visibility="invisible" >
 
             <ImageView
                 android:id="@+id/imgv_full_bg"
@@ -45,7 +45,7 @@
             android:layout_margin="0dp"
             android:background="#c0c59e"
             android:orientation="vertical"
-            android:visibility="invisible" >
+            android:visibility="visible" >
 
             <!-- 在图片预加载时，先不显示 -->
 
@@ -180,8 +180,11 @@
                         android:id="@+id/btn_refresh"
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:drawable/stat_notify_sync"
+                        android:background="@drawable/gtapp_btn_refresh"
                         android:text="" />
+                    <!-- android:background="@android:drawable/stat_notify_sync" -->
+
+
                     <!-- 刷新按钮 -->
                 </LinearLayout>
 
@@ -212,6 +215,21 @@
                         android:background="@android:drawable/stat_notify_chat"
                         android:text="" />
                     <!-- 用户反馈 -->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="#0C0071" >
+
+                    <Button
+                        android:id="@+id/btn_about"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_menu_info_details"
+                        android:text="" />
+                    <!-- 使用帮助 -->
 
                 </LinearLayout>
 

@@ -16,6 +16,10 @@ public class GtApiEnv {
 	// "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
 	// public static String gt_private_key = "";// 私钥
 
+	// GtApp的版本控制
+	public static final int gtAppSdkVersionCode = 2;
+	public static final String gtAppSdkVersionName = "1.2";
+
 	public static String gt_product_type = "embed";// 嵌入式的
 
 	// public static int slice_img_width = 48;// 切片图宽

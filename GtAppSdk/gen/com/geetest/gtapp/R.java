@@ -27,15 +27,17 @@ public final class R {
     }
     public static final class drawable {
         public static final int gtapp_before_load=0x7f020000;
-        public static final int gtapp_skb_drag_normal=0x7f020001;
-        public static final int gtapp_skb_progress_define_color=0x7f020002;
-        public static final int gtapp_skb_selected=0x7f020003;
-        public static final int gtapp_skb_thumb_state_define=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
+        public static final int gtapp_btn_refresh=0x7f020001;
+        public static final int gtapp_skb_drag_normal=0x7f020002;
+        public static final int gtapp_skb_progress_define_color=0x7f020003;
+        public static final int gtapp_skb_selected=0x7f020004;
+        public static final int gtapp_skb_thumb_state_define=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
     }
     public static final class id {
+        public static final int btn_about=0x7f08000e;
         public static final int btn_feedback=0x7f08000d;
-        public static final int btn_gtapp_dlg=0x7f08000f;
+        public static final int btn_gtapp_dlg=0x7f080010;
         public static final int btn_help=0x7f08000c;
         public static final int btn_refresh=0x7f08000b;
         public static final int imgv_captcha_status=0x7f080008;
@@ -48,7 +50,7 @@ public final class R {
         public static final int ll_viewArea22=0x7f080004;
         public static final int ll_viewArea23=0x7f080007;
         public static final int ll_viewArea24=0x7f08000a;
-        public static final int seekbar_def=0x7f08000e;
+        public static final int seekbar_def=0x7f08000f;
         public static final int tv_validateStatus=0x7f080009;
     }
     public static final class layout {
