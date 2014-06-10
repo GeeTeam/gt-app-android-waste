@@ -163,22 +163,28 @@
             <LinearLayout
                 android:id="@+id/ll_viewArea24"
                 android:layout_width="fill_parent"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
                 android:layout_below="@+id/ll_viewArea23"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
-                android:background="#D8D0A9"
+                android:background="#F5F5F5"
                 android:orientation="horizontal" >
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#E1E1E1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:background="#6C0090" >
+                    android:layout_margin="2dp" >
 
                     <Button
                         android:id="@+id/btn_refresh"
-                        android:layout_width="20dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/gtapp_btn_refresh"
                         android:text="" />
@@ -188,14 +194,20 @@
                     <!-- 刷新按钮 -->
                 </LinearLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#E1E1E1" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:background="#0C0071" >
+                    android:layout_margin="2dp" >
 
                     <Button
                         android:id="@+id/btn_help"
-                        android:layout_width="20dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/gtapp_btn_help"
                         android:text="" />
@@ -203,10 +215,15 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#E1E1E1" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:background="#6C0000" >
+                    android:layout_height="fill_parent" >
 
                     <Button
                         android:id="@+id/btn_feedback"
@@ -220,14 +237,20 @@
 
                 </LinearLayout>
 
+                <!-- <View -->
+                <!-- android:layout_width="1dp" -->
+                <!-- android:layout_height="match_parent" -->
+                <!-- android:layout_gravity="center_horizontal" -->
+                <!-- android:background="#E1E1E1" /> -->
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:background="#0C0071" >
+                    android:layout_margin="2dp" >
 
                     <Button
                         android:id="@+id/btn_about"
-                        android:layout_width="20dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/gtapp_btn_about"
                         android:text="" />
@@ -235,19 +258,34 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="8"
-                    android:background="#0C0071" >
-                </LinearLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#E1E1E1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_weight="8"
-                    android:background="#6C0000" >
+                    android:visibility="invisible" >
+
+                    <!-- 反馈 -->
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="8"
+                    android:background="@drawable/gtapp_logo" >
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#E1E1E1" />
             </LinearLayout>
             <!-- 工具区 -->
 
@@ -258,13 +296,13 @@
                 android:layout_below="@id/ll_viewArea1"
                 android:layout_gravity="center"
                 android:max="100"
-                android:maxHeight="50dp"
-                android:minHeight="50dp"
+                android:maxHeight="56dp"
+                android:minHeight="56dp"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
                 android:thumb="@drawable/gtapp_skb_thumb_state_define"
-                android:thumbOffset="-2dp" />
+                android:thumbOffset="-0dp" />
         </LinearLayout>
         <!-- 最大外边框 -->
 

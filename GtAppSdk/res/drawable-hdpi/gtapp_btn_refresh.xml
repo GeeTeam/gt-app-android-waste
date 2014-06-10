@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 这个是按下时的效果 -->
-    <item android:drawable="@android:drawable/ic_menu_rotate" android:state_enabled="true" android:state_pressed="true"/>
+    <item android:drawable="@drawable/gtapp_refresh_press" android:state_enabled="true" android:state_pressed="true"/>
     <!-- 以下为正常状态的效果 -->
-    <item android:drawable="@android:drawable/stat_notify_sync" android:state_enabled="true"></item>
+    <item android:drawable="@drawable/gtapp_refresh_normal" android:state_enabled="true"></item>
 
 </selector>

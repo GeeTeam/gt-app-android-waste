@@ -22,6 +22,8 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -654,8 +656,11 @@ public class GtAppDialog extends Dialog {
 
 						// TODO 目前只能采用硬编码的方式来处理图片的大小问题了
 						// Resources res = getResources();
-						BitmapDrawable skb_thumb = (BitmapDrawable) res
-								.getDrawable(R.drawable.gtapp_skb_drag_normal);
+						// BitmapDrawable skb_thumb = (BitmapDrawable) res
+						// .getDrawable(R.drawable.gtapp_skb_drag_normal);
+
+						// GtLogger.v("skb_thumb"+skb_thumb.);
+
 						// GtLogger.v("thumb bitmap width: "
 						// + skb_thumb.getBitmap().getWidth());
 						// GtLogger.v("thumb bitmap height: "
@@ -784,6 +789,19 @@ public class GtAppDialog extends Dialog {
 
 			thumbBmpSize.setWidth(skb_thumb.getBitmap().getWidth());
 			thumbBmpSize.setHeight(skb_thumb.getBitmap().getHeight());
+
+			// GradientDrawable skb_thumb = (GradientDrawable) res
+			// .getDrawable(R.drawable.gtapp_skb_thumb_normal_shape);
+
+			// thumbBmpSize.setWidth(skb_thumb.getBounds().width());
+			// thumbBmpSize.setHeight(skb_thumb.getBounds().height());
+
+			// TODO 先使用硬编码--2014年6月10日 16:38:19
+			// thumbBmpSize.setWidth(70);
+			// thumbBmpSize.setHeight(50);
+
+			GtLogger.v("thumbBmpSize.getWidth(): " + thumbBmpSize.getWidth()
+					+ "  thumbBmpSize.getHeight()： " + thumbBmpSize.getHeight());
 
 		} catch (Exception e) {
 			GtLogger.expection(LoggerString.getFileLineMethod()
@@ -1520,7 +1538,7 @@ public class GtAppDialog extends Dialog {
 
 				Thread.sleep(500);// 停留一段时间，自动关闭
 				dismiss();// 当前对话框关闭
-				
+
 				// TODO 后面要做一个回调的函数。
 				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
 				cbResponse.setResCode(1);
