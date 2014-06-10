@@ -302,7 +302,7 @@
                 android:paddingRight="0dp"
                 android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
                 android:thumb="@drawable/gtapp_skb_thumb_state_define"
-                android:thumbOffset="-0dp" />
+                android:thumbOffset="-1dp" />
         </LinearLayout>
         <!-- 最大外边框 -->
 
