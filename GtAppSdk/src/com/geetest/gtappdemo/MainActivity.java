@@ -4,24 +4,26 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
 import com.geetest.gtapp.R;
+import com.geetest.gtapp.utils.itface.GtAppCallback;
+import com.geetest.gtappdemo.model.vo.GtAppCbCaptchaResponse;
+import com.geetest.gtappdemo.model.vo.GtAppDialogOption;
 import com.geetest.gtappdemo.view.GtAppDialog;
 
 public class MainActivity extends Activity {
 
 	private Context context = this;
 
-
 	private Button btn_gtapp_dlg;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gtappdemo);
-
 
 		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_dlg);
 
@@ -32,17 +34,23 @@ public class MainActivity extends Activity {
 				DisplayMetrics dm = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(dm);
 				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+				GtAppCallback gtAppCallback = new GtAppCallback() {
 
-				new GtAppDialog(context, gt_public_key, R.layout.gtapp_main_dlg,
-						dm, getResources()).setDisplay();
+					@Override
+					public void gtAppResponse(GtAppCbCaptchaResponse cbResponse) {
+						// TODO 在此处书写回调函数
+						Log.v("sdkDemo", "resCode: " + cbResponse.getResCode()
+								+ "   resMsg: " + cbResponse.getResMsg());
+					}
+				};
+
+				GtAppDialogOption gtOption = new GtAppDialogOption(context,
+						gt_public_key, R.layout.gtapp_main_dlg, dm,
+						getResources(), gtAppCallback);
+
+				new GtAppDialog(gtOption).setDisplay();
 			}
 		});
 
-
 	}
-
-
-	
-
-
 }

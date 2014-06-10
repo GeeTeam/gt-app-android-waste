@@ -53,10 +53,13 @@ import com.geetest.gtapp.R;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
+import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
+import com.geetest.gtappdemo.model.vo.GtAppCbCaptchaResponse;
+import com.geetest.gtappdemo.model.vo.GtAppDialogOption;
 import com.geetest.gtappdemo.model.vo.GtPoint;
 import com.geetest.gtappdemo.model.vo.GtShapeSize;
 import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
@@ -72,10 +75,12 @@ import com.google.gson.Gson;
  */
 public class GtAppDialog extends Dialog {
 
+	// 传递进来的参数
 	private Context context;// 父窗口
 	private int gtAppDlgLayoutResId = 0;// 对话框的而已文件
 	private DisplayMetrics dm;// 显示屏幕
 	private Resources res;
+	private GtAppCallback gtAppCallback;// 回调函数
 
 	private String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
 
@@ -171,15 +176,14 @@ public class GtAppDialog extends Dialog {
 
 	private float mX, mY;// 触点的位置
 
-	public GtAppDialog(Context context, String gt_public_key,
-			int gtAppDlgLayoutResId, DisplayMetrics dm, Resources res) {
-		super(context);
-		this.context = context;
-		this.gt_public_key = gt_public_key;
-		this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
-		this.dm = dm;
-		this.res = res;
-
+	public GtAppDialog(GtAppDialogOption option) {
+		super(option.getContext());
+		this.context = option.getContext();
+		this.gt_public_key = option.getGt_public_key();
+		this.gtAppDlgLayoutResId = option.getGtAppDlgLayoutResId();
+		this.dm = option.getDm();
+		this.res = option.getRes();
+		this.gtAppCallback = option.getGtAppCallback();
 	}
 
 	/**
@@ -1410,7 +1414,7 @@ public class GtAppDialog extends Dialog {
 								tv_validateStatus.setText(succeedTip);
 								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 								// postCaptchaInfoToCustomServer();
-								// TODO 在GtApp端好像不需要二次验证，因为源码不可见
+								// TODO 在GtApp端好像不需要二次验证，因为App源码不可见
 
 							} else {
 								// 验证失败后，就不需要向客户机发起请求二次验证了
@@ -1516,7 +1520,12 @@ public class GtAppDialog extends Dialog {
 
 				Thread.sleep(500);// 停留一段时间，自动关闭
 				dismiss();// 当前对话框关闭
+				
 				// TODO 后面要做一个回调的函数。
+				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
+				cbResponse.setResCode(1);
+				cbResponse.setResMsg("succeed");
+				gtAppCallback.gtAppResponse(cbResponse);
 
 				GtLogger.v("验证成功后的图片线程");
 				// System.out.println(Thread.currentThread().getName());
