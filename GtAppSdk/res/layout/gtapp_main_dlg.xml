@@ -43,7 +43,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
-            android:background="#c0c59e"
+            android:background="#FFFFFF"
             android:orientation="vertical"
             android:visibility="visible" >
 
@@ -114,6 +114,9 @@
             </RelativeLayout>
             <!-- 图片区 -->
 
+            <View style="@style/gtapp_horizon_dividing_line" />
+            <!-- 水平分隔条 -->
+
             <LinearLayout
                 android:id="@+id/ll_viewArea23"
                 android:layout_width="fill_parent"
@@ -121,44 +124,58 @@
                 android:layout_below="@+id/ll_viewArea22"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
-                android:background="#7CB391"
                 android:orientation="horizontal" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:background="#0C0091"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <ImageView
-                        android:id="@+id/imgv_captcha_status"
+                        android:id="@+id/imgv_captcha_status_icon"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_lock_lock" />
+                        android:layout_height="fill_parent"
+                        android:layout_margin="2dp"
+                        android:src="@drawable/gtapp_wait_drag" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="2"
-                    android:background="#FFFFFF" >
+                    android:layout_height="fill_parent" >
+
+                    <!-- 验证状态 -->
 
                     <TextView
                         android:id="@+id/tv_validateStatus"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="pass" >
+                        android:layout_margin="2dp"
+                        android:gravity="center"
+                        android:text="等待验证："
+                        android:textColor="#F1BD60" >
                     </TextView>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="2"
-                    android:background="#7C0000" >
+                    android:layout_height="fill_parent" >
+
+                    <!-- 验证状态描述 -->
+
+                    <TextView
+                        android:id="@+id/tv_validateMsg"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_margin="2dp"
+                        android:gravity="center"
+                        android:text="拖动滑块使悬浮图像正确拼合" >
+                    </TextView>
                 </LinearLayout>
             </LinearLayout>
             <!-- 状态区 -->
+
+            <View style="@style/gtapp_horizon_dividing_line" />
+            <!-- 水平分隔条 -->
 
             <LinearLayout
                 android:id="@+id/ll_viewArea24"
@@ -171,11 +188,9 @@
                 android:background="#F5F5F5"
                 android:orientation="horizontal" >
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#E1E1E1" />
+                <!-- 工具栏区 -->
+
+                <View style="@style/gtapp_vertical_dividing_line" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -194,11 +209,7 @@
                     <!-- 刷新按钮 -->
                 </LinearLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#E1E1E1" />
+                <View style="@style/gtapp_vertical_dividing_line" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -215,11 +226,7 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#E1E1E1" />
+                <View style="@style/gtapp_vertical_dividing_line" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -237,12 +244,6 @@
 
                 </LinearLayout>
 
-                <!-- <View -->
-                <!-- android:layout_width="1dp" -->
-                <!-- android:layout_height="match_parent" -->
-                <!-- android:layout_gravity="center_horizontal" -->
-                <!-- android:background="#E1E1E1" /> -->
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
@@ -258,11 +259,7 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#E1E1E1" />
+                <View style="@style/gtapp_vertical_dividing_line" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -281,13 +278,12 @@
                     android:background="@drawable/gtapp_logo" >
                 </LinearLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#E1E1E1" />
+                <View style="@style/gtapp_vertical_dividing_line" />
             </LinearLayout>
             <!-- 工具区 -->
+
+            <View style="@style/gtapp_horizon_dividing_line" />
+            <!-- 水平分隔条 -->
 
             <SeekBar
                 android:id="@+id/seekbar_def"

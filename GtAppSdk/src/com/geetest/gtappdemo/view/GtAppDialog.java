@@ -22,8 +22,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -101,7 +99,9 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 
+	private ImageView imgv_captcha_status_icon;// 状态锁
 	private TextView tv_validateStatus;// 验证码的状态栏
+	private TextView tv_validateMsg;// 验证码的消息栏
 
 	private Button btn_refresh;// 用于刷新图片的按钮
 	private Button btn_help;// 使用帮助按钮
@@ -248,9 +248,13 @@ public class GtAppDialog extends Dialog {
 
 		// 重置SeekBar
 		skb_dragCaptcha.setProgress(0);
-		tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
+		
 		clientCaptchaResult = false;// 最开始状态是为不通过的。
 		skb_dragCaptcha.setEnabled(true);
+		
+		
+		
+		tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
 
 		GtLogger.v("initCaptchaOption.getYpos():" + initCaptchaOption.getYpos()
 				+ "   igv_slicebg.getTop():" + imgv_slice_bg.getTop());
@@ -843,7 +847,10 @@ public class GtAppDialog extends Dialog {
 			btn_refresh = (Button) findViewById(R.id.btn_refresh);
 			btn_help = (Button) findViewById(R.id.btn_help);
 			btn_about = (Button) findViewById(R.id.btn_about);
+
+			imgv_captcha_status_icon = (ImageView) findViewById(R.id.imgv_captcha_status_icon);
 			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
+			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
 
 			// animation = AnimationUtils.loadAnimation(context,
 			// R.anim.gtapp_anim_dlg_exit);// 动画
@@ -1417,8 +1424,8 @@ public class GtAppDialog extends Dialog {
 								float convertActionTime = (float) (Math
 										.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
 
-								String succeedTip = "验证成功！    "
-										+ convertActionTime + "秒的速度超过"
+								String succeedTip = convertActionTime
+										+ "秒的速度超过"
 										+ (100 - Integer.parseInt(actionRank))
 										+ "%的用户";
 
@@ -1429,7 +1436,13 @@ public class GtAppDialog extends Dialog {
 								GtLogger.v(" messageResult: " + messageResult
 										+ " actionRank: " + actionRank);
 
-								tv_validateStatus.setText(succeedTip);
+								// TODO 设置状态栏
+								imgv_captcha_status_icon
+										.setImageResource(R.drawable.gtapp_status_succeed);
+								tv_validateStatus.setText("验证完成：");
+								tv_validateStatus
+										.setTextColor(android.graphics.Color.GREEN);
+								tv_validateMsg.setText(succeedTip);
 								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 								// postCaptchaInfoToCustomServer();
 								// TODO 在GtApp端好像不需要二次验证，因为App源码不可见
@@ -1437,7 +1450,14 @@ public class GtAppDialog extends Dialog {
 							} else {
 								// 验证失败后，就不需要向客户机发起请求二次验证了
 								GtLogger.v("验证错误");
-								tv_validateStatus.setText("验证失败：拖动滑块使悬浮图像正确拼合");
+
+								// TODO 设置状态栏
+								imgv_captcha_status_icon
+										.setImageResource(R.drawable.gtapp_status_failed);
+								tv_validateStatus.setText("验证错误：");
+								tv_validateStatus
+										.setTextColor(android.graphics.Color.RED);
+								tv_validateMsg.setText("拖动滑块使悬浮图像正确拼合");
 
 								// // 在界面上交替闪烁--后面采用线程的方式进行
 								// SetImgStatusAfterFailed he = new
