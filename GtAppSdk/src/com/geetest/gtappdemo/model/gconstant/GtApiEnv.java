@@ -17,8 +17,8 @@ public class GtApiEnv {
 	// public static String gt_private_key = "";// 私钥
 
 	// GtApp的版本控制
-	public static final int sdkVersionCode = 2;
-	public static final String sdkVersionName = "1.2";
+	public static final int sdkVersionCode = 1;
+	public static final String sdkVersionName = "1.0";
 
 	// 互联网上的Gtapp的操作使用帮助页面
 	public static final String sdkUserHelpLink = "http://www.geetest.com/install/#instruct";

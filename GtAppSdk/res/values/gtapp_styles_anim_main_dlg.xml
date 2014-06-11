@@ -22,7 +22,7 @@
 
     <style name="gtapp_horizon_dividing_line">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:background">#E1E1E1</item>
     </style>

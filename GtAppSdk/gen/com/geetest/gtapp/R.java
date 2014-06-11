@@ -49,8 +49,10 @@ public final class R {
         public static final int gtapp_status_failed=0x7f020014;
         public static final int gtapp_status_succeed=0x7f020015;
         public static final int gtapp_status_too_much=0x7f020016;
-        public static final int gtapp_wait_drag=0x7f020017;
+        public static final int gtapp_status_wait=0x7f020017;
         public static final int ic_launcher=0x7f020018;
+        public static final int unactive_bg=0x7f020019;
+        public static final int unactive_fresh=0x7f02001a;
     }
     public static final class id {
         public static final int btn_about=0x7f08000f;
@@ -62,12 +64,12 @@ public final class R {
         public static final int imgv_full_bg=0x7f080002;
         public static final int imgv_slice=0x7f080006;
         public static final int imgv_slice_bg=0x7f080005;
+        public static final int ll_status_bar=0x7f080007;
+        public static final int ll_toolsbar=0x7f08000b;
         public static final int ll_viewArea01=0x7f080001;
         public static final int ll_viewArea1=0x7f080003;
         public static final int ll_viewArea20=0x7f080000;
         public static final int ll_viewArea22=0x7f080004;
-        public static final int ll_viewArea23=0x7f080007;
-        public static final int ll_viewArea24=0x7f08000b;
         public static final int seekbar_def=0x7f080010;
         public static final int tv_validateMsg=0x7f08000a;
         public static final int tv_validateStatus=0x7f080009;

@@ -102,6 +102,7 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_captcha_status_icon;// 状态锁
 	private TextView tv_validateStatus;// 验证码的状态栏
 	private TextView tv_validateMsg;// 验证码的消息栏
+	private GtAppStatusBar gtStatusBar;// 状态栏
 
 	private Button btn_refresh;// 用于刷新图片的按钮
 	private Button btn_help;// 使用帮助按钮
@@ -248,13 +249,11 @@ public class GtAppDialog extends Dialog {
 
 		// 重置SeekBar
 		skb_dragCaptcha.setProgress(0);
-		
+
 		clientCaptchaResult = false;// 最开始状态是为不通过的。
 		skb_dragCaptcha.setEnabled(true);
-		
-		
-		
-		tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
+
+		gtStatusBar.setToWaitStatus();
 
 		GtLogger.v("initCaptchaOption.getYpos():" + initCaptchaOption.getYpos()
 				+ "   igv_slicebg.getTop():" + imgv_slice_bg.getTop());
@@ -851,6 +850,8 @@ public class GtAppDialog extends Dialog {
 			imgv_captcha_status_icon = (ImageView) findViewById(R.id.imgv_captcha_status_icon);
 			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
+			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
+					tv_validateStatus, tv_validateMsg);
 
 			// animation = AnimationUtils.loadAnimation(context,
 			// R.anim.gtapp_anim_dlg_exit);// 动画
@@ -1436,13 +1437,9 @@ public class GtAppDialog extends Dialog {
 								GtLogger.v(" messageResult: " + messageResult
 										+ " actionRank: " + actionRank);
 
-								// TODO 设置状态栏
-								imgv_captcha_status_icon
-										.setImageResource(R.drawable.gtapp_status_succeed);
-								tv_validateStatus.setText("验证完成：");
-								tv_validateStatus
-										.setTextColor(android.graphics.Color.GREEN);
-								tv_validateMsg.setText(succeedTip);
+								// 设置状态栏
+								gtStatusBar.setToSucceedStatus(succeedTip);
+
 								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 								// postCaptchaInfoToCustomServer();
 								// TODO 在GtApp端好像不需要二次验证，因为App源码不可见
@@ -1450,20 +1447,7 @@ public class GtAppDialog extends Dialog {
 							} else {
 								// 验证失败后，就不需要向客户机发起请求二次验证了
 								GtLogger.v("验证错误");
-
-								// TODO 设置状态栏
-								imgv_captcha_status_icon
-										.setImageResource(R.drawable.gtapp_status_failed);
-								tv_validateStatus.setText("验证错误：");
-								tv_validateStatus
-										.setTextColor(android.graphics.Color.RED);
-								tv_validateMsg.setText("拖动滑块使悬浮图像正确拼合");
-
-								// // 在界面上交替闪烁--后面采用线程的方式进行
-								// SetImgStatusAfterFailed he = new
-								// SetImgStatusAfterFailed();
-								// Thread demo = new Thread(he, "Action");
-								// demo.start();
+								gtStatusBar.setToFailedStatus();
 								SetImgStatusAfterCaptchaFailed();
 
 							}
