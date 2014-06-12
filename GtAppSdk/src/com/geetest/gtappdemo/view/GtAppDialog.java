@@ -1413,48 +1413,49 @@ public class GtAppDialog extends Dialog {
 								clientCaptchaResult = true;// 验证成功
 								skb_dragCaptcha.setEnabled(false);// 禁用
 
-								// 对验证结果硬解码
-								String resultArray[] = ajaxPhp_GresVo
-										.getMessage().split("\\|");
-
-								messageResult = resultArray[0];// 验证结果值
-								String actionRank = resultArray[1];// 验证行为排名占比
-
-								double orginActionTime = (seekbarEndTime - seekbarStartTime) / 1000.0;
-								// 四舍五入保留一位小数
-								float convertActionTime = (float) (Math
-										.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
-
-								String succeedTip = convertActionTime
-										+ "秒的速度超过"
-										+ (100 - Integer.parseInt(actionRank))
-										+ "%的用户";
-
-								GtLogger.v(succeedTip);
-
-								SetImgStatusAfterCaptchaSucceed();
-
-								GtLogger.v(" messageResult: " + messageResult
-										+ " actionRank: " + actionRank);
-
+								setImgStatusAfterCaptchaSucceed();
 								// 设置状态栏
-								gtStatusBar.setToSucceedStatus(succeedTip);
+								gtStatusBar
+										.setToSucceedStatus(getSucceedToolTip(ajaxPhp_GresVo
+												.getMessage()));
 
 								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
 								// postCaptchaInfoToCustomServer();
-								// TODO 在GtApp端好像不需要二次验证，因为App源码不可见
+								// 在GtApp端好像不需要二次验证，因为App源码不可见
 
-							} else {
+							} else if (ajaxPhp_GresVo.getSuccess().equals("0")) {
+
+								clientCaptchaResult = false;
+								skb_dragCaptcha.setEnabled(true);
+
 								// 验证失败后，就不需要向客户机发起请求二次验证了
 								GtLogger.v("验证错误");
-								gtStatusBar.setToFailedStatus();
-								SetImgStatusAfterCaptchaFailed();
+
+								// TODO 所有的验证失败的情况--状态栏会给予不同的显示
+								if (ajaxPhp_GresVo.getMessage().equals("fail")) {
+									gtStatusBar.setToFailedStatus();
+								} else if (ajaxPhp_GresVo.getMessage().equals(
+										"forbidden")) {
+									gtStatusBar.setToExceptionStatus();
+								} else if (ajaxPhp_GresVo.getMessage().equals(
+										"abuse")) {
+									gtStatusBar.setToTryTooMuchStatus();
+									// 本次验证次数过多，然后会自动刷新图片
+									captchaInitialOption_StringRequest();
+
+								} else {
+									GtLogger.v("出现未知失败结果");
+								}
+								setImgStatusAfterCaptchaFailed();
+
+							} else {
+								GtLogger.v("出现 未知结果");
 
 							}
 						} catch (Exception e) {
 							GtLogger.expection(LoggerString.getFileLineMethod()
 									+ e.getMessage());
-							SetImgStatusAfterCaptchaFailed();
+							setImgStatusAfterCaptchaFailed();
 						}
 
 					}
@@ -1467,6 +1468,34 @@ public class GtAppDialog extends Dialog {
 				});
 
 		mQueue.add(option_Request);
+	}
+
+	/**
+	 * 根据编码信息来生成 成功提示
+	 * 
+	 * @time 2014年6月12日 下午5:08:00
+	 * @param encodedSucceedMsg
+	 * @return
+	 */
+	private String getSucceedToolTip(String encodedSucceedMsg) {
+		// 对验证结果硬解码
+		String resultArray[] = encodedSucceedMsg.split("\\|");
+
+		messageResult = resultArray[0];// 验证结果值
+		String actionRank = resultArray[1];// 验证行为排名占比
+
+		double orginActionTime = (seekbarEndTime - seekbarStartTime) / 1000.0;
+		// 四舍五入保留一位小数
+		float convertActionTime = (float) (Math.round(orginActionTime * 10)) / 10;// (这里的100就是2位小数点,如果要其它位,如4位,这里两个100改成10000)
+
+		String succeedTip = convertActionTime + "秒的速度超过"
+				+ (100 - Integer.parseInt(actionRank)) + "%的用户";
+
+		GtLogger.v(succeedTip);
+		GtLogger.v(" messageResult: " + messageResult + " actionRank: "
+				+ actionRank);
+
+		return succeedTip;
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -1508,7 +1537,7 @@ public class GtAppDialog extends Dialog {
 	/**
 	 * 在界面上交替闪烁--后面采用线程的方式进行
 	 */
-	private void SetImgStatusAfterCaptchaSucceed() {
+	private void setImgStatusAfterCaptchaSucceed() {
 
 		// 在界面上交替闪烁--后面采用线程的方式进行
 		SetImgStatusAfterSucceed he = new SetImgStatusAfterSucceed();
@@ -1576,7 +1605,7 @@ public class GtAppDialog extends Dialog {
 	/**
 	 * 在界面上交替闪烁--后面采用线程的方式进行
 	 */
-	private void SetImgStatusAfterCaptchaFailed() {
+	private void setImgStatusAfterCaptchaFailed() {
 
 		// 在界面上交替闪烁--后面采用线程的方式进行
 		SetImgStatusAfterFailed he = new SetImgStatusAfterFailed();
