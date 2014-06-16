@@ -243,11 +243,21 @@ public abstract class GtLogger extends Activity {
 	public static void w(String tag, String msg) {
 		Log.w(COMMON_TAG, "[" + tag + "] " + msg);
 	}
+	
+	public static void w(String msg) {
+		Log.w(COMMON_TAG, msg);
+	}
+	
 
 	public static void e(String tag, String msg) {
 		Log.e(COMMON_TAG, "[" + tag + "] " + msg);
 	}
 
+	public static void e(String msg) {
+		Log.e(COMMON_TAG, msg);
+	}
+	
+	
 	public static void v(String tag, String msg, Throwable tr) {
 		if (DEBUG_STATE) {
 			GtLogger.v(COMMON_TAG, "[" + tag + "] " + msg, tr);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <solid android:color="#FF2FCEF6" />
+    <solid android:color="#FF2FCE00" />
     <!--
   设置圆角
   注意：	bottomRightRadius是左下角而不是右下角  bottomLeftRadius右下角

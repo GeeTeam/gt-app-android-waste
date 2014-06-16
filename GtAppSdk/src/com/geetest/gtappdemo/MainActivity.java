@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.geetest.gtapp.R;
+import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.vo.GtAppCbCaptchaResponse;
 import com.geetest.gtappdemo.model.vo.GtAppDialogOption;
@@ -31,6 +32,11 @@ public class MainActivity extends Activity {
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 
+				//TODO 做一次服务器比对
+				GtLogger.e("当前SDK版本比较落后,请到极验官网服务器下载并集成最新版本");
+				
+				
+				
 				DisplayMetrics dm = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(dm);
 				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
