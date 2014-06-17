@@ -1,6 +1,5 @@
 package com.geetest.gtappdemo.model.vo;
 
-
 /**
  * 服务器上的版本信息--和文本文件一样的格式
  * 
@@ -9,32 +8,32 @@ package com.geetest.gtappdemo.model.vo;
  */
 public class GtSdkVersionInfo {
 
-	private int version_code = 0;// 版本编号
-	private String version_name = "1.0";// 版本名称
-	private String build_time = "";// 发布时间
+	private int verCode = 0;// 版本编号
+	private String verName = "1.0";// 版本名称
+	private String buildTime = "";// 发布时间
 
-	public int getVersion_code() {
-		return version_code;
+	public int getVerCode() {
+		return verCode;
 	}
 
-	public void setVersion_code(int version_code) {
-		this.version_code = version_code;
+	public void setVerCode(int verCode) {
+		this.verCode = verCode;
 	}
 
-	public String getVersion_name() {
-		return version_name;
+	public String getVerName() {
+		return verName;
 	}
 
-	public void setVersion_name(String version_name) {
-		this.version_name = version_name;
+	public void setVerName(String verName) {
+		this.verName = verName;
 	}
 
-	public String getBuild_time() {
-		return build_time;
+	public String getBuildTime() {
+		return buildTime;
 	}
 
-	public void setBuild_time(String build_time) {
-		this.build_time = build_time;
+	public void setBuildTime(String buildTime) {
+		this.buildTime = buildTime;
 	}
 
 }

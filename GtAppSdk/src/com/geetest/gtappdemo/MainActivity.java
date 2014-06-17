@@ -32,8 +32,7 @@ public class MainActivity extends Activity {
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 
-				//TODO 做一次服务器比对
-				GtLogger.e("当前SDK版本比较落后,请到极验官网服务器下载并集成最新版本");
+			
 				
 				
 				

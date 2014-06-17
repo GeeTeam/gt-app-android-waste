@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.http.client.utils.URIUtils;
@@ -61,6 +62,7 @@ import com.geetest.gtappdemo.model.vo.DecodedChallenge;
 import com.geetest.gtappdemo.model.vo.GtAppCbCaptchaResponse;
 import com.geetest.gtappdemo.model.vo.GtAppDialogOption;
 import com.geetest.gtappdemo.model.vo.GtPoint;
+import com.geetest.gtappdemo.model.vo.GtSdkVersionInfo;
 import com.geetest.gtappdemo.model.vo.GtShapeSize;
 import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.greq.GetPhp_GreqVo;
@@ -229,16 +231,41 @@ public class GtAppDialog extends Dialog {
 	private void requestSdkVersionFromServer() {
 
 		// TODO
-		String url = GtApiEnv.sdkNewestVersionInfoLink;
+
+		int randomNum = new Random().nextInt(1000) + 1;// 访问静态资源时需要随机数,避免缓存
+
+		String url = GtApiEnv.sdkNewestVersionInfoLink + "?randomNum="
+				+ randomNum;
 
 		StringRequest option_Request = new StringRequest(url,
 				new Response.Listener<String>() {
 
 					@Override
 					public void onResponse(String response) {
-						GtLogger.v("requestSdkVersionFromServer: " + response);
 
-						// TODO 硬解码抽取出JSON格式
+						try {
+							GtLogger.v("requestSdkVersionFromServer: "
+									+ response);
+							// TODO 解码抽取出JSON格式
+							GtSdkVersionInfo serverSdkVersionInfo = new GtSdkVersionInfo();
+
+							// 解析成对象
+							Gson gson = new Gson();
+							serverSdkVersionInfo = gson.fromJson(response,
+									GtSdkVersionInfo.class);
+
+							// 判断当前的版本问题
+							if (serverSdkVersionInfo.getVerCode() > GtApiEnv.sdkVersionCode) {
+								// 做一次服务器比对
+								GtLogger.e("当前SDK版本比较落后,请到极验官网服务器下载并集成GtApp最新版本");
+							}
+
+							GtLogger.v("requestSdkVersionFromServer : "
+									+ serverSdkVersionInfo.getVerCode());
+						} catch (Exception e) {
+							GtLogger.expection(LoggerString.getFileLineMethod()
+									+ e.getMessage());
+						}
 
 					}
 				}, new Response.ErrorListener() {
@@ -1139,7 +1166,7 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onResponse(String response) {
-						// GtLogger.v("response:" + response);
+						GtLogger.v("response:" + response);
 
 						// 硬解码抽取出JSON格式
 						String webJsFunction[] = response.split("=");
