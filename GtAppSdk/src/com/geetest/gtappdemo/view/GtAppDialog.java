@@ -196,6 +196,9 @@ public class GtAppDialog extends Dialog {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
 		setCanceledOnTouchOutside(false);// 在外面点击不会消失
+		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+
+		requestSdkVersionFromServer();
 
 		// 向服务器请求
 		requestOptionDataFromGtServer();
@@ -219,13 +222,41 @@ public class GtAppDialog extends Dialog {
 	}
 
 	/**
+	 * 检查SDK的版本
+	 * 
+	 * @time 2014年6月17日 下午3:17:36
+	 */
+	private void requestSdkVersionFromServer() {
+
+		// TODO
+		String url = GtApiEnv.sdkNewestVersionInfoLink;
+
+		StringRequest option_Request = new StringRequest(url,
+				new Response.Listener<String>() {
+
+					@Override
+					public void onResponse(String response) {
+						GtLogger.v("requestSdkVersionFromServer: " + response);
+
+						// TODO 硬解码抽取出JSON格式
+
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						GtLogger.e(error.getMessage());
+					}
+				});
+
+		mQueue.add(option_Request);
+
+	}
+
+	/**
 	 * 向Gt服务器请求初始化数据
 	 */
 	private void requestOptionDataFromGtServer() {
-
-		// TODO
-		// 设置通讯值
-		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
 		captchaInitialOption_StringRequest();
 	}
 
@@ -233,7 +264,6 @@ public class GtAppDialog extends Dialog {
 	 * 将服务器请求的数据绑定到本地的界面中
 	 */
 	private void bindOptionDataToLocalViews() {
-		// TODO
 
 		imgv_full_bg.setImageBitmap(bm_full_bg);
 		imgv_slice_bg.setImageBitmap(bm_slice_bg);
@@ -274,7 +304,7 @@ public class GtAppDialog extends Dialog {
 	private void initViewDisplayParameter() {
 		getScreenSize();
 
-		// TODO 设置图片点位 默认长宽
+		// 设置图片点位 默认长宽
 		setImageViewDefaultDisplay();
 		// captchaInitialOption_StringRequest();
 	}
@@ -285,7 +315,7 @@ public class GtAppDialog extends Dialog {
 	private void setImageViewDefaultDisplay() {
 
 		try {
-			// TODO 做一个宽高比例为29*6的背景图片来占位
+			// 做一个宽高比例为29*6的背景图片来占位
 			// 获取图片资源的宽和高
 
 			// BitmapDrawable bm_full_bg_occupy = (BitmapDrawable) res
@@ -311,7 +341,7 @@ public class GtAppDialog extends Dialog {
 			// para.width = skb_dragCaptcha.getWidth();
 			// imgv_full_bg.setLayoutParams(para);
 
-			// TODO 设置默认的初始的画框大小
+			// 设置默认的初始的画框大小
 			// int seekbar_width = skb_dragCaptcha.getWidth();
 			// setImageViewScale(imgv_full_bg, seekbar_width, seekbar_width * 9
 			// /
@@ -391,7 +421,7 @@ public class GtAppDialog extends Dialog {
 		// imgv_slice_bg.postInvalidate();
 		// imgv_slice.postInvalidate();
 
-		// TODO 在第一次加载的时候会导致切图找不到
+		// 在第一次加载的时候会导致切图找不到
 		// GtLogger.v("imgv_slice_bg### " + "xPos: " + imgv_slice_bg.getLeft()
 		// + " yPos: " + imgv_slice_bg.getTop());
 
@@ -505,7 +535,7 @@ public class GtAppDialog extends Dialog {
 
 				Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show();
 
-				// TODO 转向使用帮助的页面--后面会做一个Web端的页面，详细记录当前的版本的号码，做一个API的URL
+				// 转向使用帮助的页面--后面会做一个Web端的页面，详细记录当前的版本的号码，做一个API的URL
 				// 2014年6月9日 16:46:58
 				// Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
 				// Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -657,7 +687,7 @@ public class GtAppDialog extends Dialog {
 						// igv_slice.scrollTo((int) (-dX * progress), (int)
 						// (0));// 进行偏移
 
-						// TODO 目前只能采用硬编码的方式来处理图片的大小问题了
+						// 目前只能采用硬编码的方式来处理图片的大小问题了
 						// Resources res = getResources();
 						// BitmapDrawable skb_thumb = (BitmapDrawable) res
 						// .getDrawable(R.drawable.gtapp_skb_drag_normal);
@@ -799,7 +829,7 @@ public class GtAppDialog extends Dialog {
 			// thumbBmpSize.setWidth(skb_thumb.getBounds().width());
 			// thumbBmpSize.setHeight(skb_thumb.getBounds().height());
 
-			// TODO 先使用硬编码--2014年6月10日 16:38:19
+			// 先使用硬编码--2014年6月10日 16:38:19
 			// thumbBmpSize.setWidth(70);
 			// thumbBmpSize.setHeight(50);
 
@@ -1083,7 +1113,7 @@ public class GtAppDialog extends Dialog {
 	/**
 	 * 从GT服务器上获取验证码控件初始化的内容元素
 	 */
-	public void captchaInitialOption_StringRequest() {
+	private void captchaInitialOption_StringRequest() {
 		// String url = "http://www.baidu.com";
 		// 如果出现乱码，应该修改StringRequest的parseNetworkResponse()方法，指定byte[]-->String
 		// 编码
@@ -1431,7 +1461,7 @@ public class GtAppDialog extends Dialog {
 								// 验证失败后，就不需要向客户机发起请求二次验证了
 								GtLogger.v("验证错误");
 
-								// TODO 所有的验证失败的情况--状态栏会给予不同的显示
+								// 所有的验证失败的情况--状态栏会给予不同的显示
 								if (ajaxPhp_GresVo.getMessage().equals("fail")) {
 									gtStatusBar.setToFailedStatus();
 								} else if (ajaxPhp_GresVo.getMessage().equals(
@@ -1572,7 +1602,7 @@ public class GtAppDialog extends Dialog {
 				Thread.sleep(500);// 停留一段时间，自动关闭
 				dismiss();// 当前对话框关闭
 
-				// TODO 后面要做一个回调的函数。
+				// 后面要做一个回调的函数。
 				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
 				cbResponse.setResCode(1);
 				cbResponse.setResMsg("succeed");
@@ -1671,7 +1701,7 @@ public class GtAppDialog extends Dialog {
 
 							try {
 
-								// TODO 安卓客户端接收到消息后进行相应的处理
+								// 安卓客户端接收到消息后进行相应的处理
 								GtLogger.v("postCaptchaInfoToCustomServer:  "
 										+ response);
 
@@ -1753,7 +1783,7 @@ public class GtAppDialog extends Dialog {
 
 							try {
 
-								// TODO 安卓客户端接收到消息后进行相应的处理
+								// 安卓客户端接收到消息后进行相应的处理
 								GtLogger.v("postCaptchaInfoToCustomServer:  "
 										+ response);
 

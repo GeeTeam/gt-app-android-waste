@@ -22,6 +22,8 @@ public class GtApiEnv {
 
 	// 互联网上的Gtapp的操作使用帮助页面
 	public static final String sdkUserHelpLink = "http://www.geetest.com/install/#instruct";
+	// SDK的最新的发布版本信息
+	public static final String sdkNewestVersionInfoLink = "http://www.geetest.com/static/gtapp_sdk_build_info.txt";
 
 	public static String gt_product_type = "embed";// 嵌入式的
 
