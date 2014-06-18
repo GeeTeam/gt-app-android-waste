@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/linear_interpolator" >
+
+    <!-- 透明度变化 -->
+    <alpha
+        android:duration="2000"
+        android:fromAlpha="1"
+        android:toAlpha="0" />
+
+    <!-- 水平与垂直位移 -->
+    <translate
+        android:duration="2000"
+        android:fromXDelta="0"
+        android:fromYDelta="0"
+        android:toXDelta="500"
+        android:toYDelta="0" />
+
+</set>

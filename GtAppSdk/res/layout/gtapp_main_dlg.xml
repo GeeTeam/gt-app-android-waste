@@ -124,8 +124,8 @@
                 android:layout_below="@+id/ll_viewArea22"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
-                android:orientation="horizontal" 
-                android:background="#FFF9F9F9">
+                android:background="#FFF9F9F9"
+                android:orientation="horizontal" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -280,7 +280,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_margin="2dp"                    
+                    android:layout_margin="2dp"
                     android:background="@drawable/gtapp_logo" >
                 </LinearLayout>
 
@@ -305,6 +305,14 @@
                 android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
                 android:thumb="@drawable/gtapp_skb_thumb_state_define"
                 android:thumbOffset="-1dp" />
+
+            <ImageView
+                android:id="@+id/imgv_skb_tip"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="matrix"
+                android:src="@drawable/gtapp_skb_drag_normal_finger"
+                android:visibility="visible" />
         </LinearLayout>
         <!-- 最大外边框 -->
 

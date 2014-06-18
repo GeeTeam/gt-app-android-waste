@@ -34,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -100,6 +102,8 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_full_bg;// 完整的背景
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
+
+	private ImageView imgv_skb_tip;// 滑动条操作提示
 
 	private ImageView imgv_captcha_status_icon;// 状态锁
 	private TextView tv_validateStatus;// 验证码的状态栏
@@ -325,6 +329,15 @@ public class GtAppDialog extends Dialog {
 		getSliderStartLeftTopPosition();
 
 		sendMsgToUpdateUI(MSG_FULL_BG_DISPLAY);
+
+		// TODO
+		final Animation anim = AnimationUtils.loadAnimation(context,
+				R.anim.gtapp_anim_skb_tip);
+
+		anim.setDuration(500);//动画时间
+
+		// TODO
+		imgv_skb_tip.startAnimation(anim);
 
 	}
 
@@ -898,6 +911,8 @@ public class GtAppDialog extends Dialog {
 			imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
 			imgv_slice_bg = (ImageView) reLayoutView
 					.findViewById(R.id.imgv_slice_bg);
+
+			imgv_skb_tip = (ImageView) findViewById(R.id.imgv_skb_tip);
 
 			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 			btn_refresh = (Button) findViewById(R.id.btn_refresh);

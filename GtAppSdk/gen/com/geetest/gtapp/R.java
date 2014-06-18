@@ -11,6 +11,7 @@ public final class R {
     public static final class anim {
         public static final int gtapp_anim_dlg_enter=0x7f040000;
         public static final int gtapp_anim_dlg_exit=0x7f040001;
+        public static final int gtapp_anim_skb_tip=0x7f040002;
     }
     public static final class attr {
     }
@@ -39,29 +40,31 @@ public final class R {
         public static final int gtapp_refresh_press=0x7f02000a;
         public static final int gtapp_skb_drag_normal=0x7f02000b;
         public static final int gtapp_skb_drag_normal3=0x7f02000c;
-        public static final int gtapp_skb_progress_define_color=0x7f02000d;
-        public static final int gtapp_skb_selected=0x7f02000e;
-        public static final int gtapp_skb_selected3=0x7f02000f;
-        public static final int gtapp_skb_thumb_normal_shape=0x7f020010;
-        public static final int gtapp_skb_thumb_selected_shape=0x7f020011;
-        public static final int gtapp_skb_thumb_state_define=0x7f020012;
-        public static final int gtapp_status_exception=0x7f020013;
-        public static final int gtapp_status_failed=0x7f020014;
-        public static final int gtapp_status_succeed=0x7f020015;
-        public static final int gtapp_status_too_much=0x7f020016;
-        public static final int gtapp_status_wait=0x7f020017;
-        public static final int ic_launcher=0x7f020018;
-        public static final int unactive_bg=0x7f020019;
-        public static final int unactive_fresh=0x7f02001a;
+        public static final int gtapp_skb_drag_normal_finger=0x7f02000d;
+        public static final int gtapp_skb_progress_define_color=0x7f02000e;
+        public static final int gtapp_skb_selected=0x7f02000f;
+        public static final int gtapp_skb_selected3=0x7f020010;
+        public static final int gtapp_skb_thumb_normal_shape=0x7f020011;
+        public static final int gtapp_skb_thumb_selected_shape=0x7f020012;
+        public static final int gtapp_skb_thumb_state_define=0x7f020013;
+        public static final int gtapp_status_exception=0x7f020014;
+        public static final int gtapp_status_failed=0x7f020015;
+        public static final int gtapp_status_succeed=0x7f020016;
+        public static final int gtapp_status_too_much=0x7f020017;
+        public static final int gtapp_status_wait=0x7f020018;
+        public static final int ic_launcher=0x7f020019;
+        public static final int unactive_bg=0x7f02001a;
+        public static final int unactive_fresh=0x7f02001b;
     }
     public static final class id {
         public static final int btn_about=0x7f08000f;
         public static final int btn_feedback=0x7f08000e;
-        public static final int btn_gtapp_dlg=0x7f080011;
+        public static final int btn_gtapp_dlg=0x7f080012;
         public static final int btn_help=0x7f08000d;
         public static final int btn_refresh=0x7f08000c;
         public static final int imgv_captcha_status_icon=0x7f080008;
         public static final int imgv_full_bg=0x7f080002;
+        public static final int imgv_skb_tip=0x7f080011;
         public static final int imgv_slice=0x7f080006;
         public static final int imgv_slice_bg=0x7f080005;
         public static final int ll_status_bar=0x7f080007;

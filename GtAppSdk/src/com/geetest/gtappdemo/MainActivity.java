@@ -26,36 +26,39 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gtappdemo);
 
+		openGtAppDialog();
+		
+		
 		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_dlg);
 
 		// 刷新图片
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-
-			
-				
-				
-				
-				DisplayMetrics dm = new DisplayMetrics();
-				getWindowManager().getDefaultDisplay().getMetrics(dm);
-				String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
-				GtAppCallback gtAppCallback = new GtAppCallback() {
-
-					@Override
-					public void gtAppResponse(GtAppCbCaptchaResponse cbResponse) {
-						// TODO 在此处书写回调函数
-						Log.v("sdkDemo", "resCode: " + cbResponse.getResCode()
-								+ "   resMsg: " + cbResponse.getResMsg());
-					}
-				};
-
-				GtAppDialogOption gtOption = new GtAppDialogOption(context,
-						gt_public_key, R.layout.gtapp_main_dlg, dm,
-						getResources(), gtAppCallback);
-
-				new GtAppDialog(gtOption).setDisplay();
+				openGtAppDialog();
 			}
 		});
 
 	}
+
+	private void openGtAppDialog() {
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+		GtAppCallback gtAppCallback = new GtAppCallback() {
+
+			@Override
+			public void gtAppResponse(GtAppCbCaptchaResponse cbResponse) {
+				// TODO 在此处书写回调函数
+				Log.v("sdkDemo", "resCode: " + cbResponse.getResCode()
+						+ "   resMsg: " + cbResponse.getResMsg());
+			}
+		};
+
+		GtAppDialogOption gtOption = new GtAppDialogOption(context,
+				gt_public_key, R.layout.gtapp_main_dlg, dm, getResources(),
+				gtAppCallback);
+
+		new GtAppDialog(gtOption).setDisplay();
+	}
+
 }
