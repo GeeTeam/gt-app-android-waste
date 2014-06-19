@@ -35,6 +35,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -334,7 +335,38 @@ public class GtAppDialog extends Dialog {
 		final Animation anim = AnimationUtils.loadAnimation(context,
 				R.anim.gtapp_anim_skb_tip);
 
-		anim.setDuration(500);//动画时间
+		// 渐变过程监听
+		anim.setAnimationListener(new AnimationListener() {
+
+			/**
+			 * 动画开始时
+			 */
+			@Override
+			public void onAnimationStart(Animation animation) {
+				System.out.println("动画开始...");
+				imgv_skb_tip.setVisibility(View.VISIBLE);
+			}
+
+			/**
+			 * 重复动画时
+			 */
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				System.out.println("动画重复...");
+			}
+
+			/**
+			 * 动画结束时
+			 */
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				System.out.println("动画结束...");
+				// TODO
+				imgv_skb_tip.setVisibility(View.INVISIBLE);
+			}
+		});
+
+		anim.setDuration(1500);// 动画时间
 
 		// TODO
 		imgv_skb_tip.startAnimation(anim);

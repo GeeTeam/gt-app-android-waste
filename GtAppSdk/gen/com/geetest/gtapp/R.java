@@ -57,29 +57,32 @@ public final class R {
         public static final int unactive_fresh=0x7f02001b;
     }
     public static final class id {
-        public static final int btn_about=0x7f08000f;
-        public static final int btn_feedback=0x7f08000e;
+        public static final int btn_about=0x7f080011;
+        public static final int btn_feedback=0x7f080010;
         public static final int btn_gtapp_dlg=0x7f080012;
-        public static final int btn_help=0x7f08000d;
-        public static final int btn_refresh=0x7f08000c;
-        public static final int imgv_captcha_status_icon=0x7f080008;
-        public static final int imgv_full_bg=0x7f080002;
-        public static final int imgv_skb_tip=0x7f080011;
-        public static final int imgv_slice=0x7f080006;
-        public static final int imgv_slice_bg=0x7f080005;
+        public static final int btn_help=0x7f08000f;
+        public static final int btn_refresh=0x7f08000e;
+        public static final int imgv_captcha_status_icon=0x7f08000b;
+        public static final int imgv_full_bg=0x7f080000;
+        public static final int imgv_skb_tip=0x7f08000a;
+        public static final int imgv_slice=0x7f080002;
+        public static final int imgv_slice_bg=0x7f080001;
         public static final int ll_status_bar=0x7f080007;
-        public static final int ll_toolsbar=0x7f08000b;
-        public static final int ll_viewArea01=0x7f080001;
-        public static final int ll_viewArea1=0x7f080003;
-        public static final int ll_viewArea20=0x7f080000;
-        public static final int ll_viewArea22=0x7f080004;
-        public static final int seekbar_def=0x7f080010;
-        public static final int tv_validateMsg=0x7f08000a;
-        public static final int tv_validateStatus=0x7f080009;
+        public static final int ll_toolsbar=0x7f080008;
+        public static final int ll_viewArea01=0x7f080004;
+        public static final int ll_viewArea1=0x7f080005;
+        public static final int ll_viewArea20=0x7f080003;
+        public static final int ll_viewArea22=0x7f080006;
+        public static final int seekbar_def=0x7f080009;
+        public static final int tv_validateMsg=0x7f08000d;
+        public static final int tv_validateStatus=0x7f08000c;
     }
     public static final class layout {
-        public static final int gtapp_main_dlg=0x7f030000;
-        public static final int gtappdemo=0x7f030001;
+        public static final int gtapp_image_frame=0x7f030000;
+        public static final int gtapp_main_dlg=0x7f030001;
+        public static final int gtapp_status_bar=0x7f030002;
+        public static final int gtapp_tool_bar=0x7f030003;
+        public static final int gtappdemo=0x7f030004;
     }
     public static final class string {
         public static final int action_settings=0x7f060003;

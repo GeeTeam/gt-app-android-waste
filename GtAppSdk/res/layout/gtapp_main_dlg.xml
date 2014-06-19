@@ -1,12 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/cus_dlg"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent" >
+
 
     <!-- 采用相对布局来层叠 -->
 
     <RelativeLayout
+        style="@style/cus_dlg"
+         xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+        
+        
         android:id="@+id/ll_viewArea20"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -14,8 +15,6 @@
         android:layout_marginRight="0dp"
         android:layout_marginTop="0dp"
         android:background="#104D56" >
-
-        <!-- 一个空白的预加载界面 -->
 
         <LinearLayout
             android:id="@+id/ll_viewArea01"
@@ -37,6 +36,7 @@
             <!-- 网络通讯未完成时的显示过渡动画 -->
 
         </LinearLayout>
+        <!-- 一个空白的预加载界面 -->
 
         <LinearLayout
             android:id="@+id/ll_viewArea1"
@@ -49,243 +49,23 @@
 
             <!-- 在图片预加载时，先不显示 -->
 
-            <RelativeLayout
+            <include
                 android:id="@+id/ll_viewArea22"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="0dp"
-                android:background="#104D56" >
-
-                <!-- android:layout_alignTop="@+id/ll_viewArea1" -->
-
-                <ImageView
-                    android:id="@+id/imgv_full_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="fitXY"
-                    android:src="@android:drawable/title_bar" />
-                <!-- android:src="@drawable/full_bg" -->
-                <!-- android:background="@drawable/full_bg" -->
-
-
-                <!-- 完整背景图 -->
-
-                <ImageView
-                    android:id="@+id/imgv_slice_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="matrix"
-                    android:visibility="visible" />
-                <!-- android:src="@drawable/slip_big" -->
-
-
-                <!-- 切图背景 -->
-
-                <ImageView
-                    android:id="@+id/imgv_slice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:scaleType="matrix"
-                    android:visibility="visible" />
-                <!-- android:src="@drawable/slip_small" -->
-
-
-                <!-- 切片小图 -->
-
-
-                <!-- <ImageView -->
-                <!-- android:id="@+id/img" -->
-                <!-- android:layout_width="match_parent" -->
-                <!-- android:layout_height="wrap_content" -->
-                <!-- android:layout_alignParentLeft="true" -->
-                <!-- android:layout_alignParentRight="true" -->
-                <!-- android:gravity="right" -->
-                <!-- android:scaleType="matrix" -->
-                <!-- android:src="@drawable/slip_small" /> -->
-            </RelativeLayout>
+                layout="@layout/gtapp_image_frame" />
             <!-- 图片区 -->
 
             <View style="@style/gtapp_horizon_dividing_line" />
-            <!-- 水平分隔条 -->
 
-            <LinearLayout
+            <include
                 android:id="@+id/ll_status_bar"
-                android:layout_width="fill_parent"
-                android:layout_height="26dp"
-                android:layout_below="@+id/ll_viewArea22"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:background="#FFF9F9F9"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:visibility="visible" >
-
-                    <ImageView
-                        android:id="@+id/imgv_captcha_status_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:gravity="center"
-                        android:src="@drawable/gtapp_status_wait" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent" >
-
-                    <!-- 验证状态 -->
-
-                    <TextView
-                        android:id="@+id/tv_validateStatus"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="2dp"
-                        android:gravity="center"
-                        android:text="等待验证："
-                        android:textColor="#F1BD60" >
-                    </TextView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent" >
-
-                    <!-- 验证状态描述 -->
-
-                    <TextView
-                        android:id="@+id/tv_validateMsg"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="2dp"
-                        android:gravity="center"
-                        android:text="拖动滑块使悬浮图像正确拼合"
-                        android:textColor="#B0AFAF" >
-                    </TextView>
-                </LinearLayout>
-            </LinearLayout>
+                layout="@layout/gtapp_status_bar" />
             <!-- 状态区 -->
 
             <View style="@style/gtapp_horizon_dividing_line" />
-            <!-- 水平分隔条 -->
 
-            <LinearLayout
+            <include
                 android:id="@+id/ll_toolsbar"
-                android:layout_width="fill_parent"
-                android:layout_height="24dp"
-                android:layout_below="@+id/ll_status_bar"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:background="#F5F5F5"
-                android:orientation="horizontal" >
-
-                <!-- 工具栏区 -->
-
-                <View style="@style/gtapp_vertical_dividing_line" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_margin="2dp" >
-
-                    <Button
-                        android:id="@+id/btn_refresh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/gtapp_btn_refresh"
-                        android:text="" />
-                    <!-- android:background="@android:drawable/stat_notify_sync" -->
-
-
-                    <!-- 刷新按钮 -->
-                </LinearLayout>
-
-                <View style="@style/gtapp_vertical_dividing_line" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_margin="2dp" >
-
-                    <Button
-                        android:id="@+id/btn_help"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/gtapp_btn_help"
-                        android:text="" />
-                    <!-- 使用帮助 -->
-
-                </LinearLayout>
-
-                <View style="@style/gtapp_vertical_dividing_line" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent" >
-
-                    <Button
-                        android:id="@+id/btn_feedback"
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:background="@android:drawable/stat_notify_chat"
-                        android:text=""
-                        android:visibility="gone" />
-
-                    <!-- 用户反馈  上行类的数据暂时不管 -->
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_margin="2dp" >
-
-                    <Button
-                        android:id="@+id/btn_about"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/gtapp_btn_about"
-                        android:text="" />
-                    <!-- SDK信息 -->
-
-                </LinearLayout>
-
-                <View style="@style/gtapp_vertical_dividing_line" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="8"
-                    android:visibility="invisible" >
-
-                    <!-- 反馈 -->
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_margin="2dp"
-                    android:background="@drawable/gtapp_logo" >
-                </LinearLayout>
-
-                <View style="@style/gtapp_vertical_dividing_line" />
-            </LinearLayout>
+                layout="@layout/gtapp_tool_bar" />
             <!-- 工具区 -->
 
             <View style="@style/gtapp_horizon_dividing_line" />
@@ -320,5 +100,3 @@
         <!-- 拖动条 -2dp -->
 
     </RelativeLayout>
-
-</RelativeLayout>
