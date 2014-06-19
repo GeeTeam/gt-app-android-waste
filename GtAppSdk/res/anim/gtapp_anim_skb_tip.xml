@@ -4,21 +4,21 @@
 
     <!-- 透明度变化 -->
     <alpha
-        android:duration="2000"
+        android:duration="1000"
         android:fromAlpha="0.5"
         android:repeatCount="1"
         android:repeatMode="restart"
-        android:toAlpha="0.1" />
+        android:toAlpha="0.2" />
 
     <!-- 水平与垂直位移 -->
     <translate
-        android:duration="2000"
+        android:duration="1000"
         android:fromXDelta="0"
         android:fromYDelta="0"
-        android:interpolator="@android:anim/decelerate_interpolator"
+        android:interpolator="@android:anim/overshoot_interpolator"
         android:repeatCount="1"
         android:repeatMode="restart"
-        android:toXDelta="500"
+        android:toXDelta="30%"
         android:toYDelta="0" />
 
 </set>

@@ -36,7 +36,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -117,7 +119,7 @@ public class GtAppDialog extends Dialog {
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
-
+	private Animation anim;// 使用提示动画
 	// /********************下面是数据区
 
 	// 图片对象
@@ -330,43 +332,6 @@ public class GtAppDialog extends Dialog {
 		getSliderStartLeftTopPosition();
 
 		sendMsgToUpdateUI(MSG_FULL_BG_DISPLAY);
-
-		// TODO
-		final Animation anim = AnimationUtils.loadAnimation(context,
-				R.anim.gtapp_anim_skb_tip);
-
-		// 渐变过程监听
-		anim.setAnimationListener(new AnimationListener() {
-
-			/**
-			 * 动画开始时
-			 */
-			@Override
-			public void onAnimationStart(Animation animation) {
-				System.out.println("动画开始...");
-				imgv_skb_tip.setVisibility(View.VISIBLE);
-			}
-
-			/**
-			 * 重复动画时
-			 */
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				System.out.println("动画重复...");
-			}
-
-			/**
-			 * 动画结束时
-			 */
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				System.out.println("动画结束...");
-				// TODO
-				imgv_skb_tip.setVisibility(View.INVISIBLE);
-			}
-		});
-
-		anim.setDuration(1500);// 动画时间
 
 		// TODO
 		imgv_skb_tip.startAnimation(anim);
@@ -809,6 +774,38 @@ public class GtAppDialog extends Dialog {
 								getSliceYposAfterSalced());// 进行偏移
 					}
 				});
+
+		// 渐变过程监听
+		anim.setAnimationListener(new AnimationListener() {
+
+			/**
+			 * 动画开始时
+			 */
+			@Override
+			public void onAnimationStart(Animation animation) {
+				System.out.println("动画开始...");
+				imgv_skb_tip.setVisibility(View.VISIBLE);
+			}
+
+			/**
+			 * 重复动画时
+			 */
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// System.out.println("动画重复...");
+			}
+
+			/**
+			 * 动画结束时
+			 */
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				System.out.println("动画结束...");
+				// TODO
+				imgv_skb_tip.setVisibility(View.INVISIBLE);
+			}
+		});
+
 	}
 
 	/**
@@ -954,8 +951,13 @@ public class GtAppDialog extends Dialog {
 			imgv_captcha_status_icon = (ImageView) findViewById(R.id.imgv_captcha_status_icon);
 			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
+
 			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
 					tv_validateStatus, tv_validateMsg);
+
+			// TODO
+			anim = AnimationUtils.loadAnimation(context,
+					R.anim.gtapp_anim_skb_tip);
 
 			// animation = AnimationUtils.loadAnimation(context,
 			// R.anim.gtapp_anim_dlg_exit);// 动画

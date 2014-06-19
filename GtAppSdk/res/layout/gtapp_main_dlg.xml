@@ -66,28 +66,32 @@
         <View style="@style/gtapp_horizon_dividing_line" />
         <!-- 水平分隔条 -->
 
-        <SeekBar
-            android:id="@+id/seekbar_def"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_viewArea1"
-            android:layout_gravity="center"
-            android:max="100"
-            android:maxHeight="56dp"
-            android:minHeight="56dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
-            android:thumb="@drawable/gtapp_skb_thumb_state_define"
-            android:thumbOffset="-1dp" />
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/imgv_skb_tip"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:scaleType="matrix"
-            android:src="@drawable/gtapp_skb_drag_normal_finger"
-            android:visibility="visible" />
+            <SeekBar
+                android:id="@+id/seekbar_def"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:max="100"
+                android:maxHeight="56dp"
+                android:minHeight="56dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
+                android:thumb="@drawable/gtapp_skb_thumb_state_define"
+                android:thumbOffset="-1dp" />
+
+            <ImageView
+                android:id="@+id/imgv_skb_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="matrix"
+                android:src="@drawable/gtapp_skb_drag_normal_finger"
+                android:visibility="visible" />
+        </FrameLayout>
     </LinearLayout>
     <!-- 最大外边框 -->
 
