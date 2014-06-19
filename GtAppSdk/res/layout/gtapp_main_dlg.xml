@@ -1,102 +1,97 @@
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_viewArea20"
+    style="@style/cus_dlg"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginTop="0dp"
+    android:background="#104D56" >
 
     <!-- 采用相对布局来层叠 -->
 
-    <RelativeLayout
-        style="@style/cus_dlg"
-         xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-        
-        
-        android:id="@+id/ll_viewArea20"
+    <LinearLayout
+        android:id="@+id/ll_viewArea01"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
-        android:background="#104D56" >
+        android:layout_margin="0dp"
+        android:background="#c0c00e"
+        android:orientation="vertical"
+        android:visibility="invisible" >
 
-        <LinearLayout
-            android:id="@+id/ll_viewArea01"
-            android:layout_width="fill_parent"
+        <ImageView
+            android:id="@+id/imgv_full_bg"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/gtapp_before_load"
+            android:visibility="visible" />
+
+        <!-- 网络通讯未完成时的显示过渡动画 -->
+
+    </LinearLayout>
+    <!-- 一个空白的预加载界面 -->
+
+    <LinearLayout
+        android:id="@+id/ll_viewArea1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <!-- 在图片预加载时，先不显示 -->
+
+        <include
+            android:id="@+id/ll_viewArea22"
+            layout="@layout/gtapp_image_frame" />
+        <!-- 图片区 -->
+
+        <View style="@style/gtapp_horizon_dividing_line" />
+
+        <include
+            android:id="@+id/ll_status_bar"
+            layout="@layout/gtapp_status_bar" />
+        <!-- 状态区 -->
+
+        <View style="@style/gtapp_horizon_dividing_line" />
+
+        <include
+            android:id="@+id/ll_toolsbar"
+            layout="@layout/gtapp_tool_bar" />
+        <!-- 工具区 -->
+
+        <View style="@style/gtapp_horizon_dividing_line" />
+        <!-- 水平分隔条 -->
+
+        <SeekBar
+            android:id="@+id/seekbar_def"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="#c0c00e"
-            android:orientation="vertical"
-            android:visibility="invisible" >
+            android:layout_below="@id/ll_viewArea1"
+            android:layout_gravity="center"
+            android:max="100"
+            android:maxHeight="56dp"
+            android:minHeight="56dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
+            android:thumb="@drawable/gtapp_skb_thumb_state_define"
+            android:thumbOffset="-1dp" />
 
-            <ImageView
-                android:id="@+id/imgv_full_bg"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/gtapp_before_load"
-                android:visibility="visible" />
-
-            <!-- 网络通讯未完成时的显示过渡动画 -->
-
-        </LinearLayout>
-        <!-- 一个空白的预加载界面 -->
-
-        <LinearLayout
-            android:id="@+id/ll_viewArea1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="#FFFFFF"
-            android:orientation="vertical"
-            android:visibility="visible" >
-
-            <!-- 在图片预加载时，先不显示 -->
-
-            <include
-                android:id="@+id/ll_viewArea22"
-                layout="@layout/gtapp_image_frame" />
-            <!-- 图片区 -->
-
-            <View style="@style/gtapp_horizon_dividing_line" />
-
-            <include
-                android:id="@+id/ll_status_bar"
-                layout="@layout/gtapp_status_bar" />
-            <!-- 状态区 -->
-
-            <View style="@style/gtapp_horizon_dividing_line" />
-
-            <include
-                android:id="@+id/ll_toolsbar"
-                layout="@layout/gtapp_tool_bar" />
-            <!-- 工具区 -->
-
-            <View style="@style/gtapp_horizon_dividing_line" />
-            <!-- 水平分隔条 -->
-
-            <SeekBar
-                android:id="@+id/seekbar_def"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_viewArea1"
-                android:layout_gravity="center"
-                android:max="100"
-                android:maxHeight="56dp"
-                android:minHeight="56dp"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
-                android:thumb="@drawable/gtapp_skb_thumb_state_define"
-                android:thumbOffset="-1dp" />
-
-            <ImageView
-                android:id="@+id/imgv_skb_tip"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="matrix"
-                android:src="@drawable/gtapp_skb_drag_normal_finger"
-                android:visibility="visible" />
-        </LinearLayout>
-        <!-- 最大外边框 -->
+        <ImageView
+            android:id="@+id/imgv_skb_tip"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="matrix"
+            android:src="@drawable/gtapp_skb_drag_normal_finger"
+            android:visibility="visible" />
+    </LinearLayout>
+    <!-- 最大外边框 -->
 
 
-        <!-- 拖动条 -2dp -->
+    <!-- 拖动条 -2dp -->
 
-    </RelativeLayout>
+</RelativeLayout>
