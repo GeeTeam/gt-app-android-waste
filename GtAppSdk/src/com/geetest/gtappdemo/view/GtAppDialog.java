@@ -36,9 +36,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -119,7 +117,7 @@ public class GtAppDialog extends Dialog {
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
-	private Animation anim;// 使用提示动画
+	private Animation anim_skb_finger_tip;// 使用提示动画
 	// /********************下面是数据区
 
 	// 图片对象
@@ -221,6 +219,7 @@ public class GtAppDialog extends Dialog {
 		// setTitle("GtDialog");
 
 		setLocation();
+
 		show();
 
 		// int seekbar_width = skb_dragCaptcha.getRight()
@@ -334,7 +333,7 @@ public class GtAppDialog extends Dialog {
 		sendMsgToUpdateUI(MSG_FULL_BG_DISPLAY);
 
 		// TODO
-		imgv_skb_tip.startAnimation(anim);
+		imgv_skb_tip.startAnimation(anim_skb_finger_tip);
 
 	}
 
@@ -776,7 +775,7 @@ public class GtAppDialog extends Dialog {
 				});
 
 		// 渐变过程监听
-		anim.setAnimationListener(new AnimationListener() {
+		anim_skb_finger_tip.setAnimationListener(new AnimationListener() {
 
 			/**
 			 * 动画开始时
@@ -924,17 +923,16 @@ public class GtAppDialog extends Dialog {
 			// LayoutInflater paraView = (View)
 			// findViewById(R.layout.image_move);
 
-			firstReLayoutView = (RelativeLayout) findViewById(R.id.ll_viewArea20);
-
-			reLayoutView = (RelativeLayout) firstReLayoutView
-					.findViewById(R.id.ll_viewArea22);
-
+			firstReLayoutView = (RelativeLayout) findViewById(R.id.rl_viewRoot);// 根布局
 			// 加载前后
 			beforeGetImageLineraLayout = (LinearLayout) firstReLayoutView
-					.findViewById(R.id.ll_viewArea01);
+					.findViewById(R.id.ll_before_load);
 			afterGetImageLineraLayout = (LinearLayout) firstReLayoutView
-					.findViewById(R.id.ll_viewArea1);
+					.findViewById(R.id.ll_view_after_image_load);
 
+			// 图片框布局
+			reLayoutView = (RelativeLayout) firstReLayoutView
+					.findViewById(R.id.rl_view_image_frame);
 			imgv_full_bg = (ImageView) reLayoutView
 					.findViewById(R.id.imgv_full_bg);
 			imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
@@ -953,14 +951,10 @@ public class GtAppDialog extends Dialog {
 			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
 
 			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
-					tv_validateStatus, tv_validateMsg);
+					tv_validateStatus, tv_validateMsg);// 状态条
 
-			// TODO
-			anim = AnimationUtils.loadAnimation(context,
-					R.anim.gtapp_anim_skb_tip);
-
-			// animation = AnimationUtils.loadAnimation(context,
-			// R.anim.gtapp_anim_dlg_exit);// 动画
+			anim_skb_finger_tip = AnimationUtils.loadAnimation(context,
+					R.anim.gtapp_anim_skb_tip);// 手拖动动画。
 
 		} catch (Exception e) {
 			GtLogger.expection(LoggerString.getFileLineMethod()

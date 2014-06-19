@@ -2,6 +2,7 @@ package com.geetest.gtappdemo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.geetest.gtapp.R;
-import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.vo.GtAppCbCaptchaResponse;
 import com.geetest.gtappdemo.model.vo.GtAppDialogOption;
@@ -27,8 +27,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.gtappdemo);
 
 		openGtAppDialog();
-		
-		
+
 		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_dlg);
 
 		// 刷新图片
@@ -41,6 +40,9 @@ public class MainActivity extends Activity {
 	}
 
 	private void openGtAppDialog() {
+
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 锁定竖屏
+
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
@@ -51,6 +53,8 @@ public class MainActivity extends Activity {
 				// TODO 在此处书写回调函数
 				Log.v("sdkDemo", "resCode: " + cbResponse.getResCode()
 						+ "   resMsg: " + cbResponse.getResMsg());
+
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);// 传感器相关
 			}
 		};
 
@@ -59,6 +63,7 @@ public class MainActivity extends Activity {
 				gtAppCallback);
 
 		new GtAppDialog(gtOption).setDisplay();
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);// 传感器相关
 	}
 
 }

@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_viewArea20"
+    android:id="@+id/rl_viewRoot"
     style="@style/cus_dlg"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -12,7 +12,7 @@
     <!-- 采用相对布局来层叠 -->
 
     <LinearLayout
-        android:id="@+id/ll_viewArea01"
+        android:id="@+id/ll_before_load"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
@@ -25,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:scaleType="fitXY"
-            android:src="@drawable/gtapp_before_load"
-            android:visibility="visible" />
+            android:src="@drawable/gtapp_before_load" />
 
         <!-- 网络通讯未完成时的显示过渡动画 -->
 
@@ -34,7 +33,7 @@
     <!-- 一个空白的预加载界面 -->
 
     <LinearLayout
-        android:id="@+id/ll_viewArea1"
+        android:id="@+id/ll_view_after_image_load"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
@@ -42,19 +41,18 @@
         android:orientation="vertical"
         android:visibility="visible" >
 
-        <!-- 在图片预加载时，先不显示 -->
-
-        <include
-            android:id="@+id/ll_viewArea22"
-            layout="@layout/gtapp_image_frame" />
-        <!-- 图片区 -->
-
-        <View style="@style/gtapp_horizon_dividing_line" />
-
         <include
             android:id="@+id/ll_status_bar"
             layout="@layout/gtapp_status_bar" />
         <!-- 状态区 -->
+
+        <View style="@style/gtapp_horizon_dividing_line" />
+        <!-- 在图片预加载时，先不显示 -->
+
+        <include
+            android:id="@+id/rl_view_image_frame"
+            layout="@layout/gtapp_image_frame" />
+        <!-- 图片区 -->
 
         <View style="@style/gtapp_horizon_dividing_line" />
 
@@ -91,7 +89,21 @@
                 android:scaleType="matrix"
                 android:src="@drawable/gtapp_skb_drag_normal_finger"
                 android:visibility="visible" />
+            <!-- 提示滑动动画 -->
+
         </FrameLayout>
+
+        <View style="@style/gtapp_horizon_dividing_line" />
+        <!-- 水平分隔条 -->
+
+        <ImageView
+            android:id="@+id/imgv_skb_tip"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/gtapp_change_image"
+            android:visibility="visible" />
     </LinearLayout>
     <!-- 最大外边框 -->
 
