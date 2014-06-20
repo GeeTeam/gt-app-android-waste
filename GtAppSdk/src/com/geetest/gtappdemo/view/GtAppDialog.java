@@ -105,11 +105,14 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 
 	private ImageView imgv_skb_tip;// 滑动条操作提示
+	private ImageView imgv_change_image;// 换图
 
 	private ImageView imgv_captcha_status_icon;// 状态锁
 	private TextView tv_validateStatus;// 验证码的状态栏
 	private TextView tv_validateMsg;// 验证码的消息栏
 	private GtAppStatusBar gtStatusBar;// 状态栏
+
+	private Button btn_dlg_close;// 对话框关闭按钮
 
 	private Button btn_refresh;// 用于刷新图片的按钮
 	private Button btn_help;// 使用帮助按钮
@@ -144,11 +147,14 @@ public class GtAppDialog extends Dialog {
 	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
 	private final int MSG_SLICE_BG_ALPHA_MISS = 3;// 切片图渐变消失
 
-	// 坐标位置
+	// 滑块坐标位置
 	private GtPoint sliderStartLeftTopPosition = new GtPoint();// 滑块左上角坐标
 	private GtPoint sliderStartPressTouchPosition = new GtPoint();// 按下滑块时的触点位置
 	private GtPoint sliderDragMoveTouchPosition = new GtPoint();// 拖动时触点位置
 	private GtPoint sliderUpTouchPosition = new GtPoint();// 放开时触点位置
+
+	// 切换图片的滑动条
+	private GtPoint changeImageButtonStartPosition = new GtPoint();// 按下时触点位置
 
 	// 形状大小
 	private GtShapeSize thumbBmpSize = new GtShapeSize();// 滑块图片的大小
@@ -219,7 +225,6 @@ public class GtAppDialog extends Dialog {
 		// setTitle("GtDialog");
 
 		setLocation();
-
 		show();
 
 		// int seekbar_width = skb_dragCaptcha.getRight()
@@ -502,49 +507,61 @@ public class GtAppDialog extends Dialog {
 	}
 
 	private void initListeners() {
-		// imgv_slice.setOnTouchListener(new View.OnTouchListener() {
-		//
-		// public boolean onTouch(View arg0, MotionEvent event) {
-		//
-		// float curX, curY;// 鼠标的即时位置
-		//
-		// curX = event.getX();
-		// curY = event.getY();
-		//
-		// switch (event.getAction()) {
-		//
-		// case MotionEvent.ACTION_DOWN:
-		// // 获取当前的位置
-		// mX = event.getX();
-		// mY = event.getY();
-		//
-		// // actionDown_X = event.getX();
-		// // actionDown_Y = event.getY();
-		//
-		// break;
-		// case MotionEvent.ACTION_MOVE:
-		// curX = event.getX();// 当前x
-		// curY = event.getY();// 当前y
-		//
-		// // igv_slice.scrollBy((int) (mX - curX), (int) (mY -
-		// // curY));// 进行偏移
-		// imgv_slice.scrollBy((int) (mX - curX), 0);// 只进行水平方向行偏移
-		// mX = curX;
-		// mY = curY;
-		// break;
-		// case MotionEvent.ACTION_UP:
-		// GtLogger.v("Images Change Action_Up");
-		//
-		// curX = event.getX();
-		// curY = event.getY();
-		//
-		// imgv_slice.scrollBy((int) (mX - curX), 0);
-		// break;
-		// }
-		//
-		// return true;
-		// }
-		// });
+		imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View arg0, MotionEvent event) {
+
+				float curX, curY;// 鼠标的即时位置
+
+				curX = event.getX();
+				curY = event.getY();
+
+				switch (event.getAction()) {
+
+				case MotionEvent.ACTION_DOWN:
+					// 获取当前的位置
+					mX = event.getX();
+					mY = event.getY();
+
+					changeImageButtonStartPosition.setX(mX);
+					changeImageButtonStartPosition.setX(mY);
+					// actionDown_X = event.getX();
+					// actionDown_Y = event.getY();
+
+					break;
+				case MotionEvent.ACTION_MOVE:
+					curX = event.getX();// 当前x
+					curY = event.getY();// 当前y
+
+					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
+					// curY));// 进行偏移
+					// imgv_change_image.scrollBy((int) (mX - curX), 0);//
+					// 只进行水平方向行偏移
+					imgv_change_image.scrollBy(0, (int) (mY - curY));
+					mX = curX;
+					mY = curY;
+					break;
+				case MotionEvent.ACTION_UP:
+					GtLogger.v("Images Change Action_Up");
+
+					curX = event.getX();
+					curY = event.getY();
+
+					// imgv_change_image.scrollBy((int) (mX - curX), 0);
+					imgv_change_image.scrollBy(0,
+							(int) (mY - changeImageButtonStartPosition.getY()));
+					break;
+				}
+
+				return true;
+			}
+		});
+
+		btn_dlg_close.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				dismiss();// 当前对话框关闭
+			}
+		});
 
 		// 刷新图片
 		btn_refresh.setOnClickListener(new Button.OnClickListener() {
@@ -940,8 +957,12 @@ public class GtAppDialog extends Dialog {
 					.findViewById(R.id.imgv_slice_bg);
 
 			imgv_skb_tip = (ImageView) findViewById(R.id.imgv_skb_tip);
+			imgv_change_image = (ImageView) findViewById(R.id.imgv_change_image);
 
 			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
+
+			btn_dlg_close = (Button) findViewById(R.id.btn_dlg_close);
+
 			btn_refresh = (Button) findViewById(R.id.btn_refresh);
 			btn_help = (Button) findViewById(R.id.btn_help);
 			btn_about = (Button) findViewById(R.id.btn_about);

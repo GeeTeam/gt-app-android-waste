@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/tv_validateMsg"
-        android:layout_width="190dp"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_margin="2dp"
@@ -47,18 +47,6 @@
         android:textColor="#B0AFAF" />
     <!-- 验证状态描述 -->
 
-    <RelativeLayout
-        android:id="@+id/rl_buttons"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
 
-        <Button
-            android:id="@+id/btn_close"
-            android:layout_width="24dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="2dp"
-            android:background="@android:drawable/btn_dialog" />
-    </RelativeLayout>
 
 </LinearLayout>

@@ -18,7 +18,7 @@
         android:layout_margin="0dp"
         android:background="#c0c00e"
         android:orientation="vertical"
-        android:visibility="invisible" >
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/imgv_full_bg"
@@ -41,10 +41,26 @@
         android:orientation="vertical"
         android:visibility="visible" >
 
-        <include
-            android:id="@+id/ll_status_bar"
-            layout="@layout/gtapp_status_bar" />
-        <!-- 状态区 -->
+        <RelativeLayout
+            android:id="@+id/rl_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <include
+                android:id="@+id/ll_status_bar"
+                layout="@layout/gtapp_status_bar" />
+            <!-- 状态区 -->
+
+            <Button
+                android:id="@+id/btn_dlg_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="2dp"
+                android:background="@android:drawable/btn_dialog" />
+            <!-- 按钮悬浮在跑马灯上面 -->
+
+        </RelativeLayout>
 
         <View style="@style/gtapp_horizon_dividing_line" />
         <!-- 在图片预加载时，先不显示 -->
@@ -97,7 +113,7 @@
         <!-- 水平分隔条 -->
 
         <ImageView
-            android:id="@+id/imgv_skb_tip"
+            android:id="@+id/imgv_change_image"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginBottom="4dp"
