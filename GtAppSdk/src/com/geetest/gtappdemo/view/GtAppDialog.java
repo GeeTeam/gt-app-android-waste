@@ -38,6 +38,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -96,6 +97,8 @@ public class GtAppDialog extends Dialog {
 
 	private RelativeLayout firstReLayoutView;// 最外层布局
 	private RelativeLayout reLayoutView;// 相框的相对布局
+	private LinearLayout fl_slider_string_tip;// 提示滑动布局
+	private GtAppNeonLightTip gtAppNeonLightTip;// 滑动霓虹灯
 
 	private LinearLayout beforeGetImageLineraLayout;
 	private LinearLayout afterGetImageLineraLayout;
@@ -507,6 +510,7 @@ public class GtAppDialog extends Dialog {
 	}
 
 	private void initListeners() {
+
 		imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View arg0, MotionEvent event) {
@@ -523,8 +527,10 @@ public class GtAppDialog extends Dialog {
 					mX = event.getX();
 					mY = event.getY();
 
-					changeImageButtonStartPosition.setX(mX);
-					changeImageButtonStartPosition.setX(mY);
+					changeImageButtonStartPosition.setX(imgv_change_image
+							.getTop());
+					changeImageButtonStartPosition.setX(imgv_change_image
+							.getLeft());// 获取起始的位置
 					// actionDown_X = event.getX();
 					// actionDown_Y = event.getY();
 
@@ -548,8 +554,14 @@ public class GtAppDialog extends Dialog {
 					curY = event.getY();
 
 					// imgv_change_image.scrollBy((int) (mX - curX), 0);
-					imgv_change_image.scrollBy(0,
-							(int) (mY - changeImageButtonStartPosition.getY()));
+					imgv_change_image.scrollTo(0,
+							(int) (changeImageButtonStartPosition.getY()));// 归位
+
+					if ((curY - changeImageButtonStartPosition.getY()) > 100) {
+						// TODO 开始刷新图片
+						captchaInitialOption_StringRequest();
+					}
+
 					break;
 				}
 
@@ -947,6 +959,14 @@ public class GtAppDialog extends Dialog {
 			afterGetImageLineraLayout = (LinearLayout) firstReLayoutView
 					.findViewById(R.id.ll_view_after_image_load);
 
+			// 状态栏
+			imgv_captcha_status_icon = (ImageView) findViewById(R.id.imgv_captcha_status_icon);
+			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
+			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
+
+			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
+					tv_validateStatus, tv_validateMsg);// 状态条
+
 			// 图片框布局
 			reLayoutView = (RelativeLayout) firstReLayoutView
 					.findViewById(R.id.rl_view_image_frame);
@@ -963,16 +983,13 @@ public class GtAppDialog extends Dialog {
 
 			btn_dlg_close = (Button) findViewById(R.id.btn_dlg_close);
 
+			// 滑动提示文字布局
+			fl_slider_string_tip = (LinearLayout) findViewById(R.id.fl_slider_string_tip);
+			gtAppNeonLightTip = new GtAppNeonLightTip(fl_slider_string_tip);
+
 			btn_refresh = (Button) findViewById(R.id.btn_refresh);
 			btn_help = (Button) findViewById(R.id.btn_help);
-			btn_about = (Button) findViewById(R.id.btn_about);
-
-			imgv_captcha_status_icon = (ImageView) findViewById(R.id.imgv_captcha_status_icon);
-			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
-			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
-
-			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
-					tv_validateStatus, tv_validateMsg);// 状态条
+			btn_about = (Button) findViewById(R.id.btn_about_info);
 
 			anim_skb_finger_tip = AnimationUtils.loadAnimation(context,
 					R.anim.gtapp_anim_skb_tip);// 手拖动动画。

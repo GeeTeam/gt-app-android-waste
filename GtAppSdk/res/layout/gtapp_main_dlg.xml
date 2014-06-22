@@ -74,7 +74,8 @@
 
         <include
             android:id="@+id/ll_toolsbar"
-            layout="@layout/gtapp_tool_bar" />
+            layout="@layout/gtapp_tool_bar"
+            android:visibility="gone" />
         <!-- 工具区 -->
 
         <View style="@style/gtapp_horizon_dividing_line" />
@@ -112,14 +113,36 @@
         <View style="@style/gtapp_horizon_dividing_line" />
         <!-- 水平分隔条 -->
 
-        <ImageView
-            android:id="@+id/imgv_change_image"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginBottom="4dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/gtapp_change_image"
-            android:visibility="visible" />
+        <include
+            android:id="@+id/fl_slider_string_tip"
+            layout="@layout/gtapp_slider_string_tip" />
+        <!-- 霓虹灯效果 -->
+
+        <View style="@style/gtapp_horizon_dividing_line" />
+        <!-- 水平分隔条 -->
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imgv_change_image"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginBottom="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/gtapp_change_image"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_about_info"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignBottom="@id/imgv_change_image"
+                android:layout_alignRight="@id/imgv_change_image"
+                android:background="@android:drawable/ic_menu_info_details"
+                android:visibility="visible" />
+        </RelativeLayout>
     </LinearLayout>
     <!-- 最大外边框 -->
 

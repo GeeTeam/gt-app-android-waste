@@ -14,8 +14,8 @@
                 android:angle="270"
                 android:centerColor="#ffffffff"
                 android:centerY="0.9"
-                android:endColor="#ffEEEEEE"
-                android:startColor="#ffAAAAAA" />
+                android:endColor="#ffffffff"
+                android:startColor="#ffffffff" />
         </shape>
     </item>
     <!-- 进度条的背景 -->
@@ -30,10 +30,10 @@
 
                 <gradient
                     android:angle="270"
-                    android:centerColor="#ffdddddd"
+                    android:centerColor="#ffffffff"
                     android:centerY="0.9"
-                    android:endColor="#ffEEEEEE"
-                    android:startColor="#ffAAAAAA" />
+                    android:endColor="#ffffffff"
+                    android:startColor="#ffffffff" />
             </shape>
         </clip>
     </item>
