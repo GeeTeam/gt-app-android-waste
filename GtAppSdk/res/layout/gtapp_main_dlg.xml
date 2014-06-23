@@ -103,7 +103,7 @@
                 android:thumbOffset="-1dp" />
 
             <ImageView
-                android:id="@+id/imgv_skb_tip"
+                android:id="@+id/imgv_skb_anim_tip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="matrix"
@@ -118,7 +118,9 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="12dp"
                 android:gravity="center"
-                android:text=">>> 向右拖动完成验证   >>>" />
+                android:text=">>> 向右拖动完成验证   >>>"
+                android:textColor="#A2A497"
+                android:textSize="16sp" />
         </FrameLayout>
 
         <View style="@style/gtapp_horizon_dividing_line" />
@@ -135,16 +137,26 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="#DD001826" >
 
             <ImageView
                 android:id="@+id/imgv_change_image"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_marginBottom="4dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/gtapp_change_image"
+                android:scaleType="center"
+                android:src="@drawable/gtapp_downarrow_unactive"
                 android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_change_image_tip_msg"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgv_change_image"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:text="向下拖动刷新图片" />
 
             <Button
                 android:id="@+id/btn_about_info"
@@ -152,7 +164,7 @@
                 android:layout_height="24dp"
                 android:layout_alignBottom="@id/imgv_change_image"
                 android:layout_alignRight="@id/imgv_change_image"
-                android:background="@android:drawable/ic_menu_info_details"
+                android:background="@drawable/gtapp_version"
                 android:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>

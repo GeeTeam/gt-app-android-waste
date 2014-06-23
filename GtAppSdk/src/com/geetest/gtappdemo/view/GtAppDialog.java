@@ -38,7 +38,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -107,7 +106,7 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 
-	private ImageView imgv_skb_tip;// 滑动条操作提示
+	private ImageView imgv_skb_anim_tip;// 滑动条操作提示
 	private ImageView imgv_change_image;// 换图
 
 	private ImageView imgv_captcha_status_icon;// 状态锁
@@ -322,6 +321,7 @@ public class GtAppDialog extends Dialog {
 		// 重置SeekBar
 		skb_dragCaptcha.setProgress(0);
 		tv_slider_tip_msg.setVisibility(View.VISIBLE);// 拖动的提示文字消失
+		imgv_skb_anim_tip.setVisibility(View.VISIBLE);
 
 		clientCaptchaResult = false;// 最开始状态是为不通过的。
 		skb_dragCaptcha.setEnabled(true);
@@ -343,7 +343,7 @@ public class GtAppDialog extends Dialog {
 		sendMsgToUpdateUI(MSG_FULL_BG_DISPLAY);
 
 		// TODO
-		imgv_skb_tip.startAnimation(anim_skb_finger_tip);
+		imgv_skb_anim_tip.startAnimation(anim_skb_finger_tip);
 
 	}
 
@@ -627,6 +627,9 @@ public class GtAppDialog extends Dialog {
 					GtLogger.v("按下拖动条");
 
 					tv_slider_tip_msg.setVisibility(View.INVISIBLE);// 拖动的提示文字消失
+					imgv_skb_anim_tip.setVisibility(View.GONE);// 好像没效果
+																// 2014年6月23日
+																// 17:51:17
 
 					GtLogger.v("skb_dragCaptcha.getLeft(): "
 							+ skb_dragCaptcha.getLeft()
@@ -816,7 +819,7 @@ public class GtAppDialog extends Dialog {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				System.out.println("动画开始...");
-				imgv_skb_tip.setVisibility(View.VISIBLE);
+				imgv_skb_anim_tip.setVisibility(View.VISIBLE);
 			}
 
 			/**
@@ -834,7 +837,7 @@ public class GtAppDialog extends Dialog {
 			public void onAnimationEnd(Animation animation) {
 				System.out.println("动画结束...");
 				// TODO
-				imgv_skb_tip.setVisibility(View.INVISIBLE);
+				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 			}
 		});
 
@@ -980,7 +983,7 @@ public class GtAppDialog extends Dialog {
 			imgv_slice_bg = (ImageView) reLayoutView
 					.findViewById(R.id.imgv_slice_bg);
 
-			imgv_skb_tip = (ImageView) findViewById(R.id.imgv_skb_tip);
+			imgv_skb_anim_tip = (ImageView) findViewById(R.id.imgv_skb_anim_tip);
 			imgv_change_image = (ImageView) findViewById(R.id.imgv_change_image);
 
 			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
