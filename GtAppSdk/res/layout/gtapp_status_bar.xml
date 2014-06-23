@@ -4,7 +4,7 @@
     android:layout_height="26dp"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
-    android:background="#FFF9F9F9"
+    
     android:orientation="horizontal" >
 
     <ImageView
@@ -44,9 +44,7 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="拖动滑块使悬浮图像正确拼合"
-        android:textColor="#B0AFAF" />
+        android:textColor="#FFFFFF" />
     <!-- 验证状态描述 -->
-
-
 
 </LinearLayout>

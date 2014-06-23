@@ -44,20 +44,23 @@
         <RelativeLayout
             android:id="@+id/rl_buttons"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="40dp"
+            android:background="@drawable/gtapp_top_bar_repeat_bg"
+            android:gravity="center" >
 
             <include
                 android:id="@+id/ll_status_bar"
+                android:layout_centerVertical="true"
                 layout="@layout/gtapp_status_bar" />
             <!-- 状态区 -->
 
             <Button
                 android:id="@+id/btn_dlg_close"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="2dp"
-                android:background="@android:drawable/btn_dialog" />
+                android:layout_marginRight="1dp"
+                android:background="@drawable/gtapp_btn_close" />
             <!-- 按钮悬浮在跑马灯上面 -->
 
         </RelativeLayout>
@@ -108,6 +111,14 @@
                 android:visibility="visible" />
             <!-- 提示滑动动画 -->
 
+            <TextView
+                android:id="@+id/tv_slider_tip_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="12dp"
+                android:gravity="center"
+                android:text=">>> 向右拖动完成验证   >>>" />
         </FrameLayout>
 
         <View style="@style/gtapp_horizon_dividing_line" />
@@ -115,7 +126,8 @@
 
         <include
             android:id="@+id/fl_slider_string_tip"
-            layout="@layout/gtapp_slider_string_tip" />
+            layout="@layout/gtapp_slider_string_tip"
+            android:visibility="gone" />
         <!-- 霓虹灯效果 -->
 
         <View style="@style/gtapp_horizon_dividing_line" />

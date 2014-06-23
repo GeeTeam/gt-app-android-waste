@@ -121,6 +121,7 @@ public class GtAppDialog extends Dialog {
 	private Button btn_help;// 使用帮助按钮
 	private Button btn_about;// "关于"按钮
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
+	private TextView tv_slider_tip_msg;// 滑动提示文字
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
 	private Animation anim_skb_finger_tip;// 使用提示动画
@@ -320,6 +321,7 @@ public class GtAppDialog extends Dialog {
 
 		// 重置SeekBar
 		skb_dragCaptcha.setProgress(0);
+		tv_slider_tip_msg.setVisibility(View.VISIBLE);// 拖动的提示文字消失
 
 		clientCaptchaResult = false;// 最开始状态是为不通过的。
 		skb_dragCaptcha.setEnabled(true);
@@ -623,6 +625,8 @@ public class GtAppDialog extends Dialog {
 
 				case MotionEvent.ACTION_DOWN:
 					GtLogger.v("按下拖动条");
+
+					tv_slider_tip_msg.setVisibility(View.INVISIBLE);// 拖动的提示文字消失
 
 					GtLogger.v("skb_dragCaptcha.getLeft(): "
 							+ skb_dragCaptcha.getLeft()
@@ -980,6 +984,7 @@ public class GtAppDialog extends Dialog {
 			imgv_change_image = (ImageView) findViewById(R.id.imgv_change_image);
 
 			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
+			tv_slider_tip_msg = (TextView) findViewById(R.id.tv_slider_tip_msg);
 
 			btn_dlg_close = (Button) findViewById(R.id.btn_dlg_close);
 
