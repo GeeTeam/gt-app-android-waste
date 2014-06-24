@@ -858,7 +858,7 @@ public class GtAppDialog extends Dialog {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				System.out.println("动画开始...");
-				imgv_skb_anim_tip.setVisibility(View.VISIBLE);
+				imgv_flashlight.setVisibility(View.VISIBLE);
 			}
 
 			/**
@@ -1116,15 +1116,18 @@ public class GtAppDialog extends Dialog {
 	 */
 	private float getImageZoomScale(int orginImageWidth) {
 
-		int seekbar_width = skb_dragCaptcha.getRight()
-				- skb_dragCaptcha.getLeft();
+		// int seekbar_width = skb_dragCaptcha.getRight()
+		// - skb_dragCaptcha.getLeft();
 
-		int relWidth = reLayoutView.getRight() - reLayoutView.getLeft();
+		// int relWidth = reLayoutView.getRight() - reLayoutView.getLeft();
 
-		GtLogger.v("seekbar_width: " + seekbar_width);
+		int relWidth = firstReLayoutView.getRight()
+				- firstReLayoutView.getLeft();
+
+		// GtLogger.v("seekbar_width: " + seekbar_width);
 		GtLogger.v("relWidth: " + relWidth);
 
-		float zoom_scale = ((seekbar_width - leftMargin - rightMargin) * 1000)
+		float zoom_scale = ((relWidth - leftMargin - rightMargin) * 1000)
 				/ (orginImageWidth * 1000.0f);
 
 		// float zoom_scale = ((screenSize.getWidth() - leftMargin -

@@ -18,7 +18,7 @@
         android:layout_margin="0dp"
         android:background="#c0c00e"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <ImageView
             android:id="@+id/imgv_full_bg"
@@ -39,7 +39,7 @@
         android:layout_margin="0dp"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <RelativeLayout
             android:id="@+id/rl_buttons"
