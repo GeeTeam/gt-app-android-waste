@@ -63,7 +63,8 @@ public class MainActivity extends Activity {
 				gtAppCallback);
 
 		new GtAppDialog(gtOption).setDisplay();
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);// 传感器相关
+		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);//
+		// 传感器相关
 	}
 
 }

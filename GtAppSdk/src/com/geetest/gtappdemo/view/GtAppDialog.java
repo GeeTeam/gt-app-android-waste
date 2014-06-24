@@ -38,6 +38,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -95,7 +96,8 @@ public class GtAppDialog extends Dialog {
 	// private Animation animation;
 
 	private RelativeLayout firstReLayoutView;// 最外层布局
-	private RelativeLayout reLayoutView;// 相框的相对布局
+	private FrameLayout reLayoutView;// 相框的相对布局
+	// private RelativeLayout reLayoutView;// 相框的相对布局
 	private LinearLayout fl_slider_string_tip;// 提示滑动布局
 	private GtAppNeonLightTip gtAppNeonLightTip;// 滑动霓虹灯
 
@@ -105,9 +107,10 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_full_bg;// 完整的背景
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
+	private ImageView imgv_flashlight;// 闪电图
 
 	private ImageView imgv_skb_anim_tip;// 滑动条操作提示
-	private ImageView imgv_change_image;// 换图
+	private ImageView imgv_change_image;// 换图按钮
 
 	private ImageView imgv_captcha_status_icon;// 状态锁
 	private TextView tv_validateStatus;// 验证码的状态栏
@@ -124,6 +127,7 @@ public class GtAppDialog extends Dialog {
 
 	private RequestQueue mQueue;// 用于Volley的通讯内容
 	private Animation anim_skb_finger_tip;// 使用提示动画
+	private Animation anim_flashlight;// 闪电图
 	// /********************下面是数据区
 
 	// 图片对象
@@ -321,7 +325,8 @@ public class GtAppDialog extends Dialog {
 		// 重置SeekBar
 		skb_dragCaptcha.setProgress(0);
 		tv_slider_tip_msg.setVisibility(View.VISIBLE);// 拖动的提示文字消失
-		imgv_skb_anim_tip.setVisibility(View.VISIBLE);
+		imgv_skb_anim_tip.setVisibility(View.VISIBLE);// 拖动手指显示
+		imgv_flashlight.setVisibility(View.INVISIBLE);// 闪电图在开始时不可见
 
 		clientCaptchaResult = false;// 最开始状态是为不通过的。
 		skb_dragCaptcha.setEnabled(true);
@@ -333,6 +338,9 @@ public class GtAppDialog extends Dialog {
 
 		setImageViewScale(imgv_slice, bm_full_bg.getWidth(),
 				bm_full_bg.getHeight());
+
+		setImageViewScale(imgv_flashlight, bm_full_bg.getWidth(),
+				bm_full_bg.getHeight());// 设置闪电图
 
 		// igv_slice.setImageBitmap(response);
 
@@ -841,6 +849,46 @@ public class GtAppDialog extends Dialog {
 			}
 		});
 
+		// 渐变过程监听
+		anim_flashlight.setAnimationListener(new AnimationListener() {
+
+			/**
+			 * 动画开始时
+			 */
+			@Override
+			public void onAnimationStart(Animation animation) {
+				System.out.println("动画开始...");
+				imgv_skb_anim_tip.setVisibility(View.VISIBLE);
+			}
+
+			/**
+			 * 重复动画时
+			 */
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// System.out.println("动画重复...");
+			}
+
+			/**
+			 * 动画结束时
+			 */
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				// System.out.println("动画结束...");
+				// TODO
+				imgv_flashlight.setVisibility(View.INVISIBLE);
+				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
+
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}// 停留一段时间，自动关闭
+				dismiss();// 当前对话框关闭
+			}
+		});
+
 	}
 
 	/**
@@ -974,14 +1022,16 @@ public class GtAppDialog extends Dialog {
 			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
 					tv_validateStatus, tv_validateMsg);// 状态条
 
-			// 图片框布局
-			reLayoutView = (RelativeLayout) firstReLayoutView
+			// 图片框布局--好像相对布局必须要这样弄
+			reLayoutView = (FrameLayout) firstReLayoutView
 					.findViewById(R.id.rl_view_image_frame);
 			imgv_full_bg = (ImageView) reLayoutView
 					.findViewById(R.id.imgv_full_bg);
 			imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
 			imgv_slice_bg = (ImageView) reLayoutView
 					.findViewById(R.id.imgv_slice_bg);
+			imgv_flashlight = (ImageView) reLayoutView
+					.findViewById(R.id.imgv_flashlight);
 
 			imgv_skb_anim_tip = (ImageView) findViewById(R.id.imgv_skb_anim_tip);
 			imgv_change_image = (ImageView) findViewById(R.id.imgv_change_image);
@@ -1001,6 +1051,9 @@ public class GtAppDialog extends Dialog {
 
 			anim_skb_finger_tip = AnimationUtils.loadAnimation(context,
 					R.anim.gtapp_anim_skb_tip);// 手拖动动画。
+
+			anim_flashlight = AnimationUtils.loadAnimation(context,
+					R.anim.gtapp_anim_flashlight);// 闪电图。
 
 		} catch (Exception e) {
 			GtLogger.expection(LoggerString.getFileLineMethod()
@@ -1715,8 +1768,10 @@ public class GtAppDialog extends Dialog {
 					}
 				}
 
-				Thread.sleep(500);// 停留一段时间，自动关闭
-				dismiss();// 当前对话框关闭
+				// 设计单独的动画
+				imgv_flashlight.startAnimation(anim_flashlight);
+
+				// TODO 设置一个动画的事件，在动画结束后停止 关闭对话框
 
 				// 后面要做一个回调的函数。
 				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();

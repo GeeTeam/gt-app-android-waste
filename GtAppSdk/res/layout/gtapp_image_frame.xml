@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="0dp"
@@ -13,39 +13,37 @@
         android:id="@+id/imgv_full_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:scaleType="fitXY"
         android:src="@android:drawable/title_bar" />
     <!-- android:src="@drawable/full_bg" -->
     <!-- android:background="@drawable/full_bg" -->
-
-
     <!-- 完整背景图 -->
 
     <ImageView
         android:id="@+id/imgv_slice_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:scaleType="matrix"
         android:visibility="visible" />
-    <!-- android:src="@drawable/slip_big" -->
-
-
     <!-- 切图背景 -->
 
     <ImageView
         android:id="@+id/imgv_slice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:gravity="right"
         android:scaleType="matrix"
         android:visibility="visible" />
     <!-- 切片小图 -->
     <!-- android:src="@drawable/slip_small" -->
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/imgv_flashlight"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:scaleType="matrix"
+        android:src="@drawable/gtapp_flashlight"
+        android:visibility="visible" />
+
+</FrameLayout>
