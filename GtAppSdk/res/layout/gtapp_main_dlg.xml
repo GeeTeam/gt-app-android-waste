@@ -11,25 +11,29 @@
 
     <!-- 采用相对布局来层叠 -->
 
-    <LinearLayout
+    <include
         android:id="@+id/ll_before_load"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:background="#c0c00e"
-        android:orientation="vertical"
-        android:visibility="visible" >
+        layout="@layout/gtapp_wait_for_image"
+        android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/imgv_full_bg"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/gtapp_before_load" />
+    <!-- <LinearLayout -->
+    <!-- android:id="@+id/ll_before_load" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_margin="0dp" -->
+    <!-- android:background="#c0c00e" -->
+    <!-- android:orientation="vertical" -->
+    <!-- android:visibility="visible" > -->
 
-        <!-- 网络通讯未完成时的显示过渡动画 -->
 
-    </LinearLayout>
+    <!-- <ImageView -->
+    <!-- android:id="@+id/imgv_full_bg" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="160dp" -->
+    <!-- android:scaleType="fitXY" -->
+    <!-- android:src="@drawable/gtapp_before_load" /> -->
+    <!-- </LinearLayout> -->
+
     <!-- 一个空白的预加载界面 -->
 
     <LinearLayout

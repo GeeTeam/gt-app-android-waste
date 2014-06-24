@@ -121,7 +121,8 @@ public final class R {
         public static final int gtapp_slider_string_tip=0x7f030002;
         public static final int gtapp_status_bar=0x7f030003;
         public static final int gtapp_tool_bar=0x7f030004;
-        public static final int gtappdemo=0x7f030005;
+        public static final int gtapp_wait_for_image=0x7f030005;
+        public static final int gtappdemo=0x7f030006;
     }
     public static final class string {
         public static final int action_settings=0x7f070003;
