@@ -5,8 +5,8 @@
     <!-- 透明度变化 -->
     <alpha
         android:duration="400"
-        android:fromAlpha="0.5"
-        android:toAlpha="0.2" />
+        android:fromAlpha="1"
+        android:toAlpha="0.5" />
 
     <!-- 水平与垂直位移 -->
     <translate
