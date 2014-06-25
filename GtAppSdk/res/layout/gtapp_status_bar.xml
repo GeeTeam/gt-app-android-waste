@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="26dp"
+    android:layout_height="56dp"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
-    
     android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/imgv_captcha_status_icon"
+        style="@style/statusTextShadow"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
@@ -21,6 +21,7 @@
 
     <TextView
         android:id="@+id/tv_validateStatus"
+        style="@style/statusTextShadow"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
@@ -31,6 +32,7 @@
 
     <TextView
         android:id="@+id/tv_validateMsg"
+        style="@style/statusTextShadow"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
@@ -44,7 +46,7 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="拖动滑块使悬浮图像正确拼合"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FF9F9D92" />
     <!-- 验证状态描述 -->
 
 </LinearLayout>

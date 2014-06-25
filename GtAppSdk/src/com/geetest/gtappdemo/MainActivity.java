@@ -66,5 +66,4 @@ public class MainActivity extends Activity {
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);//
 		// 传感器相关
 	}
-
 }

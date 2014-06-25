@@ -88,7 +88,7 @@ public class GtAppStatusBar {
 		imgv_captcha_status_icon.setImageResource(R.drawable.gtapp_status_wait);
 		tv_validateStatus.setText("等待验证：");
 		tv_validateStatus.setTextColor(0xffF2BD5F);
-		tv_validateMsg.setText("拖动滑块使悬浮图像正确拼合Xaceddgqwer");
+		tv_validateMsg.setText("拖动滑块使悬浮图像正确拼合");//"拖动滑块使悬浮图像正确拼合Xadfasdgweggdfa"
 	}
 
 	/**

@@ -1,12 +1,11 @@
 package com.geetest.gtappdemo.model.vo;
 
-import java.security.PublicKey;
-
-import com.geetest.gtapp.utils.itface.GtAppCallback;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+
+import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.utils.itface.GtAppCallback;
 
 /**
  * GtApp 对话框的初始化
@@ -22,6 +21,7 @@ public class GtAppDialogOption {
 	private DisplayMetrics dm;// 屏幕对象###暂无
 	private Resources res;// 资源对象###暂无
 	private GtAppCallback gtAppCallback;// 回调函数###暂无
+	private float screenDensity;// 获取屏幕的密度
 
 	public GtAppDialogOption(Context context, String gt_public_key,
 			int gtAppDlgLayoutResId, DisplayMetrics dm, Resources res,
@@ -33,7 +33,9 @@ public class GtAppDialogOption {
 		this.dm = dm;
 		this.res = res;
 		this.gtAppCallback = gtAppCallback;
+		this.screenDensity = res.getDisplayMetrics().densityDpi;
 
+		GtLogger.v("screenDensity:   " + screenDensity);
 	}
 
 	public Context getContext() {

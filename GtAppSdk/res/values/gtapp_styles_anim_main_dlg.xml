@@ -28,6 +28,16 @@
     </style>
     <!-- 水平分割线 -->
 
+    <style name="statusTextShadow">
+        <item name="android:shadowColor">#ffFFFFFF</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- 状态栏文字阴影效果 -->
+    
+    
     <style name="gtapp_slilder_tip">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -37,5 +47,6 @@
         <item name="android:layout_marginLeft">6dp</item>
         <item name="android:layout_marginRight">6dp</item>
     </style>
+    <!-- 文字霓虹灯效果 -->
 
 </resources>

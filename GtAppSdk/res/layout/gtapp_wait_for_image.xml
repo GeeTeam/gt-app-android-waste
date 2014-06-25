@@ -13,6 +13,6 @@
         android:scaleType="fitXY"
         android:src="@drawable/gtapp_before_load" />
 
-    <!-- 网络通讯未完成时的显示过渡动画 -->
+    <!-- 网络通讯未完成时的显示过渡动画 gtapp_before_load -->
 
 </LinearLayout>

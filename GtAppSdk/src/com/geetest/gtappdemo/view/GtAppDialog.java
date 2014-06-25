@@ -581,6 +581,11 @@ public class GtAppDialog extends Dialog {
 
 		btn_dlg_close.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
+
+				GtShapeSize pt_bGtSp = new GtShapeSize();
+				pt_bGtSp.setWidth((btn_dlg_close.getWidth()));
+				pt_bGtSp.setHeight((btn_dlg_close.getHeight()));
+				pt_bGtSp.v();
 				dismiss();// 当前对话框关闭
 			}
 		});
@@ -1043,7 +1048,7 @@ public class GtAppDialog extends Dialog {
 
 			// 滑动提示文字布局
 			fl_slider_string_tip = (LinearLayout) findViewById(R.id.fl_slider_string_tip);
-			gtAppNeonLightTip = new GtAppNeonLightTip(fl_slider_string_tip);
+			// gtAppNeonLightTip = new GtAppNeonLightTip(fl_slider_string_tip);
 
 			btn_refresh = (Button) findViewById(R.id.btn_refresh);
 			btn_help = (Button) findViewById(R.id.btn_help);
@@ -1116,6 +1121,16 @@ public class GtAppDialog extends Dialog {
 	 */
 	private float getImageZoomScale(int orginImageWidth) {
 
+		int gtapp_dlg_width = skb_dragCaptcha.getRight()
+				- skb_dragCaptcha.getLeft();
+		GtLogger.v("seekbar_width: " + gtapp_dlg_width);
+
+		if (0 == gtapp_dlg_width) {
+			gtapp_dlg_width = firstReLayoutView.getRight()
+					- firstReLayoutView.getLeft();
+			GtLogger.v("root_gtapp_dlg_width: " + gtapp_dlg_width);
+		}
+
 		// int seekbar_width = skb_dragCaptcha.getRight()
 		// - skb_dragCaptcha.getLeft();
 
@@ -1125,9 +1140,8 @@ public class GtAppDialog extends Dialog {
 				- firstReLayoutView.getLeft();
 
 		// GtLogger.v("seekbar_width: " + seekbar_width);
-		GtLogger.v("relWidth: " + relWidth);
 
-		float zoom_scale = ((relWidth - leftMargin - rightMargin) * 1000)
+		float zoom_scale = ((gtapp_dlg_width - leftMargin - rightMargin) * 1000)
 				/ (orginImageWidth * 1000.0f);
 
 		// float zoom_scale = ((screenSize.getWidth() - leftMargin -

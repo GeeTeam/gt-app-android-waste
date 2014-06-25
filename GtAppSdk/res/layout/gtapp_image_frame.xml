@@ -45,5 +45,7 @@
         android:scaleType="matrix"
         android:src="@drawable/gtapp_flashlight"
         android:visibility="visible" />
+    <!-- 闪电条 -->
+
 
 </FrameLayout>
