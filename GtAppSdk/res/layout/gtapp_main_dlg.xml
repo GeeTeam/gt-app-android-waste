@@ -14,7 +14,7 @@
     <include
         android:id="@+id/ll_before_load"
         layout="@layout/gtapp_wait_for_image"
-        android:visibility="gone" />
+        android:visibility="visible" />
     <!-- 一个空白的预加载界面 -->
 
     <LinearLayout
@@ -24,7 +24,7 @@
         android:layout_margin="0dp"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <RelativeLayout
             android:id="@+id/rl_buttons"
