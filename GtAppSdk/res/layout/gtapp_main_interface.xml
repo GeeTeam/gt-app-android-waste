@@ -130,7 +130,8 @@
             android:layout_gravity="right"
             android:gravity="center"
             android:text="向下拖动刷新图片"
-            android:textColor="#22FFFFFF" />
+            android:textColor="#22FFFFFF"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_about_info"
