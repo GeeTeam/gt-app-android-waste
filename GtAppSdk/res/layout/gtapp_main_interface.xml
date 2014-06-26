@@ -29,7 +29,8 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
             android:layout_marginTop="1dp"
             android:background="@drawable/gtapp_btn_close" />
 
