@@ -126,15 +126,6 @@
         android:layout_height="wrap_content"
         android:background="#DD001826" >
 
-        <Button
-            android:id="@+id/btn_about_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/gtapp_version"
-            android:visibility="visible" />
-
         <!-- android:layout_alignBottom="@id/imgv_change_image" -->
         <!-- android:layout_alignRight="@id/imgv_change_image" -->
 
@@ -145,12 +136,21 @@
             android:id="@+id/tv_change_image_tip_msg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="向下拖动刷新图片"
             android:textColor="#22FFFFFF"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_about_info"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="2dp"
+            android:background="@android:drawable/ic_menu_info_details"
+            android:visibility="visible" />
     </RelativeLayout>
     <!-- 图片加载成功后的主交互界面 -->
 
