@@ -5,10 +5,10 @@
     <!-- 透明度变化 -->
     <alpha
         android:duration="1000"
-        android:fromAlpha="1"
+        android:fromAlpha="0.9"
         android:repeatCount="1"
         android:repeatMode="restart"
-        android:toAlpha="0.6" />
+        android:toAlpha="0.2" />
 
     <!-- 水平与垂直位移 -->
     <translate

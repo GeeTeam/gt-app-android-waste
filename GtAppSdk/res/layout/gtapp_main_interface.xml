@@ -30,15 +30,14 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/gtapp_btn_close" />
 
         <!-- 按钮悬浮在跑马灯上面 -->
 
     </RelativeLayout>
 
-    <View style="@style/gtapp_horizon_dividing_line" />
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 在图片预加载时，先不显示 -->
 
     <include
@@ -46,7 +45,8 @@
         layout="@layout/gtapp_image_frame" />
     <!-- 图片区 -->
 
-    <View style="@style/gtapp_horizon_dividing_line" />
+
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
 
     <include
         android:id="@+id/ll_toolsbar"
@@ -54,7 +54,8 @@
         android:visibility="gone" />
     <!-- 工具区 -->
 
-    <View style="@style/gtapp_horizon_dividing_line" />
+
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
     <FrameLayout
@@ -79,6 +80,7 @@
             android:id="@+id/imgv_skb_anim_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_drag_normal_finger"
             android:visibility="visible" />
@@ -97,7 +99,7 @@
             android:textSize="14sp" />
     </FrameLayout>
 
-    <View style="@style/gtapp_horizon_dividing_line" />
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
     <include
@@ -106,42 +108,49 @@
         android:visibility="gone" />
     <!-- 霓虹灯效果 -->
 
-    <View style="@style/gtapp_horizon_dividing_line" />
+
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
+
+    <ImageView
+        android:id="@+id/imgv_change_image"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#DD001826"
+        android:scaleType="center"
+        android:src="@drawable/gtapp_downarrow_unactive"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#DD001826" >
 
-        <ImageView
-            android:id="@+id/imgv_change_image"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginBottom="4dp"
-            android:scaleType="center"
-            android:src="@drawable/gtapp_downarrow_unactive"
-            android:visibility="visible" />
-
         <Button
             android:id="@+id/btn_about_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/imgv_change_image"
-            android:layout_alignRight="@id/imgv_change_image"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/gtapp_version"
             android:visibility="visible" />
+
+        <!-- android:layout_alignBottom="@id/imgv_change_image" -->
+        <!-- android:layout_alignRight="@id/imgv_change_image" -->
+
+
+        <!-- android:layout_below="@+id/imgv_change_image" -->
 
         <TextView
             android:id="@+id/tv_change_image_tip_msg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imgv_change_image"
             android:layout_gravity="right"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="向下拖动刷新图片"
             android:textColor="#22FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
     <!-- 图片加载成功后的主交互界面 -->
 
