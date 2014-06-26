@@ -76,14 +76,6 @@
             android:thumb="@drawable/gtapp_skb_thumb_state_define"
             android:thumbOffset="-8dp" />
 
-        <ImageView
-            android:id="@+id/imgv_skb_anim_tip"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="8dp"
-            android:scaleType="matrix"
-            android:src="@drawable/gtapp_skb_drag_normal_finger"
-            android:visibility="visible" />
         <!-- 提示滑动动画 -->
 
         <TextView
@@ -97,6 +89,16 @@
             android:text=">>> 向右拖动完成验证   >>>"
             android:textColor="#A2A497"
             android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imgv_skb_anim_tip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:scaleType="matrix"
+            android:src="@drawable/gtapp_skb_drag_normal_finger"
+            android:visibility="visible" />
     </FrameLayout>
 
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
@@ -123,7 +125,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="#DD001826" >
 
         <!-- android:layout_alignBottom="@id/imgv_change_image" -->
@@ -136,19 +138,19 @@
             android:id="@+id/tv_change_image_tip_msg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="向下拖动刷新图片"
             android:textColor="#22FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_about_info"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="1dp"
             android:background="@android:drawable/ic_menu_info_details"
             android:visibility="visible" />
     </RelativeLayout>
