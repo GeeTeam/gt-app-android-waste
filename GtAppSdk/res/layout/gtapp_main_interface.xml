@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/rl_buttons"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:background="@drawable/gtapp_topbar"
         android:gravity="center" >
 
@@ -18,8 +18,10 @@
 
         <include
             android:id="@+id/ll_status_bar"
-            android:layout_centerVertical="true"
             layout="@layout/gtapp_status_bar" />
+        <!-- android:layout_centerVertical="true" -->
+
+
         <!-- 状态区 -->
 
         <Button
@@ -27,10 +29,10 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:layout_marginRight="1dp"
             android:layout_marginTop="1dp"
             android:background="@drawable/gtapp_btn_close" />
+
         <!-- 按钮悬浮在跑马灯上面 -->
 
     </RelativeLayout>

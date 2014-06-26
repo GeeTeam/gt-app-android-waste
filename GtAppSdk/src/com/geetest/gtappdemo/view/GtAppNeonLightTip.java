@@ -20,8 +20,8 @@ import com.geetest.gtapp.R;
 public class GtAppNeonLightTip {
 	private int currentColor = 0;
 	// 定义一个颜色数组
-	final int[] colors = new int[] { Color.BLACK, Color.WHITE, Color.WHITE,
-			Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, };
+	final int[] colors = new int[] { Color.BLACK, R.color.gtapp_status_succeed,
+			Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, };
 
 	// final int[] colors = new int[] { R.color.color7, R.color.color6,
 	// R.color.color5, R.color.color4, R.color.color3, R.color.color2,

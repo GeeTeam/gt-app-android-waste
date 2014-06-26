@@ -1024,7 +1024,7 @@ public class GtAppDialog extends Dialog {
 			tv_validateStatus = (TextView) findViewById(R.id.tv_validateStatus);
 			tv_validateMsg = (TextView) findViewById(R.id.tv_validateMsg);
 
-			gtStatusBar = new GtAppStatusBar(imgv_captcha_status_icon,
+			gtStatusBar = new GtAppStatusBar(res, imgv_captcha_status_icon,
 					tv_validateStatus, tv_validateMsg);// 状态条
 
 			// 图片框布局--好像相对布局必须要这样弄
