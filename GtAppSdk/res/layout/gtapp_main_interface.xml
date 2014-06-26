@@ -117,10 +117,19 @@
         <ImageView
             android:id="@+id/imgv_change_image"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="120dp"
             android:layout_marginBottom="4dp"
             android:scaleType="center"
             android:src="@drawable/gtapp_downarrow_unactive"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_about_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/imgv_change_image"
+            android:layout_alignRight="@id/imgv_change_image"
+            android:background="@drawable/gtapp_version"
             android:visibility="visible" />
 
         <TextView
@@ -133,15 +142,6 @@
             android:text="向下拖动刷新图片"
             android:textColor="#22FFFFFF"
             android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btn_about_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/imgv_change_image"
-            android:layout_alignRight="@id/imgv_change_image"
-            android:background="@drawable/gtapp_version"
-            android:visibility="visible" />
     </RelativeLayout>
     <!-- 图片加载成功后的主交互界面 -->
 
