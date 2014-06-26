@@ -78,8 +78,8 @@
 
         <ImageView
             android:id="@+id/imgv_skb_anim_tip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_marginLeft="8dp"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_drag_normal_finger"
