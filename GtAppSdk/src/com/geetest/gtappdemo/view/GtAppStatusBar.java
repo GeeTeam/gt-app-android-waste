@@ -68,7 +68,7 @@ public class GtAppStatusBar {
 		tv_validateStatus.setText(R.string.gtapp_status_too_much);
 		tv_validateStatus.setTextColor(res
 				.getColor(R.color.gtapp_status_too_much));// android.graphics.Color.GREEN
-		tv_validateMsg.setText("系统正在自动更新刷新验证图片……");
+		tv_validateMsg.setText(R.string.gtapp_status_msg_too_much);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class GtAppStatusBar {
 		tv_validateStatus.setText(R.string.gtapp_status_failed);
 		tv_validateStatus.setTextColor(res
 				.getColor(R.color.gtapp_status_failed));// android.graphics.Color.GREEN
-		tv_validateMsg.setText("拖动滑块使悬浮图像正确拼合");
+		tv_validateMsg.setText(R.string.gtapp_status_msg_failed);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class GtAppStatusBar {
 		tv_validateStatus.setText(R.string.gtapp_status_wait);
 		tv_validateStatus.setTextColor(res
 				.getColor(R.color.gtapp_status_wait));
-		tv_validateMsg.setText("拖动滑块使悬浮图像正确拼合");// "拖动滑块使悬浮图像正确拼合Xadfasdgweggdfa"
+		tv_validateMsg.setText(R.string.gtapp_status_msg_wait);// "拖动滑块使悬浮图像正确拼合Xadfasdgweggdfa"
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class GtAppStatusBar {
 		tv_validateStatus.setText(R.string.gtapp_status_exception);
 		tv_validateStatus.setTextColor(res
 				.getColor(R.color.gtapp_status_exception));
-		tv_validateMsg.setText("你是来自星星的都敏俊吧？");
+		tv_validateMsg.setText(R.string.gtapp_status_msg_exception);
 	}
 
 }
