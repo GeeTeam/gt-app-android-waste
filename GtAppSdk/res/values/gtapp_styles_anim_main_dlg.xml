@@ -33,7 +33,7 @@
         <item name="android:shadowRadius">1</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
     <!-- 状态栏文字阴影效果 -->
     
