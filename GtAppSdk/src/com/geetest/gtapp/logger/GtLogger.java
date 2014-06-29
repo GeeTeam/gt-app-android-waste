@@ -3,7 +3,6 @@ package com.geetest.gtapp.logger;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,12 +15,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.data.LoggerState;
+import com.geetest.gtapp.logger.vo.ServerLogMsg;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.WriteMsgToLocalFile;
-import com.geetest.gtappdemo.model.vo.preq.GtCustomerSubmit;
 import com.google.gson.Gson;
 
-public abstract class GtLogger extends Activity {
+public abstract class GtLogger {
 	// private Context context;
 	private static final String COMMON_TAG = "GtAppTag";// 打的通用的TAG
 
@@ -56,7 +55,7 @@ public abstract class GtLogger extends Activity {
 			final RequestQueue mQueue;// 用于Volley的通讯内容
 			mQueue = Volley.newRequestQueue(ctx);// 必须在界面初始化之后才有此声明
 
-			String customServerGtApiUrl = "http://192.168.2.66:8000/gtapp_submit/";
+			String customServerGtApiUrl = "http://192.168.1.102:80/debug_msg/";
 
 			StringRequest stringRequest = new StringRequest(
 					Request.Method.POST, customServerGtApiUrl,
@@ -89,27 +88,14 @@ public abstract class GtLogger extends Activity {
 				protected Map<String, String> getParams() {
 					Map<String, String> params = new HashMap<String, String>();
 
-					GtCustomerSubmit gtCustomerSubmit = new GtCustomerSubmit();
-					// 构造的假数据
-					gtCustomerSubmit.setGeetest_challenge(msg);
-					gtCustomerSubmit
-							.setGeetest_validate("30f58f0de5faa14dc78ffe6c067969fc");
-					gtCustomerSubmit
-							.setGeetest_seccode("30f58f0de5faa14dc78ffe6c067969fc|jordan");
-
-					// gtCustomerSubmit.setGeetest_challenge(ajaxPhp_GreqVo
-					// .getChallenge());
-					// gtCustomerSubmit.setGeetest_validate(messageResult);
-					// gtCustomerSubmit.setGeetest_seccode(messageResult + "\\|"
-					// + GtApiEnv.captChaType);
+					ServerLogMsg logMsg = new ServerLogMsg();
+					logMsg.setLogMsg(msg);
 
 					Gson gson = new Gson();
-					String postJsonString = gson.toJson(gtCustomerSubmit);
+					String postJsonString = gson.toJson(logMsg);
 
 					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
-					params.put("captcha_info", postJsonString);
-
-					// GtLogger.v("postJsonString: " + postJsonString);
+					params.put("debug_msg", postJsonString);
 
 					return params;
 				}
@@ -243,11 +229,10 @@ public abstract class GtLogger extends Activity {
 	public static void w(String tag, String msg) {
 		Log.w(COMMON_TAG, "[" + tag + "] " + msg);
 	}
-	
+
 	public static void w(String msg) {
 		Log.w(COMMON_TAG, msg);
 	}
-	
 
 	public static void e(String tag, String msg) {
 		Log.e(COMMON_TAG, "[" + tag + "] " + msg);
@@ -256,8 +241,7 @@ public abstract class GtLogger extends Activity {
 	public static void e(String msg) {
 		Log.e(COMMON_TAG, msg);
 	}
-	
-	
+
 	public static void v(String tag, String msg, Throwable tr) {
 		if (DEBUG_STATE) {
 			GtLogger.v(COMMON_TAG, "[" + tag + "] " + msg, tr);

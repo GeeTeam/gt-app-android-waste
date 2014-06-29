@@ -207,6 +207,8 @@ public class GtAppDialog extends Dialog {
 		this.dm = option.getDm();
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
+
+		// GtLogger.s_v(context, "Hello Server");
 	}
 
 	/**
@@ -428,17 +430,17 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void getSliderStartLeftTopPosition() {
 
-		GtLogger.v("获取滑块起始左上角坐标值： ");
+		GtLogger.s_v(context, "获取滑块起始左上角坐标值： ");
 
 		GtPoint skbPositon = new GtPoint();
 		skbPositon.setX(skb_dragCaptcha.getLeft());
 		skbPositon
 				.setY((skb_dragCaptcha.getBottom() + skb_dragCaptcha.getTop()) / 2);
 
-		GtLogger.v("滑块高度Hieght: "
+		GtLogger.s_v(context, "滑块高度Hieght: "
 				+ (skb_dragCaptcha.getBottom() - skb_dragCaptcha.getTop()));
 
-		GtLogger.v("滑动条Bar坐标--X: " + skbPositon.getX() + " Y: "
+		GtLogger.s_v(context, "滑动条Bar坐标--X: " + skbPositon.getX() + " Y: "
 				+ skbPositon.getY());
 
 		// 将滑块的坐标体系从 屏幕坐标体系 转成 seekbar坐标体系
