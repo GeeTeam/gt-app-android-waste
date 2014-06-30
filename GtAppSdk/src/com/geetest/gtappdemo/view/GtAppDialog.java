@@ -1223,9 +1223,12 @@ public class GtAppDialog extends Dialog {
 						imgLoadTimeStamp.setSlice_img_end_time(System
 								.currentTimeMillis());
 
+						Gson gson = new Gson();
+						String strMsg = gson.toJson(imgLoadTimeStamp
+								.getImageLoadTimeCycle());
+
 						// 将图片 信息收集进去
-						GtLogger.s_v(context, LogMsgTag.imageLoadTime,
-								imgLoadTimeStamp.getImageLoadTimeCycle());
+						GtLogger.s_v(context, LogMsgTag.imageLoadTime, strMsg);
 						// String postJsonString =
 						// gson.toJson(imgLoadTimeStamp);
 

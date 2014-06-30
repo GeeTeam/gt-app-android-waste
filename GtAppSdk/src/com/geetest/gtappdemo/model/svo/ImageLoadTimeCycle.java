@@ -7,12 +7,20 @@ package com.geetest.gtappdemo.model.svo;
  * @time 2014年6月30日 下午12:02:23
  */
 public class ImageLoadTimeCycle {
-	
+
 	private long bg_img_cycle; // 背景图加载时间（完毕时间-开始时间）（ms）
 	private long slice_bg_img_cycle;// 切图背景加载时间（ms）
 	private long slice_img_cycle;// 切图加载时间（ms）
 
-	
+	private long total_img_cycle;// 三张图片载的总时间
+
+	public long getTotal_img_cycle() {
+		return total_img_cycle;
+	}
+
+	public void setTotal_img_cycle(long total_img_cycle) {
+		this.total_img_cycle = total_img_cycle;
+	}
 
 	public long getBg_img_cycle() {
 		return bg_img_cycle;
@@ -30,19 +38,13 @@ public class ImageLoadTimeCycle {
 		this.slice_bg_img_cycle = slice_bg_img_cycle;
 	}
 
-
-
 	public long getSlice_img_cycle() {
 		return slice_img_cycle;
 	}
 
-
-
 	public void setSlice_img_cycle(long slice_img_cycle) {
 		this.slice_img_cycle = slice_img_cycle;
 	}
-
-
 
 	public void setSlice_img_cycle(int slice_img_cycle) {
 		this.slice_img_cycle = slice_img_cycle;

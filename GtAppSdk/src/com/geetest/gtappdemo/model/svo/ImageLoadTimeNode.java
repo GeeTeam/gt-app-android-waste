@@ -39,6 +39,7 @@ public class ImageLoadTimeNode {
 		timeCycle.setSlice_bg_img_cycle(slice_bg_img_end_time
 				- slice_bg_img_start_time);
 		timeCycle.setSlice_img_cycle(slice_img_end_time - slice_img_start_time);
+		timeCycle.setTotal_img_cycle(getTotalLoadTime());
 
 		return timeCycle;
 	}
