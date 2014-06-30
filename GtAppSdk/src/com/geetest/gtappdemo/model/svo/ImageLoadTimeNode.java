@@ -6,7 +6,7 @@ package com.geetest.gtappdemo.model.svo;
  * @author Zheng
  * @time 2014年6月30日 下午12:13:26
  */
-public class ImageLoadTime {
+public class ImageLoadTimeNode {
 
 	// 软件行为参数收集
 	private long bg_img_start_time = 0;

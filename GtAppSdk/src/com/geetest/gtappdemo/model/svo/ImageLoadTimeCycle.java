@@ -6,7 +6,7 @@ package com.geetest.gtappdemo.model.svo;
  * @author Zheng
  * @time 2014年6月30日 下午12:02:23
  */
-public class ImageLoadInfo {
+public class ImageLoadTimeCycle {
 	
 	private int bg_img_cycle; // 背景图加载时间（完毕时间-开始时间）（ms）
 	private int slice_bg_img_cycle;// 切图背景加载时间（ms）

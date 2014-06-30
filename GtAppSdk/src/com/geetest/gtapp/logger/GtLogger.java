@@ -69,7 +69,9 @@ public abstract class GtLogger {
 			final RequestQueue mQueue;// 用于Volley的通讯内容
 			mQueue = Volley.newRequestQueue(ctx);// 必须在界面初始化之后才有此声明
 
-			String customServerGtApiUrl = "http://192.168.1.102:80/debug_msg/";
+			String customServerGtApiUrl = "http://192.168.2.66:80/debug_msg/";
+			// String customServerGtApiUrl =
+			// "http://192.168.1.102:80/debug_msg/";
 
 			StringRequest stringRequest = new StringRequest(
 					Request.Method.POST, customServerGtApiUrl,

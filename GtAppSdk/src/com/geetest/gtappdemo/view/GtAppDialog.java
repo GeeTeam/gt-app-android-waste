@@ -60,8 +60,8 @@ import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
-import com.geetest.gtappdemo.model.svo.ImageLoadInfo;
-import com.geetest.gtappdemo.model.svo.ImageLoadTime;
+import com.geetest.gtappdemo.model.svo.ImageLoadTimeCycle;
+import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
@@ -191,9 +191,9 @@ public class GtAppDialog extends Dialog {
 	private int rightMargin = 0;// dp
 
 	// 软件行为参数收集
-	private ImageLoadTime imgLoadTimeStamp;// 中间时间节点记录
+	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
 
-	private ImageLoadInfo imgLoadInfo = new ImageLoadInfo();
+	private ImageLoadTimeCycle imgLoadInfo = new ImageLoadTimeCycle();
 
 	// private float seekbar_server_length = 1;
 	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
@@ -1221,6 +1221,12 @@ public class GtAppDialog extends Dialog {
 
 						imgLoadTimeStamp.setSlice_img_end_time(System
 								.currentTimeMillis());
+
+						// 将图片 信息收集进去
+						Gson gson = new Gson();
+						GtLogger.s_v(context, gson.toJson(imgLoadTimeStamp));
+						// String postJsonString =
+						// gson.toJson(imgLoadTimeStamp);
 
 						GtLogger.v("切片图 Width: " + response.getWidth());
 						GtLogger.v("切片图 放大 后Width: " + response.getWidth()
