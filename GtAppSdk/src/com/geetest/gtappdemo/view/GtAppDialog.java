@@ -56,6 +56,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.R;
 import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.logger.vo.LogMsgTag;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
@@ -1223,8 +1224,8 @@ public class GtAppDialog extends Dialog {
 								.currentTimeMillis());
 
 						// 将图片 信息收集进去
-						Gson gson = new Gson();
-						GtLogger.s_v(context, gson.toJson(imgLoadTimeStamp));
+						GtLogger.s_v(context, LogMsgTag.imageLoadTime,
+								imgLoadTimeStamp.getImageLoadTimeCycle());
 						// String postJsonString =
 						// gson.toJson(imgLoadTimeStamp);
 

@@ -8,9 +8,9 @@ package com.geetest.gtapp.logger.vo;
  */
 public class ServerDebugMsg {
 
-	private String api = "";// 存储的API的名称
+	private String msgTag = "log_msg";// 消息的标签
 	private String osType = "android";// 操作系统类型 android,ios
-	private Object data = "";// 发送的字符数据对象
+	private Object logMsg = "";// 发送的字符数据对象
 
 	public String getOsType() {
 		return osType;
@@ -20,20 +20,20 @@ public class ServerDebugMsg {
 		this.osType = osType;
 	}
 
-	public String getApi() {
-		return api;
+	public String getMsgTag() {
+		return msgTag;
 	}
 
-	public void setApi(String api) {
-		this.api = api;
+	public void setMsgTag(String msgTag) {
+		this.msgTag = msgTag;
 	}
 
-	public Object getData() {
-		return data;
+	public Object getLogMsg() {
+		return logMsg;
 	}
 
-	public void setData(Object data) {
-		this.data = data;
+	public void setLogMsg(Object logMsg) {
+		this.logMsg = logMsg;
 	}
 
 }

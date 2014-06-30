@@ -15,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.data.LoggerState;
+import com.geetest.gtapp.logger.vo.ServerDebugMsg;
 import com.geetest.gtapp.logger.vo.ServerLogMsg;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.WriteMsgToLocalFile;
@@ -57,6 +58,26 @@ public abstract class GtLogger {
 		// TODO 向服务器提交相应的数据
 		GtLogger.v("向服务器提交数据");
 		postMsgToServer(ctx, msg);
+	}
+
+	/**
+	 * 给不同的信息类型加上不同的标签
+	 * 
+	 * @time 2014年6月30日 下午3:32:02
+	 * @param context
+	 * @param msgTag
+	 * @param msgObj
+	 */
+	public static void s_v(Context context, String msgTag, Object msgObj) {
+
+		ServerDebugMsg debugMsg = new ServerDebugMsg();
+		debugMsg.setOsType("android");
+		debugMsg.setMsgTag(msgTag);
+		debugMsg.setLogMsg(msgObj);
+
+		Gson gson = new Gson();
+		String strMsg = gson.toJson(debugMsg);
+		postMsgToServer(context, strMsg);
 	}
 
 	/**
@@ -107,18 +128,18 @@ public abstract class GtLogger {
 					// ServerDebugMsg debugMsg = new ServerDebugMsg();
 					// debugMsg.setOsType("android");
 
-					ServerLogMsg logMsg = new ServerLogMsg();
-					logMsg.setOsType("android");
-					logMsg.setLogMsg(jsonMsg);
-
-					// ServerDebugMsg debugMsg = new ServerDebugMsg();
-					// deb
-
-					Gson gson = new Gson();
-					String postJsonString = gson.toJson(logMsg);
+					// ServerLogMsg logMsg = new ServerLogMsg();
+					// logMsg.setOsType("android");
+					// logMsg.setLogMsg(jsonMsg);
+					//
+					// // ServerDebugMsg debugMsg = new ServerDebugMsg();
+					// // deb
+					//
+					// Gson gson = new Gson();
+					// String postJsonString = gson.toJson(logMsg);
 
 					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
-					params.put("debug_msg", postJsonString);
+					params.put("debug_msg", jsonMsg);
 
 					return params;
 				}

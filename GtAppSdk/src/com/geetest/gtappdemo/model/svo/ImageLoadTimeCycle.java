@@ -8,29 +8,41 @@ package com.geetest.gtappdemo.model.svo;
  */
 public class ImageLoadTimeCycle {
 	
-	private int bg_img_cycle; // 背景图加载时间（完毕时间-开始时间）（ms）
-	private int slice_bg_img_cycle;// 切图背景加载时间（ms）
-	private int slice_img_cycle;// 切图加载时间（ms）
+	private long bg_img_cycle; // 背景图加载时间（完毕时间-开始时间）（ms）
+	private long slice_bg_img_cycle;// 切图背景加载时间（ms）
+	private long slice_img_cycle;// 切图加载时间（ms）
 
-	public int getBg_img_cycle() {
+	
+
+	public long getBg_img_cycle() {
 		return bg_img_cycle;
 	}
 
-	public void setBg_img_cycle(int bg_img_cycle) {
+	public void setBg_img_cycle(long bg_img_cycle) {
 		this.bg_img_cycle = bg_img_cycle;
 	}
 
-	public int getSlice_bg_img_cycle() {
+	public long getSlice_bg_img_cycle() {
 		return slice_bg_img_cycle;
 	}
 
-	public void setSlice_bg_img_cycle(int slice_bg_img_cycle) {
+	public void setSlice_bg_img_cycle(long slice_bg_img_cycle) {
 		this.slice_bg_img_cycle = slice_bg_img_cycle;
 	}
 
-	public int getSlice_img_cycle() {
+
+
+	public long getSlice_img_cycle() {
 		return slice_img_cycle;
 	}
+
+
+
+	public void setSlice_img_cycle(long slice_img_cycle) {
+		this.slice_img_cycle = slice_img_cycle;
+	}
+
+
 
 	public void setSlice_img_cycle(int slice_img_cycle) {
 		this.slice_img_cycle = slice_img_cycle;

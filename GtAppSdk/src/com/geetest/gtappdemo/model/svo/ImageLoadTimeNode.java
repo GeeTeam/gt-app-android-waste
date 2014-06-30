@@ -1,10 +1,14 @@
 package com.geetest.gtappdemo.model.svo;
 
 /**
- * 图片的数据收集
+ * 图片的数据收集--时间节点
  * 
  * @author Zheng
  * @time 2014年6月30日 下午12:13:26
+ */
+/**
+ * @author Zheng
+ * @time 2014年6月30日 下午2:41:53
  */
 public class ImageLoadTimeNode {
 
@@ -20,6 +24,23 @@ public class ImageLoadTimeNode {
 
 	public long getTotalLoadTime() {
 		return (slice_img_end_time - bg_img_start_time);
+	}
+
+	/**
+	 * 将时刻节点转换成时间段
+	 * 
+	 * @time 2014年6月30日 下午2:41:56
+	 * @return
+	 */
+	public ImageLoadTimeCycle getImageLoadTimeCycle() {
+
+		ImageLoadTimeCycle timeCycle = new ImageLoadTimeCycle();
+		timeCycle.setBg_img_cycle(bg_img_end_time - bg_img_start_time);
+		timeCycle.setSlice_bg_img_cycle(slice_bg_img_end_time
+				- slice_bg_img_start_time);
+		timeCycle.setSlice_img_cycle(slice_img_end_time - slice_img_start_time);
+
+		return timeCycle;
 	}
 
 	// public void setTotalLoadTime(long totalLoadTime) {
