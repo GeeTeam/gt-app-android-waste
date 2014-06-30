@@ -26,6 +26,20 @@ public abstract class GtLogger {
 
 	public static boolean DEBUG_STATE = true;
 
+	// public static Context context;
+	//
+	// public GtLogger(Context context) {
+	// this.context = context;
+	// }
+	//
+	// public static Context getContext() {
+	// return context;
+	// }
+
+	// public static void setContext(Context context) {
+	// GtLogger.context = context;
+	// }
+
 	public static int loggerState = LoggerState.TO_LOGCAT;// log输出的状态值
 
 	// public Logger(Context context) {
@@ -48,7 +62,7 @@ public abstract class GtLogger {
 	/**
 	 * 向服务器提交数据--没有成功 2014年5月28日 10:31:46
 	 */
-	public static void postMsgToServer(Context ctx, final String msg) {
+	public static void postMsgToServer(Context ctx, final String jsonMsg) {
 
 		try {
 
@@ -88,8 +102,15 @@ public abstract class GtLogger {
 				protected Map<String, String> getParams() {
 					Map<String, String> params = new HashMap<String, String>();
 
+					// ServerDebugMsg debugMsg = new ServerDebugMsg();
+					// debugMsg.setOsType("android");
+
 					ServerLogMsg logMsg = new ServerLogMsg();
-					logMsg.setLogMsg(msg);
+					logMsg.setOsType("android");
+					logMsg.setLogMsg(jsonMsg);
+
+					// ServerDebugMsg debugMsg = new ServerDebugMsg();
+					// deb
 
 					Gson gson = new Gson();
 					String postJsonString = gson.toJson(logMsg);
@@ -210,6 +231,7 @@ public abstract class GtLogger {
 	 */
 	public static void v(String msg) {
 		if (DEBUG_STATE) {
+			// s_v(context, msg);
 			Log.v(COMMON_TAG, msg);
 		}
 	}

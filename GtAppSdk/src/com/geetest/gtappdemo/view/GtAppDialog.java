@@ -60,6 +60,8 @@ import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
+import com.geetest.gtappdemo.model.svo.ImageLoadInfo;
+import com.geetest.gtappdemo.model.svo.ImageLoadTime;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
@@ -144,8 +146,8 @@ public class GtAppDialog extends Dialog {
 	private long seekbarEndTime = 0;// 放开时
 
 	// 图片加载的起始时间
-	private long bgImgLoadStartTime = 0;
-	private long bgImgLoadEndTime = 0;
+	// private long bgImgLoadStartTime = 0;
+	// private long bgImgLoadEndTime = 0;
 
 	private String messageResult = "";// Gt服务器返回的验证结果
 
@@ -188,6 +190,11 @@ public class GtAppDialog extends Dialog {
 	private int leftMargin = 0;// dp
 	private int rightMargin = 0;// dp
 
+	// 软件行为参数收集
+	private ImageLoadTime imgLoadTimeStamp;// 中间时间节点记录
+
+	private ImageLoadInfo imgLoadInfo = new ImageLoadInfo();
+
 	// private float seekbar_server_length = 1;
 	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
 	// 80/1.3
@@ -208,6 +215,7 @@ public class GtAppDialog extends Dialog {
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
 
+		// GtLogger.setContext(context);// 这是用于调试的一个接口。
 		// GtLogger.s_v(context, "Hello Server");
 	}
 
@@ -1086,6 +1094,9 @@ public class GtAppDialog extends Dialog {
 					public void onResponse(Bitmap response) {
 
 						try {
+							imgLoadTimeStamp.setBg_img_end_time(System
+									.currentTimeMillis());
+
 							// 对图片进行缩放--以充斥全屏
 							bm_zoom_scale = getImageZoomScale(response
 									.getWidth());
@@ -1110,7 +1121,8 @@ public class GtAppDialog extends Dialog {
 					}
 				});
 
-		bgImgLoadStartTime = System.currentTimeMillis();// 图片开始请求时记录一个时间节点。
+		imgLoadTimeStamp.setBg_img_start_time(System.currentTimeMillis());
+		// bgImgLoadStartTime = ;// 图片开始请求时记录一个时间节点。
 
 		mQueue.add(bg_imageRequest);
 	}
@@ -1169,6 +1181,9 @@ public class GtAppDialog extends Dialog {
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
+						imgLoadTimeStamp.setSlice_bg_img_end_time(System
+								.currentTimeMillis());
+
 						// 对图片进行缩放
 						bm_slice_bg = zoomImage(response, bm_zoom_scale);
 						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
@@ -1182,6 +1197,8 @@ public class GtAppDialog extends Dialog {
 						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
+
+		imgLoadTimeStamp.setSlice_bg_img_start_time(System.currentTimeMillis());
 
 		mQueue.add(bg_imageRequest);
 	}
@@ -1202,6 +1219,9 @@ public class GtAppDialog extends Dialog {
 					@Override
 					public void onResponse(Bitmap response) {
 
+						imgLoadTimeStamp.setSlice_img_end_time(System
+								.currentTimeMillis());
+
 						GtLogger.v("切片图 Width: " + response.getWidth());
 						GtLogger.v("切片图 放大 后Width: " + response.getWidth()
 								* bm_zoom_scale);
@@ -1210,7 +1230,8 @@ public class GtAppDialog extends Dialog {
 
 						bm_slice = zoomImage(response, bm_zoom_scale);
 
-						bgImgLoadEndTime = System.currentTimeMillis();// 背景图加载截止时间
+						// bgImgLoadEndTime = System.currentTimeMillis();//
+						// 背景图加载截止时间
 
 						// 缩放图片数据源
 
@@ -1230,6 +1251,7 @@ public class GtAppDialog extends Dialog {
 					}
 				});
 
+		imgLoadTimeStamp.setSlice_img_start_time(System.currentTimeMillis());
 		mQueue.add(slip_imageRequest);
 	}
 
@@ -1590,8 +1612,7 @@ public class GtAppDialog extends Dialog {
 		ajaxPhp_GreqVo.setChallenge(initCaptchaOption.getChallenge());
 		ajaxPhp_GreqVo.setUserresponse(encodeUserResponse);
 		ajaxPhp_GreqVo.setPasstime((int) (seekbarEndTime - seekbarStartTime));
-		ajaxPhp_GreqVo
-				.setImgload((int) (bgImgLoadEndTime - bgImgLoadStartTime));
+		ajaxPhp_GreqVo.setImgload((int) (imgLoadTimeStamp.getTotalLoadTime()));
 		ajaxPhp_GreqVo.setA(encodeUserActions);
 
 		GtLogger.v(ajaxPhp_GreqVo.getA());
