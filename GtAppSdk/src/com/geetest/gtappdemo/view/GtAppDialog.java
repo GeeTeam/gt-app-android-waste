@@ -26,6 +26,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -61,8 +62,9 @@ import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
-import com.geetest.gtappdemo.model.svo.ImageLoadTimeCycle;
 import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
+import com.geetest.gtappdemo.model.svo.MobileInfo;
+import com.geetest.gtappdemo.model.svo.SdkRunInfo;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
@@ -185,7 +187,7 @@ public class GtAppDialog extends Dialog {
 	 */
 	private Boolean clientCaptchaResult = false;
 
-	private String logTag = "testImageView";
+	// private String logTag = "testImageView";
 
 	// 图片展示区离屏幕边缘的距--和布局文件的设计有关
 	private int leftMargin = 0;// dp
@@ -193,8 +195,9 @@ public class GtAppDialog extends Dialog {
 
 	// 软件行为参数收集
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
+	private MobileInfo mobileInfo = new MobileInfo();
 
-	private ImageLoadTimeCycle imgLoadInfo = new ImageLoadTimeCycle();
+	// private ImageLoadTimeCycle imgLoadInfo = new ImageLoadTimeCycle();
 
 	// private float seekbar_server_length = 1;
 	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
@@ -218,6 +221,8 @@ public class GtAppDialog extends Dialog {
 
 		// GtLogger.setContext(context);// 这是用于调试的一个接口。
 		// GtLogger.s_v(context, "Hello Server");
+
+		getMobileInfo();
 	}
 
 	/**
@@ -431,6 +436,42 @@ public class GtAppDialog extends Dialog {
 
 		screenSize.setWidth(dm.widthPixels);
 		screenSize.setHeight(dm.heightPixels);
+
+	}
+
+	/**
+	 * 获取IMEI号，IESI号，手机型号
+	 */
+	private void getMobileInfo() {
+		TelephonyManager mTm = (TelephonyManager) context
+				.getSystemService(context.TELEPHONY_SERVICE);
+
+		mobileInfo.setImei(mTm.getDeviceId());
+		mobileInfo.setImsi(mTm.getSubscriberId());
+		mobileInfo.setMtyb(android.os.Build.MODEL);
+		mobileInfo.setMtyb(android.os.Build.BRAND);
+		mobileInfo.setNumer(mTm.getLine1Number());
+		mobileInfo.setNetWorkType(mTm.getNetworkType());
+
+		// Gson gson = new Gson();
+		// String strMsg = gson.toJson(mobileInfo);
+		// GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
+		// mobileInfo.v();
+	}
+
+	/**
+	 * 收集参数运行信息
+	 * 
+	 * @time 2014年6月30日 下午7:17:27
+	 */
+	private void postMobileInfo() {
+		SdkRunInfo sdkRunInfo = new SdkRunInfo();
+		sdkRunInfo.setMobileInfo(mobileInfo);
+		sdkRunInfo.setTimeCycle(imgLoadTimeStamp.getImageLoadTimeCycle());
+
+		Gson gson = new Gson();
+		String strMsg = gson.toJson(sdkRunInfo);
+		GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
 
 	}
 
@@ -1223,12 +1264,14 @@ public class GtAppDialog extends Dialog {
 						imgLoadTimeStamp.setSlice_img_end_time(System
 								.currentTimeMillis());
 
-						Gson gson = new Gson();
-						String strMsg = gson.toJson(imgLoadTimeStamp
-								.getImageLoadTimeCycle());
+						// Gson gson = new Gson();
+						// String strMsg = gson.toJson(imgLoadTimeStamp
+						// .getImageLoadTimeCycle());
 
 						// 将图片 信息收集进去
-						GtLogger.s_v(context, LogMsgTag.imageLoadTime, strMsg);
+						postMobileInfo();
+						// GtLogger.s_v(context, LogMsgTag.imageLoadTime,
+						// strMsg);
 						// String postJsonString =
 						// gson.toJson(imgLoadTimeStamp);
 

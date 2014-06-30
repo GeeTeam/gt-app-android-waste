@@ -55,9 +55,7 @@ public abstract class GtLogger {
 	 * @param msg
 	 */
 	public static void s_v(Context ctx, String msg) {
-		// TODO 向服务器提交相应的数据
-		GtLogger.v("向服务器提交数据");
-		postMsgToServer(ctx, msg);
+		s_v(ctx, "log_msg", msg);
 	}
 
 	/**
