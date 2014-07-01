@@ -12,6 +12,15 @@ public class SdkRunInfo {
 
 	private ImageLoadTimeCycle timeCycle = new ImageLoadTimeCycle();
 	private MobileInfo mobileInfo = new MobileInfo();
+	private UiElementSize uiSize = new UiElementSize();
+
+	public UiElementSize getUiSize() {
+		return uiSize;
+	}
+
+	public void setUiSize(UiElementSize uiSize) {
+		this.uiSize = uiSize;
+	}
 
 	private Context context;
 

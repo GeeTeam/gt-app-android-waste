@@ -58,6 +58,7 @@ import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.R;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.logger.vo.LogMsgTag;
+import com.geetest.gtapp.slogger.GtSlogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
@@ -65,6 +66,7 @@ import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
 import com.geetest.gtappdemo.model.svo.MobileInfo;
 import com.geetest.gtappdemo.model.svo.SdkRunInfo;
+import com.geetest.gtappdemo.model.svo.UiElementSize;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
@@ -196,6 +198,8 @@ public class GtAppDialog extends Dialog {
 	// 软件行为参数收集
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
 	private MobileInfo mobileInfo = new MobileInfo();
+	private UiElementSize uiSize = new UiElementSize();// 界面元素的高度收集--方便做一些适配工作
+	private GtSlogger slogger;// 向服务器提交运行日志数据的类
 
 	// private ImageLoadTimeCycle imgLoadInfo = new ImageLoadTimeCycle();
 
@@ -233,6 +237,7 @@ public class GtAppDialog extends Dialog {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
 		setCanceledOnTouchOutside(false);// 在外面点击不会消失
 		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+		slogger = new GtSlogger(context);// 向服务器提交数据的类
 
 		requestSdkVersionFromServer();
 
@@ -263,8 +268,6 @@ public class GtAppDialog extends Dialog {
 	 * @time 2014年6月17日 下午3:17:36
 	 */
 	private void requestSdkVersionFromServer() {
-
-		// TODO
 
 		int randomNum = new Random().nextInt(1000) + 1;// 访问静态资源时需要随机数,避免缓存
 
@@ -366,9 +369,9 @@ public class GtAppDialog extends Dialog {
 
 		sendMsgToUpdateUI(MSG_FULL_BG_DISPLAY);
 
-		// TODO
 		imgv_skb_anim_tip.startAnimation(anim_skb_finger_tip);
 
+		postMobileInfo();
 	}
 
 	private void initViewDisplayParameter() {
@@ -468,11 +471,11 @@ public class GtAppDialog extends Dialog {
 		SdkRunInfo sdkRunInfo = new SdkRunInfo();
 		sdkRunInfo.setMobileInfo(mobileInfo);
 		sdkRunInfo.setTimeCycle(imgLoadTimeStamp.getImageLoadTimeCycle());
+		sdkRunInfo.setUiSize(uiSize);
 
-		Gson gson = new Gson();
-		String strMsg = gson.toJson(sdkRunInfo);
-		GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
-
+		// Gson gson = new Gson();
+		// String strMsg = gson.toJson(sdkRunInfo);
+		slogger.s_v(LogMsgTag.mobileInfo, sdkRunInfo);
 	}
 
 	/**
@@ -480,26 +483,24 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void getSliderStartLeftTopPosition() {
 
-		GtLogger.s_v(context, "获取滑块起始左上角坐标值： ");
-
-		GtPoint skbPositon = new GtPoint();
+		GtPoint skbPositon = new GtPoint();// 滑条的左边中点的坐标值
 		skbPositon.setX(skb_dragCaptcha.getLeft());
 		skbPositon
 				.setY((skb_dragCaptcha.getBottom() + skb_dragCaptcha.getTop()) / 2);
-
-		GtLogger.s_v(context, "滑块高度Hieght: "
-				+ (skb_dragCaptcha.getBottom() - skb_dragCaptcha.getTop()));
-
-		GtLogger.s_v(context, "滑动条Bar坐标--X: " + skbPositon.getX() + " Y: "
-				+ skbPositon.getY());
 
 		// 将滑块的坐标体系从 屏幕坐标体系 转成 seekbar坐标体系
 		sliderStartLeftTopPosition.setX(skbPositon.getX());
 		sliderStartLeftTopPosition.setY(skbPositon.getY()
 				- thumbBmpSize.getHeight() / 2 - skb_dragCaptcha.getTop());
 
-		GtLogger.v("滑动块sliderStartLeftTopPosition--X: "
-				+ sliderStartLeftTopPosition.getX() + " Y: "
+		// Debug: 收集界面运行的信息
+		uiSize.setSkb_dragCaptcha_height("滑块高度Hieght: "
+				+ (skb_dragCaptcha.getBottom() - skb_dragCaptcha.getTop()));
+		uiSize.setSkb_dragCaptcha_position("滑动条Bar坐标--X: " + skbPositon.getX()
+				+ " Y: " + skbPositon.getY());
+		uiSize.setSliderStartLeftTopPosition("滑动块sliderStartLeftTopPosition--X: "
+				+ sliderStartLeftTopPosition.getX()
+				+ " Y: "
 				+ sliderStartLeftTopPosition.getY());
 
 	}
@@ -939,7 +940,6 @@ public class GtAppDialog extends Dialog {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}// 停留一段时间，自动关闭
 				dismiss();// 当前对话框关闭
@@ -1269,7 +1269,7 @@ public class GtAppDialog extends Dialog {
 						// .getImageLoadTimeCycle());
 
 						// 将图片 信息收集进去
-						postMobileInfo();
+
 						// GtLogger.s_v(context, LogMsgTag.imageLoadTime,
 						// strMsg);
 						// String postJsonString =
