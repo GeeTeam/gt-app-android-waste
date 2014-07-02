@@ -96,6 +96,7 @@ public class GtSlogger {
 	 */
 	public void ex(Object msgObj) {
 		s_v("exception", msgObj);
+		GtLogger.exception(msgObj.toString());
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class GtSlogger {
 								// 安卓客户端接收到消息后进行相应的处理
 								GtLogger.v("gtLoggerResponse: " + response);
 							} catch (Exception e) {
-								GtLogger.expection(LoggerString
+								GtLogger.exception(LoggerString
 										.getFileLineMethod() + e.getMessage());
 							}
 
@@ -191,7 +192,7 @@ public class GtSlogger {
 			mQueue.add(stringRequest);
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
+			GtLogger.exception(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 		}
 	}

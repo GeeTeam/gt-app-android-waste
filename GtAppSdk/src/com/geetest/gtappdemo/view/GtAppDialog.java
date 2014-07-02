@@ -306,7 +306,7 @@ public class GtAppDialog extends Dialog {
 							GtLogger.v("requestSdkVersionFromServer : "
 									+ serverSdkVersionInfo.getVerCode());
 						} catch (Exception e) {
-							GtLogger.expection(LoggerString.getFileLineMethod()
+							slogger.ex(LoggerString.getFileLineMethod()
 									+ e.getMessage());
 						}
 
@@ -426,8 +426,7 @@ public class GtAppDialog extends Dialog {
 			// 26);
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -925,6 +924,8 @@ public class GtAppDialog extends Dialog {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
+					slogger.ex(LoggerString.getFileLineMethod()
+							+ e.getMessage());
 					e.printStackTrace();
 				}// 停留一段时间，自动关闭
 				dismiss();// 当前对话框关闭
@@ -1031,8 +1032,7 @@ public class GtAppDialog extends Dialog {
 					+ "  thumbBmpSize.getHeight()： " + thumbBmpSize.getHeight());
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -1098,8 +1098,7 @@ public class GtAppDialog extends Dialog {
 					R.anim.gtapp_anim_flashlight);// 闪电图。
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -1134,7 +1133,7 @@ public class GtAppDialog extends Dialog {
 							slice_bg_ImageRequest(initCaptchaOption.getImgurl());// 再请求切图背景
 							// igv_slicebg.setImageBitmap(response);
 						} catch (Exception e) {
-							GtLogger.expection(LoggerString.getFileLineMethod()
+							slogger.ex(LoggerString.getFileLineMethod()
 									+ e.getMessage());
 						}
 
@@ -1142,7 +1141,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.expection("volley error: "
+						GtLogger.exception("volley error: "
 								+ error.getMessage());
 						// imgv_full_bg.setImageResource(R.drawable.ic_launcher);
 					}
@@ -1219,7 +1218,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.expection("volley error: "
+						GtLogger.exception("volley error: "
 								+ error.getMessage());
 						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
@@ -1283,7 +1282,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.expection("volley error: "
+						GtLogger.exception("volley error: "
 								+ error.getMessage());
 						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
@@ -1528,6 +1527,7 @@ public class GtAppDialog extends Dialog {
 
 			return url.toString();
 		} catch (URISyntaxException e) {
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -1551,6 +1551,7 @@ public class GtAppDialog extends Dialog {
 
 			return url.toString();
 		} catch (URISyntaxException e) {
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -1731,9 +1732,9 @@ public class GtAppDialog extends Dialog {
 
 							}
 						} catch (Exception e) {
-							GtLogger.expection(LoggerString.getFileLineMethod()
-									+ e.getMessage());
 							setImgStatusAfterCaptchaFailed();
+							slogger.ex(LoggerString.getFileLineMethod()
+									+ e.getMessage());
 						}
 
 					}
@@ -1843,6 +1844,8 @@ public class GtAppDialog extends Dialog {
 						// 更新Alpha值
 						updateAlpha();
 					} catch (InterruptedException e) {
+						slogger.ex(LoggerString.getFileLineMethod()
+								+ e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -1861,6 +1864,7 @@ public class GtAppDialog extends Dialog {
 				GtLogger.v("验证成功后的图片线程");
 				// System.out.println(Thread.currentThread().getName());
 			} catch (Exception e) {
+				slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -1929,6 +1933,7 @@ public class GtAppDialog extends Dialog {
 				GtLogger.v("验证失败后的图片线程");
 				System.out.println(Thread.currentThread().getName());
 			} catch (InterruptedException e) {
+				slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -1956,8 +1961,8 @@ public class GtAppDialog extends Dialog {
 										+ response);
 
 							} catch (Exception e) {
-								GtLogger.expection(LoggerString
-										.getFileLineMethod() + e.getMessage());
+								slogger.ex(LoggerString.getFileLineMethod()
+										+ e.getMessage());
 							}
 
 						}
@@ -2008,8 +2013,7 @@ public class GtAppDialog extends Dialog {
 			mQueue.add(stringRequest);
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -2038,8 +2042,8 @@ public class GtAppDialog extends Dialog {
 										+ response);
 
 							} catch (Exception e) {
-								GtLogger.expection(LoggerString
-										.getFileLineMethod() + e.getMessage());
+								slogger.ex(LoggerString.getFileLineMethod()
+										+ e.getMessage());
 							}
 
 						}
@@ -2069,8 +2073,7 @@ public class GtAppDialog extends Dialog {
 			mQueue.add(stringRequest);
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}

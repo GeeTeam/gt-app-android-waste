@@ -19,8 +19,8 @@ public abstract class GtLogger {
 	 * 
 	 * @param msg
 	 */
-	public static void expection(String msg) {
-		GtLogger.v("Excption:	" + msg);
+	public static void exception(String msg) {
+		GtLogger.v("Exception:	" + msg);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public abstract class GtLogger {
 	 * @param msg
 	 */
 	public static void toastExpection(Context ctx, String msg) {
-		GtLogger.expection(msg);
+		GtLogger.exception(msg);
 		Toast.makeText(ctx, "" + msg, Toast.LENGTH_SHORT).show();
 	}
 
@@ -56,7 +56,7 @@ public abstract class GtLogger {
 	 * @author zheng dreamzsm@gmail.com
 	 */
 	public static void toastToolTip(Context ctx, String msg) {
-		GtLogger.expection(msg);
+		GtLogger.exception(msg);
 		Toast.makeText(ctx, "" + msg, Toast.LENGTH_SHORT).show();
 	}
 

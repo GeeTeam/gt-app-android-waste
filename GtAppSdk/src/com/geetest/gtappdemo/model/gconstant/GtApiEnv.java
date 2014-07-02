@@ -71,7 +71,7 @@ public class GtApiEnv {
 		try {
 
 		} catch (Exception e) {
-			GtLogger.expection(LoggerString.getFileLineMethod()
+			GtLogger.exception(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 		}
 
