@@ -10,6 +10,6 @@ public class LogMsgTag {
 
 	public final static String imageLoadTime = "imageLoadTime";// 图片载的实验
 
-	public final static String mobileInfo = "mobileInfo";// 手机信息
+	public final static String sdkRunInfo = "sdkRunInfo";// SDK运行时的信息收集
 
 }

@@ -26,7 +26,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -65,7 +64,6 @@ import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.svo.HostInfo;
 import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
-import com.geetest.gtappdemo.model.svo.MobileInfo;
 import com.geetest.gtappdemo.model.svo.SdkRunInfo;
 import com.geetest.gtappdemo.model.svo.UiElementSize;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
@@ -460,7 +458,7 @@ public class GtAppDialog extends Dialog {
 		// 如果是上传成字符串到字段中，则使用下面的语句
 		// Gson gson = new Gson();
 		// String strMsg = gson.toJson(sdkRunInfo);
-		slogger.s_v(LogMsgTag.mobileInfo, sdkRunInfo);
+		slogger.s_v(LogMsgTag.sdkRunInfo, sdkRunInfo);
 	}
 
 	/**
