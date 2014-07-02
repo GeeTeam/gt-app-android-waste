@@ -9,7 +9,9 @@ package com.geetest.gtapp.logger.vo;
 public class ServerDebugMsg {
 
 	private String msgTag = "log_msg";// 消息的标签
-	private String osType = "android";// 操作系统类型 android,ios
+	private String osType = "android";// 操作系统类型 android,ios,WP8
+	private Object osDetail = "osDetail";// 操作系统的详细信息
+	private Object hostInfo = "";// 宿主程序信息
 	private Object logMsg = "";// 发送的字符数据对象
 
 	public String getOsType() {
@@ -18,6 +20,22 @@ public class ServerDebugMsg {
 
 	public void setOsType(String osType) {
 		this.osType = osType;
+	}
+
+	public Object getOsDetail() {
+		return osDetail;
+	}
+
+	public void setOsDetail(Object osDetail) {
+		this.osDetail = osDetail;
+	}
+
+	public Object getHostInfo() {
+		return hostInfo;
+	}
+
+	public void setHostInfo(Object hostInfo) {
+		this.hostInfo = hostInfo;
 	}
 
 	public String getMsgTag() {

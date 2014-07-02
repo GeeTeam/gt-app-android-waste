@@ -63,6 +63,7 @@ import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
+import com.geetest.gtappdemo.model.svo.HostInfo;
 import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
 import com.geetest.gtappdemo.model.svo.MobileInfo;
 import com.geetest.gtappdemo.model.svo.SdkRunInfo;
@@ -95,7 +96,7 @@ public class GtAppDialog extends Dialog {
 	private Resources res;
 	private GtAppCallback gtAppCallback;// 回调函数
 
-	private String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+	private String gt_public_key = "";// 公钥
 
 	// 界面元素信息
 	// private View dlgView;
@@ -196,21 +197,16 @@ public class GtAppDialog extends Dialog {
 	private int rightMargin = 0;// dp
 
 	// 软件行为参数收集
+	// private HostInfo hostInfo = new HostInfo();
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
-	private MobileInfo mobileInfo = new MobileInfo();
 	private UiElementSize uiSize = new UiElementSize();// 界面元素的高度收集--方便做一些适配工作
 	private GtSlogger slogger;// 向服务器提交运行日志数据的类
 
-	// private ImageLoadTimeCycle imgLoadInfo = new ImageLoadTimeCycle();
-
-	// private float seekbar_server_length = 1;
-	// 滑条在服务器端的标准长度px--和背景图一样大，在安卓上的显示的长度有1.3倍的差距
-	// 80/1.3
-
-	// private int slice_img_width = 126;// 切片图的宽度
-
-	/* 声明相关变量作为存储图片宽高,位置使用 */
-	// private int intWidth, intHeight, intDefaultX, intDefaultY;
+	// TODO 下拉刷新加载效果
+	// private ScrollView mScrollView;// 可以滑动操作的视图
+	// private PullToRefreshScrollView mPullScrollView;// 刷新的加载效果视图
+	// private SimpleDateFormat mDateFormat = new
+	// SimpleDateFormat("MM-dd HH:mm");
 
 	private float mX, mY;// 触点的位置
 
@@ -223,10 +219,25 @@ public class GtAppDialog extends Dialog {
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
 
-		// GtLogger.setContext(context);// 这是用于调试的一个接口。
-		// GtLogger.s_v(context, "Hello Server");
+		getHostInfo();
+	}
 
-		getMobileInfo();
+	/**
+	 * 在初始化时 获取 宿主APP的信息
+	 * 
+	 * @time 2014年7月2日 下午11:57:20
+	 * @return
+	 */
+	private HostInfo getHostInfo() {
+
+		// TODO 需要从宿主信息里面获取 版本号，需要传递过来
+		HostInfo hostInfo = new HostInfo();
+		hostInfo.setVerCode(1);
+		hostInfo.setVerName("1.0");
+		hostInfo.setGt_public_key(gt_public_key);
+		hostInfo.setGtapp_sdk_version(GtApiEnv.getSdkVersionInfo());
+
+		return hostInfo;
 	}
 
 	/**
@@ -237,7 +248,7 @@ public class GtAppDialog extends Dialog {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
 		setCanceledOnTouchOutside(false);// 在外面点击不会消失
 		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-		slogger = new GtSlogger(context);// 向服务器提交数据的类
+		slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
 
 		requestSdkVersionFromServer();
 
@@ -254,11 +265,6 @@ public class GtAppDialog extends Dialog {
 
 		setLocation();
 		show();
-
-		// int seekbar_width = skb_dragCaptcha.getRight()
-		// - skb_dragCaptcha.getLeft();
-		//
-		// GtLogger.v("seekbar_width: " + seekbar_width);
 
 	}
 
@@ -371,7 +377,7 @@ public class GtAppDialog extends Dialog {
 
 		imgv_skb_anim_tip.startAnimation(anim_skb_finger_tip);
 
-		postMobileInfo();
+		postSdkRunInfo();
 	}
 
 	private void initViewDisplayParameter() {
@@ -379,7 +385,6 @@ public class GtAppDialog extends Dialog {
 
 		// 设置图片点位 默认长宽
 		setImageViewDefaultDisplay();
-		// captchaInitialOption_StringRequest();
 	}
 
 	/**
@@ -443,36 +448,17 @@ public class GtAppDialog extends Dialog {
 	}
 
 	/**
-	 * 获取IMEI号，IESI号，手机型号
-	 */
-	private void getMobileInfo() {
-		TelephonyManager mTm = (TelephonyManager) context
-				.getSystemService(context.TELEPHONY_SERVICE);
-
-		mobileInfo.setImei(mTm.getDeviceId());
-		mobileInfo.setImsi(mTm.getSubscriberId());
-		mobileInfo.setMtyb(android.os.Build.MODEL);
-		mobileInfo.setMtyb(android.os.Build.BRAND);
-		mobileInfo.setNumer(mTm.getLine1Number());
-		mobileInfo.setNetWorkType(mTm.getNetworkType());
-
-		// Gson gson = new Gson();
-		// String strMsg = gson.toJson(mobileInfo);
-		// GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
-		// mobileInfo.v();
-	}
-
-	/**
 	 * 收集参数运行信息
 	 * 
 	 * @time 2014年6月30日 下午7:17:27
 	 */
-	private void postMobileInfo() {
+	private void postSdkRunInfo() {
 		SdkRunInfo sdkRunInfo = new SdkRunInfo();
-		sdkRunInfo.setMobileInfo(mobileInfo);
+
 		sdkRunInfo.setTimeCycle(imgLoadTimeStamp.getImageLoadTimeCycle());
 		sdkRunInfo.setUiSize(uiSize);
 
+		// 如果是上传成字符串到字段中，则使用下面的语句
 		// Gson gson = new Gson();
 		// String strMsg = gson.toJson(sdkRunInfo);
 		slogger.s_v(LogMsgTag.mobileInfo, sdkRunInfo);
@@ -621,7 +607,7 @@ public class GtAppDialog extends Dialog {
 							(int) (changeImageButtonStartPosition.getY()));// 归位
 
 					if ((curY - changeImageButtonStartPosition.getY()) > 100) {
-						// TODO 开始刷新图片
+						// 开始刷新图片
 						captchaInitialOption_StringRequest();
 					}
 
@@ -902,7 +888,6 @@ public class GtAppDialog extends Dialog {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				System.out.println("动画结束...");
-				// TODO
 				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 			}
 		});
@@ -933,7 +918,7 @@ public class GtAppDialog extends Dialog {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				// System.out.println("动画结束...");
-				// TODO
+
 				imgv_flashlight.setVisibility(View.INVISIBLE);
 				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 
@@ -1402,7 +1387,8 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onResponse(String response) {
-						GtLogger.v("response:" + response);
+
+						slogger.d("response:" + response);
 
 						// 硬解码抽取出JSON格式
 						String webJsFunction[] = response.split("=");
@@ -1415,7 +1401,7 @@ public class GtAppDialog extends Dialog {
 						initCaptchaOption = gson.fromJson(optionValue,
 								CaptchaOption.class);
 
-						GtLogger.v("getFullbg : "
+						slogger.d("getFullbg : "
 								+ initCaptchaOption.getFullbg());
 
 						// 开始连锁的串行向服务器请求图片
@@ -1538,7 +1524,7 @@ public class GtAppDialog extends Dialog {
 					GtApiEnv.gtApiBaseUrl, GtApiEnv.gtApiPort, relApiPath,
 					param, null);
 
-			GtLogger.v("ApiFullUrl: " + url.toString());
+			slogger.d("ApiFullUrl: " + url.toString());
 
 			return url.toString();
 		} catch (URISyntaxException e) {
@@ -1561,7 +1547,7 @@ public class GtAppDialog extends Dialog {
 			URI url = URIUtils.createURI(GtApiEnv.httpType, localBaseUrl,
 					GtApiEnv.gtApiPort, relApiPath, param, null);
 
-			GtLogger.v("ApiFullUrl: " + url.toString());
+			slogger.d("ApiFullUrl: " + url.toString());
 
 			return url.toString();
 		} catch (URISyntaxException e) {
@@ -1591,7 +1577,7 @@ public class GtAppDialog extends Dialog {
 
 			userAction.setTimeIncrement(10 * (i + 1));
 
-			GtLogger.v(userAction.getxPos() + "," + userAction.getyPos() + ","
+			slogger.d(userAction.getxPos() + "," + userAction.getyPos() + ","
 					+ userAction.getTimeIncrement());
 
 			userActions.add(userAction);

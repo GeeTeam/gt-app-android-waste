@@ -3,6 +3,9 @@ package com.geetest.gtapp.slogger;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,9 +16,10 @@ import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.logger.vo.ServerDebugMsg;
 import com.geetest.gtapp.utils.LoggerString;
+import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
+import com.geetest.gtappdemo.model.svo.HostInfo;
+import com.geetest.gtappdemo.model.svo.MobileInfo;
 import com.google.gson.Gson;
-
-import android.content.Context;
 
 /**
  * 向服务器提交日志的一个框架体系
@@ -29,22 +33,52 @@ public class GtSlogger {
 	 * 要向服务器提交
 	 */
 	private Context context;
+	private MobileInfo mobileInfo = new MobileInfo();// 手机的静态固件信息
+	private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
 
-	private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
-
-	// String customServerGtApiUrl =
-	// "http://192.168.1.102:80/debug_msg/";
+	// private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
+	private final String loggerServerApi = "http://192.168.1.102:80/debug_msg/";
+	private final String osType = "android";
 
 	public GtSlogger() {
 
 	}
 
-	public GtSlogger(Context context) {
+	public GtSlogger(Context context, HostInfo hostInfo) {
 		this.context = context;
+		this.hostInfo = hostInfo;
+		setMobileInfo();
+	}
+
+	/**
+	 * 获取IMEI号，IESI号，手机型号
+	 */
+	private void setMobileInfo() {
+		TelephonyManager mTm = (TelephonyManager) context
+				.getSystemService(context.TELEPHONY_SERVICE);
+
+		mobileInfo.setImei(mTm.getDeviceId());
+		mobileInfo.setImsi(mTm.getSubscriberId());
+
+		mobileInfo.setNumer(mTm.getLine1Number());
+		mobileInfo.setNetWorkType(mTm.getNetworkType());
+
+		mobileInfo.setMtyb(android.os.Build.MODEL);
+		mobileInfo.setMtyb(android.os.Build.BRAND);
+		mobileInfo.setBuildVersionSdk(android.os.Build.VERSION.SDK);
+		mobileInfo.setBuildVersionRelease(android.os.Build.VERSION.RELEASE);
+		mobileInfo.setBuildVersionSdkInt(android.os.Build.VERSION.SDK_INT);
+
+		// Gson gson = new Gson();
+		// String strMsg = gson.toJson(mobileInfo);
+		// GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
+		// mobileInfo.v();
 	}
 
 	public void v(Object msgObj) {
-		s_v("verbose", msgObj);
+		if (GtApiEnv.DEBUG_STATE) {
+			s_v("verbose", msgObj);
+		}
 	}
 
 	public void i(Object msgObj) {
@@ -64,8 +98,17 @@ public class GtSlogger {
 		s_v("exception", msgObj);
 	}
 
+	/**
+	 * 在发布的 时候，不输出这些中间信息
+	 * 
+	 * @time 2014年7月2日 上午10:25:09
+	 * @param msgObj
+	 */
 	public void d(Object msgObj) {
-		s_v("debug", msgObj);
+
+		if (GtApiEnv.DEBUG_STATE) {
+			s_v("debug", msgObj);
+		}
 	}
 
 	public void w(Object msgObj) {
@@ -83,7 +126,9 @@ public class GtSlogger {
 	public void s_v(String msgTag, Object msgObj) {
 
 		ServerDebugMsg debugMsg = new ServerDebugMsg();
-		debugMsg.setOsType("android");
+		debugMsg.setOsType(osType);
+		debugMsg.setOsDetail(mobileInfo);
+		debugMsg.setHostInfo(hostInfo);
 		debugMsg.setMsgTag(msgTag);
 		debugMsg.setLogMsg(msgObj);
 

@@ -16,6 +16,9 @@ public class GtApiEnv {
 	// "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
 	// public static String gt_private_key = "";// 私钥
 
+	public static boolean DEBUG_STATE = true;
+	
+	
 	// GtApp的版本控制
 	public static final int sdkVersionCode = 2;
 	public static final String sdkVersionName = "1.1";
@@ -27,7 +30,6 @@ public class GtApiEnv {
 	// public static final String sdkNewestVersionInfoLink =
 	// "http://192.168.2.66/gtapp_sdk_build_info.txt";
 	public static String gt_product_type = "embed";// 嵌入式的
-
 
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式
@@ -55,6 +57,10 @@ public class GtApiEnv {
 	 * 用于输出调试信息的服务器API
 	 */
 	public static String debugServerApi = "http://192.168.2.66:80/debug_msg/";;
+
+	public static String getSdkVersionInfo() {
+		return "Vc" + sdkVersionCode + "Vn" + sdkVersionName;
+	}
 
 	/**
 	 * @param apiRelativePath

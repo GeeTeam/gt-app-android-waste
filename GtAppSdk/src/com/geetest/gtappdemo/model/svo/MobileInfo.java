@@ -17,6 +17,37 @@ public class MobileInfo {
 	private String numer = "8600000000000"; // 手机号码，有的可得，有的不可得
 	private int netWorkType = 0;// 上网类型
 
+	private String buildVersionSdk = "";// SDK版本
+	private String buildVersionRelease = "";// 系统版本
+
+	private int buildVersionSdkInt = 0;// android.os.Build.VERSION.SDK_INT
+
+	
+
+	public int getBuildVersionSdkInt() {
+		return buildVersionSdkInt;
+	}
+
+	public void setBuildVersionSdkInt(int buildVersionSdkInt) {
+		this.buildVersionSdkInt = buildVersionSdkInt;
+	}
+
+	public String getBuildVersionSdk() {
+		return buildVersionSdk;
+	}
+
+	public void setBuildVersionSdk(String buildVersionSdk) {
+		this.buildVersionSdk = buildVersionSdk;
+	}
+
+	public String getBuildVersionRelease() {
+		return buildVersionRelease;
+	}
+
+	public void setBuildVersionRelease(String buildVersionRelease) {
+		this.buildVersionRelease = buildVersionRelease;
+	}
+
 	public int getNetWorkType() {
 		return netWorkType;
 	}

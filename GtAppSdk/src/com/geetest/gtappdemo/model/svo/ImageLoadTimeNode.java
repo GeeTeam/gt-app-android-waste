@@ -13,6 +13,7 @@ package com.geetest.gtappdemo.model.svo;
 public class ImageLoadTimeNode {
 
 	// 软件行为参数收集
+	private long dlg_open_time = 0;// 对话框打开的时间
 	private long bg_img_start_time = 0;
 	private long bg_img_end_time = 0;
 	private long slice_bg_img_start_time = 0;
@@ -22,8 +23,18 @@ public class ImageLoadTimeNode {
 
 	// private long totalLoadTime = 0;// 所有的图片的加载时间
 
+	
+	
 	public long getTotalLoadTime() {
 		return (slice_img_end_time - bg_img_start_time);
+	}
+
+	public long getDlg_open_time() {
+		return dlg_open_time;
+	}
+
+	public void setDlg_open_time(long dlg_open_time) {
+		this.dlg_open_time = dlg_open_time;
 	}
 
 	/**

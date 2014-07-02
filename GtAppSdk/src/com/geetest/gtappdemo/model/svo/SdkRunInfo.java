@@ -1,9 +1,7 @@
 package com.geetest.gtappdemo.model.svo;
 
-import android.content.Context;
-
 /**
- * SDK运行信息
+ * SDK运行信息--一些动态值
  * 
  * @author Zheng
  * @time 2014年6月30日 下午6:57:11
@@ -11,7 +9,7 @@ import android.content.Context;
 public class SdkRunInfo {
 
 	private ImageLoadTimeCycle timeCycle = new ImageLoadTimeCycle();
-	private MobileInfo mobileInfo = new MobileInfo();
+//	private MobileInfo mobileInfo = new MobileInfo();
 	private UiElementSize uiSize = new UiElementSize();
 
 	public UiElementSize getUiSize() {
@@ -22,15 +20,15 @@ public class SdkRunInfo {
 		this.uiSize = uiSize;
 	}
 
-	private Context context;
+	// private Context context;
 
 	public SdkRunInfo() {
 		// this.context = context;
 	}
 
-	public SdkRunInfo(Context context) {
-		this.context = context;
-	}
+	// public SdkRunInfo(Context context) {
+	// this.context = context;
+	// }
 
 	public ImageLoadTimeCycle getTimeCycle() {
 		return timeCycle;
@@ -40,13 +38,13 @@ public class SdkRunInfo {
 		this.timeCycle = timeCycle;
 	}
 
-	public MobileInfo getMobileInfo() {
-		return mobileInfo;
-	}
-
-	public void setMobileInfo(MobileInfo mobileInfo) {
-		this.mobileInfo = mobileInfo;
-	}
+	// public MobileInfo getMobileInfo() {
+	// return mobileInfo;
+	// }
+	//
+	// public void setMobileInfo(MobileInfo mobileInfo) {
+	// this.mobileInfo = mobileInfo;
+	// }
 
 	/**
 	 * 将信息发送到服务器
