@@ -114,8 +114,15 @@
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
+    <com.geetest.gtappdemo.view.GtRefreshableView
+        android:id="@+id/refreshable_view"
+        android:layout_width="fill_parent"
+        android:layout_height="90dp" >
+    </com.geetest.gtappdemo.view.GtRefreshableView>
+
     <include
         android:id="@+id/ll_gtapp_tool_interface"
         layout="@layout/gtapp_tool_interface" />
+    <!-- 一些交互的工具区 -->
 
 </LinearLayout>

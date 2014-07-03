@@ -20,7 +20,7 @@ public abstract class GtLogger {
 	 * @param msg
 	 */
 	public static void exception(String msg) {
-		GtLogger.v("Exception:	" + msg);
+		GtLogger.e("Exception:	" + msg);
 	}
 
 	/**

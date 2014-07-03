@@ -78,6 +78,7 @@ import com.geetest.gtappdemo.model.vo.greq.AjaxPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.greq.GetPhp_GreqVo;
 import com.geetest.gtappdemo.model.vo.gres.AjaxPhp_GresVo;
 import com.geetest.gtappdemo.model.vo.preq.GtCustomerSubmit;
+import com.geetest.gtappdemo.view.GtRefreshableView.PullToRefreshListener;
 import com.google.gson.Gson;
 
 /**
@@ -117,6 +118,7 @@ public class GtAppDialog extends Dialog {
 
 	private ImageView imgv_skb_anim_tip;// 滑动条操作提示
 	private ImageView imgv_change_image;// 换图按钮
+	private GtRefreshableView refreshableView;// 下拉刷新
 
 	private ImageView imgv_captcha_status_icon;// 状态锁
 	private TextView tv_validateStatus;// 验证码的状态栏
@@ -243,26 +245,30 @@ public class GtAppDialog extends Dialog {
 	 */
 	public void setDisplay() {
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
-		setCanceledOnTouchOutside(false);// 在外面点击不会消失
-		mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-		slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
+		try {
+			requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
+			setCanceledOnTouchOutside(false);// 在外面点击不会消失
+			mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+			slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
 
-		requestSdkVersionFromServer();
+			requestSdkVersionFromServer();
 
-		// 向服务器请求
-		requestOptionDataFromGtServer();
+			// 向服务器请求
+			requestOptionDataFromGtServer();
 
-		setContentView(gtAppDlgLayoutResId);// 设置资源内容
-		initViews();
-		initViewDisplayParameter();
-		initListeners();
+			setContentView(gtAppDlgLayoutResId);// 设置资源内容
+			initViews();
+			initViewDisplayParameter();
+			initListeners();
 
-		// bindOptionDataToLocalViews();
-		// setTitle("GtDialog");
+			// bindOptionDataToLocalViews();
+			// setTitle("GtDialog");
 
-		setLocation();
-		show();
+			setLocation();
+			show();
+		} catch (Exception e) {
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+		}
 
 	}
 
@@ -614,6 +620,19 @@ public class GtAppDialog extends Dialog {
 				return true;
 			}
 		});
+
+		refreshableView.setOnRefreshListener(new PullToRefreshListener() {
+			@Override
+			public void onRefresh() {
+				try {
+					// TODO
+					Thread.sleep(2000);// 模拟一个耗时为2s的事件
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				refreshableView.finishRefreshing();
+			}
+		}, 0);
 
 		btn_dlg_close.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
@@ -1075,6 +1094,8 @@ public class GtAppDialog extends Dialog {
 
 			imgv_skb_anim_tip = (ImageView) findViewById(R.id.imgv_skb_anim_tip);
 			imgv_change_image = (ImageView) findViewById(R.id.imgv_change_image);
+
+			refreshableView = (GtRefreshableView) findViewById(R.id.refreshable_view);// 自定义的下拉组件
 
 			skb_dragCaptcha = (SeekBar) findViewById(R.id.seekbar_def); // “系统默认SeekBar”
 			tv_slider_tip_msg = (TextView) findViewById(R.id.tv_slider_tip_msg);
