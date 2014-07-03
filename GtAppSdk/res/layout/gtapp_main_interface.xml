@@ -114,46 +114,8 @@
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
-    <ImageView
-        android:id="@+id/imgv_change_image"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="#DD001826"
-        android:scaleType="center"
-        android:src="@drawable/gtapp_downarrow_unactive"
-        android:visibility="visible" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="#DD001826" >
-
-        <!-- android:layout_alignBottom="@id/imgv_change_image" -->
-        <!-- android:layout_alignRight="@id/imgv_change_image" -->
-
-
-        <!-- android:layout_below="@+id/imgv_change_image" -->
-
-        <TextView
-            android:id="@+id/tv_change_image_tip_msg"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:text="向下拖动刷新图片"
-            android:textColor="#22FFFFFF"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btn_about_info"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="1dp"
-            android:background="@android:drawable/ic_menu_info_details"
-            android:visibility="visible" />
-    </RelativeLayout>
-    <!-- 图片加载成功后的主交互界面 -->
+    <include
+        android:id="@+id/ll_gtapp_tool_interface"
+        layout="@layout/gtapp_tool_interface" />
 
 </LinearLayout>

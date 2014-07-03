@@ -36,8 +36,9 @@ public class GtSlogger {
 	private MobileInfo mobileInfo = new MobileInfo();// 手机的静态固件信息
 	private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
 
-	// private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
-	private final String loggerServerApi = "http://192.168.1.102:80/debug_msg/";
+	private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
+	// private final String loggerServerApi =
+	// "http://192.168.1.102:80/debug_msg/";
 	private final String osType = "android";
 
 	public GtSlogger() {
