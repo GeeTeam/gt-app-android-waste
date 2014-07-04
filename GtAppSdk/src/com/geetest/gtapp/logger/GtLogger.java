@@ -23,6 +23,12 @@ public abstract class GtLogger {
 		GtLogger.e("Exception:	" + msg);
 	}
 
+	public static void i(String msg) {
+		if (DEBUG_STATE) {
+			Log.i(COMMON_TAG, msg);
+		}
+	}
+
 	/**
 	 * 出现异常的时候，输出异常信息并toast显示出来
 	 * 

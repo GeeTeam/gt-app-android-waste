@@ -59,6 +59,7 @@
     <!-- 水平分隔条 -->
 
     <FrameLayout
+        android:id="@+id/fl_seekbar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -114,15 +115,36 @@
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
-    <com.geetest.gtappdemo.view.GtRefreshableView
-        android:id="@+id/refreshable_view"
-        android:layout_width="fill_parent"
-        android:layout_height="90dp" >
-    </com.geetest.gtappdemo.view.GtRefreshableView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/imgv_full_bg_XX"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tv_view"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/title_bar" />
+
+        <com.geetest.gtappdemo.view.GtRefreshableView
+            android:id="@+id/refreshable_view"
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:layout_below="@+id/imgv_full_bg_XX" >
+        </com.geetest.gtappdemo.view.GtRefreshableView>
+    </RelativeLayout>
+
+    <!-- <com.geetest.gtappdemo.view.GtRefreshableView -->
+    <!-- android:id="@+id/refreshable_view" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="90dp" > -->
+    <!-- </com.geetest.gtappdemo.view.GtRefreshableView> -->
 
     <include
         android:id="@+id/ll_gtapp_tool_interface"
-        layout="@layout/gtapp_tool_interface" />
+        layout="@layout/gtapp_tool_interface"
+        android:visibility="gone" />
     <!-- 一些交互的工具区 -->
 
 </LinearLayout>

@@ -1,5 +1,8 @@
 package com.geetest.gtappdemo.view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.geetest.gtapp.R;
+import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.slogger.GtSlogger;
 
 /**
  * 可进行下拉刷新的自定义控件。
@@ -166,7 +171,7 @@ public class GtRefreshableView extends LinearLayout {
 	/**
 	 * 是否已加载过一次layout，这里onLayout中的初始化只需加载一次
 	 */
-	private boolean loadOnce;
+	private boolean loadOnce = false;
 
 	/**
 	 * 当前是否可以下拉，只有ListView滚动到头的时候才允许下拉
@@ -176,6 +181,37 @@ public class GtRefreshableView extends LinearLayout {
 	private float mX, mY;// 触点的位置
 
 	/**
+	 * 对此布局做的一些操作参数的记录
+	 */
+	// private ArrayList<String> logMsg = new ArrayList<String>();
+	private ArrayList<String> runSeqMsg;// 运行的时序
+	private HashMap<String, Object> logMsg;
+	private GtSlogger slogger;// 向服务器提交运行日志数据的类
+
+	/**
+	 * 初始化调试系统
+	 * 
+	 * @time 2014年7月4日 上午11:37:41
+	 * @param context
+	 */
+	private void initGtDebugSys(Context context) {
+		slogger = new GtSlogger(context);
+		runSeqMsg = new ArrayList<String>();// 运行的时序
+		logMsg = new HashMap<String, Object>();
+	}
+
+	/**
+	 * 发送收集运行信息
+	 * 
+	 * @time 2014年7月4日 上午11:06:08
+	 */
+	private void postLoggerToServer() {
+		Log.e("", "postLoggerToServer");
+		slogger.s_v("gtFresh-runSeqMsg", runSeqMsg);
+		slogger.s_v("gtFresh-logMsg", logMsg);
+	}
+
+	/**
 	 * 下拉刷新控件的构造函数，会在运行时动态添加一个下拉头的布局。
 	 * 
 	 * @param context
@@ -183,6 +219,11 @@ public class GtRefreshableView extends LinearLayout {
 	 */
 	public GtRefreshableView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		initGtDebugSys(context);
+
+		runSeqMsg.add("GtRefreshableView");
+
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		header = LayoutInflater.from(context).inflate(R.layout.pull_to_refresh,
 				null, true);// 加入头部的布局
@@ -195,13 +236,19 @@ public class GtRefreshableView extends LinearLayout {
 
 		touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 		refreshUpdatedAtValue();
-		setOrientation(VERTICAL);
+		// setOrientation(VERTICAL);
+		setOrientation(HORIZONTAL);// TODO 后面修改成水平的
 
 		// 动态添加触摸栏
 		touchView = LayoutInflater.from(context).inflate(R.layout.pull_region,
 				null, true);
 		addView(header, 0);
 		addView(touchView, 1);
+
+		logMsg.put("header postion",
+				"X:" + header.getLeft() + " Y:" + header.getTop());
+		logMsg.put("touchView postion", "X:" + touchView.getLeft() + " Y:"
+				+ touchView.getTop());
 
 		touchView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -230,10 +277,15 @@ public class GtRefreshableView extends LinearLayout {
 							&& headerLayoutParams.topMargin <= hideHeaderHeight) {
 						return false;
 					}
+
+					// 如果下拉距离小于设定距离，也不理会
 					if (distance < touchSlop) {
 						return false;
 					}
+
+					// 如果当前状态不是正在刷新状态
 					if (currentStatus != STATUS_REFRESHING) {
+
 						if (headerLayoutParams.topMargin > 0) {
 							currentStatus = STATUS_RELEASE_TO_REFRESH;
 						} else {
@@ -284,11 +336,20 @@ public class GtRefreshableView extends LinearLayout {
 	 */
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		runSeqMsg.add("onLayout");
+
 		super.onLayout(changed, l, t, r, b);
 		if (changed && !loadOnce) {
 			hideHeaderHeight = -header.getHeight();
+
+			runSeqMsg.add("onLayout changed && !loadOnce");
+			logMsg.put("hideHeaderHeight", hideHeaderHeight);
+			GtLogger.e("loadOnce 首次加载");
+
 			headerLayoutParams = (MarginLayoutParams) header.getLayoutParams();
-			headerLayoutParams.topMargin = hideHeaderHeight;
+			// headerLayoutParams.topMargin = hideHeaderHeight;
+			headerLayoutParams.topMargin = 0;
+			headerLayoutParams.leftMargin = 100;
 			// touchView = (touchView) getChildAt(1);
 			// touchView.setOnTouchListener(this);
 			loadOnce = true;
@@ -376,6 +437,8 @@ public class GtRefreshableView extends LinearLayout {
 	 *            为了防止不同界面的下拉刷新在上次更新时间上互相有冲突， 请不同界面在注册下拉刷新监听器时一定要传入不同的id。
 	 */
 	public void setOnRefreshListener(PullToRefreshListener listener, int id) {
+		runSeqMsg.add("setOnRefreshListener");
+
 		mListener = listener;
 		mId = id;
 	}
@@ -384,6 +447,10 @@ public class GtRefreshableView extends LinearLayout {
 	 * 当所有的刷新逻辑完成后，记录调用一下，否则你的ListView将一直处于正在刷新状态。
 	 */
 	public void finishRefreshing() {
+		runSeqMsg.add("finishRefreshing");
+
+		postLoggerToServer();
+
 		currentStatus = STATUS_REFRESH_FINISHED;
 		preferences.edit()
 				.putLong(UPDATED_AT + mId, System.currentTimeMillis()).commit();
@@ -423,6 +490,8 @@ public class GtRefreshableView extends LinearLayout {
 	 * 更新下拉头中的信息。
 	 */
 	private void updateHeaderView() {
+		runSeqMsg.add("updateHeaderView");
+
 		if (lastStatus != currentStatus) {
 			if (currentStatus == STATUS_PULL_TO_REFRESH) {
 				description.setText(getResources().getString(
@@ -451,6 +520,7 @@ public class GtRefreshableView extends LinearLayout {
 	 * 根据当前的状态来旋转箭头。
 	 */
 	private void rotateArrow() {
+		runSeqMsg.add("rotateArrow");
 		float pivotX = arrow.getWidth() / 2f;
 		float pivotY = arrow.getHeight() / 2f;
 		float fromDegrees = 0f;
@@ -473,6 +543,8 @@ public class GtRefreshableView extends LinearLayout {
 	 * 刷新下拉头中上次更新时间的文字描述。
 	 */
 	private void refreshUpdatedAtValue() {
+		runSeqMsg.add("refreshUpdatedAtValue");
+
 		lastUpdateTime = preferences.getLong(UPDATED_AT + mId, -1);
 		long currentTime = System.currentTimeMillis();
 		long timePassed = currentTime - lastUpdateTime;

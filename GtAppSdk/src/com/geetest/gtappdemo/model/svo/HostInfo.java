@@ -9,7 +9,7 @@ package com.geetest.gtappdemo.model.svo;
 public class HostInfo {
 
 	private int verCode = 0;
-	private String verName = "0.0";
+	private String verName = "";
 	
 	private String gt_public_key = "";
 	private String gtapp_sdk_version = "";

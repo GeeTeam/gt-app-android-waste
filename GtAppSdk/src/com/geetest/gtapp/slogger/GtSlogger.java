@@ -41,8 +41,9 @@ public class GtSlogger {
 	// "http://192.168.1.102:80/debug_msg/";
 	private final String osType = "android";
 
-	public GtSlogger() {
-
+	public GtSlogger(Context context) {
+		this.context = context;
+		setMobileInfo();
 	}
 
 	public GtSlogger(Context context, HostInfo hostInfo) {
@@ -159,7 +160,7 @@ public class GtSlogger {
 
 							try {
 								// 安卓客户端接收到消息后进行相应的处理
-								GtLogger.v("gtLoggerResponse: " + response);
+								GtLogger.i("gtLoggerResponse: " + response);
 							} catch (Exception e) {
 								GtLogger.exception(LoggerString
 										.getFileLineMethod() + e.getMessage());
