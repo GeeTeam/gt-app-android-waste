@@ -115,31 +115,34 @@
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
 
-        <ImageView
-            android:id="@+id/imgv_full_bg_XX"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/tv_view"
-            android:scaleType="fitXY"
-            android:src="@android:drawable/title_bar" />
+    <!-- <RelativeLayout -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" > -->
 
-        <com.geetest.gtappdemo.view.GtRefreshableView
-            android:id="@+id/refreshable_view"
-            android:layout_width="fill_parent"
-            android:layout_height="90dp"
-            android:layout_below="@+id/imgv_full_bg_XX" >
-        </com.geetest.gtappdemo.view.GtRefreshableView>
-    </RelativeLayout>
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/imgv_full_bg_XX" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="24dp" -->
+    <!-- android:layout_below="@+id/tv_view" -->
+    <!-- android:scaleType="fitXY" -->
+    <!-- android:src="@android:drawable/title_bar" /> -->
+
 
     <!-- <com.geetest.gtappdemo.view.GtRefreshableView -->
     <!-- android:id="@+id/refreshable_view" -->
     <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="90dp" > -->
+    <!-- android:layout_height="40dp" -->
+    <!-- android:layout_below="@+id/imgv_full_bg_XX" > -->
     <!-- </com.geetest.gtappdemo.view.GtRefreshableView> -->
+    <!-- </RelativeLayout> -->
+
+    <com.geetest.gtappdemo.view.GtRefreshableView
+        android:id="@+id/refreshable_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </com.geetest.gtappdemo.view.GtRefreshableView>
 
     <include
         android:id="@+id/ll_gtapp_tool_interface"

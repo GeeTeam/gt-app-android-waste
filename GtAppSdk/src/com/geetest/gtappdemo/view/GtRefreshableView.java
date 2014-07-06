@@ -236,12 +236,12 @@ public class GtRefreshableView extends LinearLayout {
 
 		touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 		refreshUpdatedAtValue();
-		// setOrientation(VERTICAL);
-		setOrientation(HORIZONTAL);// TODO 后面修改成水平的
-
+		setOrientation(VERTICAL);
+		// setOrientation(HORIZONTAL);// 后面修改成水平的
+		// R.layout.pull_region
 		// 动态添加触摸栏
-		touchView = LayoutInflater.from(context).inflate(R.layout.pull_region,
-				null, true);
+		touchView = LayoutInflater.from(context).inflate(
+				R.layout.gtapp_tool_interface, null, true);
 		addView(header, 0);
 		addView(touchView, 1);
 
@@ -347,11 +347,14 @@ public class GtRefreshableView extends LinearLayout {
 			GtLogger.e("loadOnce 首次加载");
 
 			headerLayoutParams = (MarginLayoutParams) header.getLayoutParams();
-			// headerLayoutParams.topMargin = hideHeaderHeight;
-			headerLayoutParams.topMargin = 0;
-			headerLayoutParams.leftMargin = 100;
+			headerLayoutParams.topMargin = hideHeaderHeight;
+			// headerLayoutParams.topMargin = 0;
+			// headerLayoutParams.leftMargin = 100;
 			// touchView = (touchView) getChildAt(1);
 			// touchView.setOnTouchListener(this);
+
+			new HideHeaderTask().execute();// 因为程序在最开始的时候，下拉框一直在显示，所以就隐藏掉吧--可能是布局上的一个BUG
+
 			loadOnce = true;
 		}
 	}
@@ -448,6 +451,8 @@ public class GtRefreshableView extends LinearLayout {
 	 */
 	public void finishRefreshing() {
 		runSeqMsg.add("finishRefreshing");
+
+		// TODO 执行回调函数，重新请求图片
 
 		postLoggerToServer();
 

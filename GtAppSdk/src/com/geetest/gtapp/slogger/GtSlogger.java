@@ -36,10 +36,12 @@ public class GtSlogger {
 	private MobileInfo mobileInfo = new MobileInfo();// 手机的静态固件信息
 	private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
 
-	private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
+	// private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
 	// private final String loggerServerApi =
-	// "http://192.168.1.102:80/debug_msg/";
-	private final String osType = "android";
+	// "http://192.168.1.100:80/local_log_msg/";
+
+	private String loggerServerApi = "http://logmsg.duapp.com/debug_msg/";// 公网的服务
+	private String osType = "android";
 
 	public GtSlogger(Context context) {
 		this.context = context;
@@ -49,6 +51,16 @@ public class GtSlogger {
 	public GtSlogger(Context context, HostInfo hostInfo) {
 		this.context = context;
 		this.hostInfo = hostInfo;
+
+		// // 做一个发布/调试的切换开关
+		// if (GtApiEnv.DEBUG_STATE) {
+		// loggerServerApi = "http://192.168.1.100:80/local_log_msg/";// 本地运行的程序
+		// // loggerServerApi =
+		// // "http://192.168.2.66:80/local_log_msg/";//本地运行的程序
+		// } else {
+		// loggerServerApi = "http://logmsg.duapp.com/debug_msg/";// 公网
+		// }
+
 		setMobileInfo();
 	}
 

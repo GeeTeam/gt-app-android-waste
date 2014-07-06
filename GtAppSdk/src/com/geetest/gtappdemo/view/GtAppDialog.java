@@ -563,70 +563,71 @@ public class GtAppDialog extends Dialog {
 
 	private void initListeners() {
 
-		imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
-
-			public boolean onTouch(View arg0, MotionEvent event) {
-
-				float curX, curY;// 鼠标的即时位置
-
-				curX = event.getX();
-				curY = event.getY();
-
-				switch (event.getAction()) {
-
-				case MotionEvent.ACTION_DOWN:
-					// 获取当前的位置
-					mX = event.getX();
-					mY = event.getY();
-
-					changeImageButtonStartPosition.setX(imgv_change_image
-							.getTop());
-					changeImageButtonStartPosition.setX(imgv_change_image
-							.getLeft());// 获取起始的位置
-					// actionDown_X = event.getX();
-					// actionDown_Y = event.getY();
-
-					break;
-				case MotionEvent.ACTION_MOVE:
-					curX = event.getX();// 当前x
-					curY = event.getY();// 当前y
-
-					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
-					// curY));// 进行偏移
-					// imgv_change_image.scrollBy((int) (mX - curX), 0);//
-					// 只进行水平方向行偏移
-					imgv_change_image.scrollBy(0, (int) (mY - curY));
-					mX = curX;
-					mY = curY;
-					break;
-				case MotionEvent.ACTION_UP:
-					GtLogger.v("Images Change Action_Up");
-
-					curX = event.getX();
-					curY = event.getY();
-
-					// imgv_change_image.scrollBy((int) (mX - curX), 0);
-					imgv_change_image.scrollTo(0,
-							(int) (changeImageButtonStartPosition.getY()));// 归位
-
-					if ((curY - changeImageButtonStartPosition.getY()) > 100) {
-						// 开始刷新图片
-						captchaInitialOption_StringRequest();
-					}
-
-					break;
-				}
-
-				return true;
-			}
-		});
+		// imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
+		//
+		// public boolean onTouch(View arg0, MotionEvent event) {
+		//
+		// float curX, curY;// 鼠标的即时位置
+		//
+		// curX = event.getX();
+		// curY = event.getY();
+		//
+		// switch (event.getAction()) {
+		//
+		// case MotionEvent.ACTION_DOWN:
+		// // 获取当前的位置
+		// mX = event.getX();
+		// mY = event.getY();
+		//
+		// changeImageButtonStartPosition.setX(imgv_change_image
+		// .getTop());
+		// changeImageButtonStartPosition.setX(imgv_change_image
+		// .getLeft());// 获取起始的位置
+		// // actionDown_X = event.getX();
+		// // actionDown_Y = event.getY();
+		//
+		// break;
+		// case MotionEvent.ACTION_MOVE:
+		// curX = event.getX();// 当前x
+		// curY = event.getY();// 当前y
+		//
+		// // igv_slice.scrollBy((int) (mX - curX), (int) (mY -
+		// // curY));// 进行偏移
+		// // imgv_change_image.scrollBy((int) (mX - curX), 0);//
+		// // 只进行水平方向行偏移
+		// imgv_change_image.scrollBy(0, (int) (mY - curY));
+		// mX = curX;
+		// mY = curY;
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// GtLogger.v("Images Change Action_Up");
+		//
+		// curX = event.getX();
+		// curY = event.getY();
+		//
+		// // imgv_change_image.scrollBy((int) (mX - curX), 0);
+		// imgv_change_image.scrollTo(0,
+		// (int) (changeImageButtonStartPosition.getY()));// 归位
+		//
+		// if ((curY - changeImageButtonStartPosition.getY()) > 100) {
+		// // 开始刷新图片
+		// captchaInitialOption_StringRequest();
+		// }
+		//
+		// break;
+		// }
+		//
+		// return true;
+		// }
+		// });
 
 		refreshableView.setOnRefreshListener(new PullToRefreshListener() {
 			@Override
 			public void onRefresh() {
 				try {
-					// TODO
-					Thread.sleep(2000);// 模拟一个耗时为2s的事件
+					// 开始刷新图片
+					captchaInitialOption_StringRequest();
+					Thread.sleep(100);// 模拟一个耗时为2s的事件
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
