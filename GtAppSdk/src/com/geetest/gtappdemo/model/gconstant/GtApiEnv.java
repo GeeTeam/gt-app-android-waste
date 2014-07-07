@@ -53,10 +53,6 @@ public class GtApiEnv {
 	// // Gt的地址
 	// public static String gtApiBase = "http://api.geetest.com/";
 
-	/**
-	 * 用于输出调试信息的服务器API
-	 */
-	public static String debugServerApi = "http://192.168.2.66:80/debug_msg/";;
 
 	public static String getSdkVersionInfo() {
 		return "Vc" + sdkVersionCode + "Vn" + sdkVersionName;

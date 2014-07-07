@@ -36,12 +36,13 @@ public class GtSlogger {
 	private MobileInfo mobileInfo = new MobileInfo();// 手机的静态固件信息
 	private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
 
-	// private String loggerServerApi = "http://192.168.2.66:80/debug_msg/";
+	private String loggerServerApi = "http://192.168.2.66:80/local_log_msg/";
 	// private final String loggerServerApi =
 	// "http://192.168.1.100:80/local_log_msg/";
 
-	private String loggerServerApi = "http://logmsg.duapp.com/debug_msg/";// 公网的服务
-	private String osType = "android";
+	// private final String loggerServerApi =
+	// "http://logmsg.duapp.com/debug_msg/";// 公网的服务
+	private final String osType = "android";
 
 	public GtSlogger(Context context) {
 		this.context = context;

@@ -1,19 +1,20 @@
 package com.geetest.gtappdemo.model.svo;
 
 /**
- * 图片的数据收集--时间节点--绝对时间
+ * 图片的数据收集--时间节点
  * 
  * @author Zheng
  * @time 2014年6月30日 下午12:13:26
  */
 /**
+ * 相对时间
+ * 
  * @author Zheng
  * @time 2014年6月30日 下午2:41:53
  */
-public class ImageLoadTimeNode {
+public class ImageLoadRelTimeNode {
 
 	// 软件行为参数收集
-	private long dlg_open_time = 0;// 对话框打开的时间
 	private long dlg_show_time = 0;// 对话框显示的时刻点
 	private long bg_img_start_time = 0;
 	private long bg_img_end_time = 0;
@@ -24,30 +25,17 @@ public class ImageLoadTimeNode {
 
 	// private long totalLoadTime = 0;// 所有的图片的加载时间
 
-	/**
-	 * 从绝对时刻点，转换成相对的时刻点
-	 * 
-	 * @time 2014年7月7日 下午11:45:34
-	 * @return
-	 */
-	public ImageLoadRelTimeNode getRelativeTimeNode() {
+	// 串行的通讯 方式导致的通讯时间
+	public long getAbsTotalLoadTime() {
+		return (slice_img_end_time - bg_img_start_time);
+	}
 
-		ImageLoadRelTimeNode relativeTimeNode = new ImageLoadRelTimeNode();
-		relativeTimeNode.setDlg_show_time(dlg_show_time - dlg_open_time);
-		relativeTimeNode
-				.setBg_img_start_time(bg_img_start_time - dlg_open_time);
-		relativeTimeNode.setBg_img_end_time(bg_img_end_time - dlg_open_time);
-		relativeTimeNode.setSlice_bg_img_start_time(slice_bg_img_start_time
-				- dlg_open_time);
-		relativeTimeNode.setSlice_bg_img_end_time(slice_bg_img_end_time
-				- dlg_open_time);
-		relativeTimeNode.setSlice_img_start_time(slice_img_start_time
-				- dlg_open_time);
-		relativeTimeNode.setSlice_img_end_time(slice_img_end_time
-				- dlg_open_time);
+	public long getDlg_show_time() {
+		return dlg_show_time;
+	}
 
-		return relativeTimeNode;
-
+	public void setDlg_show_time(long dlg_show_time) {
+		this.dlg_show_time = dlg_show_time;
 	}
 
 	/**
@@ -74,32 +62,6 @@ public class ImageLoadTimeNode {
 		timeCycle.setTotal_abs_img_cycle(getAbsTotalLoadTime());
 
 		return timeCycle;
-
-	}
-
-	// public long getTotalLoadTime() {
-	// return (slice_img_end_time - bg_img_start_time);
-	// }
-
-	// 串行的通讯 方式导致的通讯时间
-	public long getAbsTotalLoadTime() {
-		return (slice_img_end_time - bg_img_start_time);
-	}
-
-	public long getDlg_show_time() {
-		return dlg_show_time;
-	}
-
-	public void setDlg_show_time(long dlg_show_time) {
-		this.dlg_show_time = dlg_show_time;
-	}
-
-	public long getDlg_open_time() {
-		return dlg_open_time;
-	}
-
-	public void setDlg_open_time(long dlg_open_time) {
-		this.dlg_open_time = dlg_open_time;
 	}
 
 	// public void setTotalLoadTime(long totalLoadTime) {

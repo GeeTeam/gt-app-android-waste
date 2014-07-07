@@ -189,6 +189,7 @@ public class GtAppDialog extends Dialog {
 	 * 客户端的验证结果
 	 */
 	private Boolean clientCaptchaResult = false;
+	private Boolean picRequestSucceed = false;// 图片是否加载成功
 
 	// private String logTag = "testImageView";
 
@@ -220,6 +221,7 @@ public class GtAppDialog extends Dialog {
 		this.gtAppCallback = option.getGtAppCallback();
 
 		getHostInfo();
+		imgLoadTimeStamp.setDlg_open_time(System.currentTimeMillis());
 	}
 
 	/**
@@ -266,6 +268,7 @@ public class GtAppDialog extends Dialog {
 
 			setLocation();
 			show();
+			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
 		} catch (Exception e) {
 			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
@@ -381,6 +384,7 @@ public class GtAppDialog extends Dialog {
 
 		imgv_skb_anim_tip.startAnimation(anim_skb_finger_tip);
 
+		picRequestSucceed = true;
 		postSdkRunInfo();
 	}
 
@@ -465,6 +469,13 @@ public class GtAppDialog extends Dialog {
 		// Gson gson = new Gson();
 		// String strMsg = gson.toJson(sdkRunInfo);
 		slogger.s_v(LogMsgTag.sdkRunInfo, sdkRunInfo);
+
+		// 这是第一次加载时的元素信息
+		slogger.s_v(LogMsgTag.elementFirstLoadTime,
+				imgLoadTimeStamp.getRelativeTimeNode());
+		slogger.s_v(LogMsgTag.imageLoadCycle,
+				imgLoadTimeStamp.getImageLoadTimeCycle());
+
 	}
 
 	/**
@@ -625,9 +636,20 @@ public class GtAppDialog extends Dialog {
 			@Override
 			public void onRefresh() {
 				try {
-					// 开始刷新图片
+					// TODO 开始刷新图片
+					picRequestSucceed = false;// 在进行加载前，先设置标志位
+
+					int waitCnt = 0;
 					captchaInitialOption_StringRequest();
-					Thread.sleep(100);// 模拟一个耗时为2s的事件
+
+					// 因为都是异步的，所以需要设置标志位，来进行等待执行完毕
+					while (!picRequestSucceed) {
+						if (waitCnt > 100) {
+							break;
+						}
+						Thread.sleep(100);// 模拟一个耗时为2s的事件
+					}
+
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -789,7 +811,6 @@ public class GtAppDialog extends Dialog {
 						Log.v("seekbar", "拖动停止");
 						// 向服务器提交行为数据
 						userBehaviourUpload_StringRequest();
-						// postDebugMsgToServer("Stop drag~!");
 					}
 
 					/**
@@ -1672,7 +1693,8 @@ public class GtAppDialog extends Dialog {
 		ajaxPhp_GreqVo.setChallenge(initCaptchaOption.getChallenge());
 		ajaxPhp_GreqVo.setUserresponse(encodeUserResponse);
 		ajaxPhp_GreqVo.setPasstime((int) (seekbarEndTime - seekbarStartTime));
-		ajaxPhp_GreqVo.setImgload((int) (imgLoadTimeStamp.getTotalLoadTime()));
+		ajaxPhp_GreqVo
+				.setImgload((int) (imgLoadTimeStamp.getAbsTotalLoadTime()));
 		ajaxPhp_GreqVo.setA(encodeUserActions);
 
 		GtLogger.v(ajaxPhp_GreqVo.getA());
@@ -2038,65 +2060,65 @@ public class GtAppDialog extends Dialog {
 
 	}
 
-	// 用于调试的函数区
-
-	/**
-	 * 
-	 */
-	public void postDebugMsgToServer(final String jsonDebugMsg) {
-
-		try {
-
-			String customServerGtApiUrl = GtApiEnv.debugServerApi;
-
-			StringRequest stringRequest = new StringRequest(
-					Request.Method.POST, customServerGtApiUrl,
-					new Response.Listener<String>() {
-
-						public void onResponse(String response) {
-
-							try {
-
-								// 安卓客户端接收到消息后进行相应的处理
-								GtLogger.v("postCaptchaInfoToCustomServer:  "
-										+ response);
-
-							} catch (Exception e) {
-								slogger.ex(LoggerString.getFileLineMethod()
-										+ e.getMessage());
-							}
-
-						}
-					}, new Response.ErrorListener() {
-
-						public void onErrorResponse(VolleyError arg0) {
-
-							GtLogger.v(LoggerString.getFileLineMethod()
-									+ arg0.getMessage());
-						}
-					}) {
-
-				@Override
-				protected Map<String, String> getParams() {
-					Map<String, String> params = new HashMap<String, String>();
-
-					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
-					params.put("debug_msg", jsonDebugMsg);
-					return params;
-				}
-
-			};
-
-			// 设置请求超时时间5s：http://blog.csdn.net/xyz_lmn/article/details/12177005
-			stringRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1,
-					1.0f));
-			mQueue.add(stringRequest);
-
-		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
-		}
-
-	}
+	// // 用于调试的函数区
+	//
+	// /**
+	// *
+	// */
+	// public void postDebugMsgToServer(final String jsonDebugMsg) {
+	//
+	// try {
+	//
+	// String customServerGtApiUrl = GtApiEnv.debugServerApi;
+	//
+	// StringRequest stringRequest = new StringRequest(
+	// Request.Method.POST, customServerGtApiUrl,
+	// new Response.Listener<String>() {
+	//
+	// public void onResponse(String response) {
+	//
+	// try {
+	//
+	// // 安卓客户端接收到消息后进行相应的处理
+	// GtLogger.v("postCaptchaInfoToCustomServer:  "
+	// + response);
+	//
+	// } catch (Exception e) {
+	// slogger.ex(LoggerString.getFileLineMethod()
+	// + e.getMessage());
+	// }
+	//
+	// }
+	// }, new Response.ErrorListener() {
+	//
+	// public void onErrorResponse(VolleyError arg0) {
+	//
+	// GtLogger.v(LoggerString.getFileLineMethod()
+	// + arg0.getMessage());
+	// }
+	// }) {
+	//
+	// @Override
+	// protected Map<String, String> getParams() {
+	// Map<String, String> params = new HashMap<String, String>();
+	//
+	// // 将客户端的信息编码成一个Json串，然后上传到客户服务器
+	// params.put("debug_msg", jsonDebugMsg);
+	// return params;
+	// }
+	//
+	// };
+	//
+	// // 设置请求超时时间5s：http://blog.csdn.net/xyz_lmn/article/details/12177005
+	// stringRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1,
+	// 1.0f));
+	// mQueue.add(stringRequest);
+	//
+	// } catch (Exception e) {
+	// slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+	// }
+	//
+	// }
 
 	/**
 	 * 设置位置

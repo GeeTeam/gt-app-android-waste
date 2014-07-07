@@ -12,4 +12,8 @@ public class LogMsgTag {
 
 	public final static String sdkRunInfo = "sdkRunInfo";// SDK运行时的信息收集
 
+	public final static String elementFirstLoadTime = "elementFirstLoadTime";// 元素加载时间分析
+
+	public final static String imageLoadCycle = "imageLoadCycle";// 图片加载耗费时间
+
 }
