@@ -231,7 +231,6 @@ public class GtAppDialog extends Dialog {
 	 * @return
 	 */
 	private HostInfo getHostInfo() {
-
 		// TODO 需要从宿主信息里面获取 版本号，需要传递过来
 		HostInfo hostInfo = new HostInfo();
 		hostInfo.setVerCode(1);
@@ -243,7 +242,7 @@ public class GtAppDialog extends Dialog {
 	}
 
 	/**
-	 * 
+	 * 设置显示方式
 	 */
 	public void setDisplay() {
 
@@ -254,9 +253,6 @@ public class GtAppDialog extends Dialog {
 			slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
 
 			requestSdkVersionFromServer();
-
-			// 向服务器请求
-			requestOptionDataFromGtServer();
 
 			setContentView(gtAppDlgLayoutResId);// 设置资源内容
 			initViews();
@@ -269,6 +265,8 @@ public class GtAppDialog extends Dialog {
 			setLocation();
 			show();
 			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
+			// 向服务器请求初始化信息
+			requestOptionDataFromGtServer();
 		} catch (Exception e) {
 			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
@@ -322,7 +320,8 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.e(error.getMessage());
+						slogger.ex(LoggerString.getFileLineMethod()
+								+ error.getMessage());
 					}
 				});
 
@@ -1185,9 +1184,8 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.exception("volley error: "
+						slogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
-						// imgv_full_bg.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -1262,7 +1260,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.exception("volley error: "
+						slogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
@@ -1326,9 +1324,8 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GtLogger.exception("volley error: "
+						slogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
-						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
 				});
 
@@ -1428,6 +1425,7 @@ public class GtAppDialog extends Dialog {
 
 						imgLoadTimeStamp.setOption_end_time(System
 								.currentTimeMillis());
+
 						slogger.d("response:" + response);
 
 						// 硬解码抽取出JSON格式
@@ -1458,7 +1456,8 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-
+						slogger.ex(LoggerString.getFileLineMethod()
+								+ error.getMessage());
 					}
 				});
 
@@ -1787,7 +1786,8 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-
+						slogger.ex(LoggerString.getFileLineMethod()
+								+ error.getMessage());
 					}
 				});
 
@@ -2013,10 +2013,10 @@ public class GtAppDialog extends Dialog {
 						}
 					}, new Response.ErrorListener() {
 
-						public void onErrorResponse(VolleyError arg0) {
+						public void onErrorResponse(VolleyError error) {
 
-							GtLogger.v(LoggerString.getFileLineMethod()
-									+ arg0.getMessage());
+							slogger.ex(LoggerString.getFileLineMethod()
+									+ error.getMessage());
 						}
 					}) {
 
