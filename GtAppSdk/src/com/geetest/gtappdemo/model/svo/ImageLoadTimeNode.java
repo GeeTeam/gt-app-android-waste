@@ -49,10 +49,10 @@ public class ImageLoadTimeNode {
 		relativeTimeNode
 				.setOption_start_time(option_start_time - dlg_open_time);
 		relativeTimeNode.setOption_end_time(option_end_time - dlg_open_time);
-		relativeTimeNode.setPost_action_start_time(post_action_start_time
-				- dlg_open_time);
-		relativeTimeNode.setPost_action_end_time(post_action_end_time
-				- dlg_open_time);
+		// relativeTimeNode.setPost_action_start_time(post_action_start_time
+		// - dlg_open_time);
+		// relativeTimeNode.setPost_action_end_time(post_action_end_time
+		// - dlg_open_time);
 
 		relativeTimeNode
 				.setBg_img_start_time(bg_img_start_time - dlg_open_time);
@@ -119,9 +119,9 @@ public class ImageLoadTimeNode {
 		// .setSlice_img_start_cycle(slice_img_start_time - dlg_open_time);
 
 		// 从请求图片开始
-		timeCycle.setOption_cycle(option_start_time - option_end_time);
-		timeCycle.setPost_action_cycle(post_action_end_time
-				- post_action_start_time);
+		timeCycle.setOption_cycle(option_end_time - option_start_time);
+		// timeCycle.setPost_action_cycle(post_action_end_time
+		// - post_action_start_time);
 		timeCycle.setBg_img_cycle(bg_img_end_time - bg_img_start_time);
 		timeCycle.setSlice_bg_img_cycle(slice_bg_img_end_time
 				- slice_bg_img_start_time);

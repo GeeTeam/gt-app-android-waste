@@ -28,8 +28,8 @@ public class ImageLoadRelTimeNode {
 	private long option_end_time = 0;
 
 	// 上传行为数据
-	private long post_action_start_time = 0;
-	private long post_action_end_time = 0;
+	// private long post_action_start_time = 0;
+	// private long post_action_end_time = 0;
 
 	// private long totalLoadTime = 0;// 所有的图片的加载时间
 
@@ -54,21 +54,21 @@ public class ImageLoadRelTimeNode {
 		this.option_end_time = option_end_time;
 	}
 
-	public long getPost_action_start_time() {
-		return post_action_start_time;
-	}
-
-	public void setPost_action_start_time(long post_action_start_time) {
-		this.post_action_start_time = post_action_start_time;
-	}
-
-	public long getPost_action_end_time() {
-		return post_action_end_time;
-	}
-
-	public void setPost_action_end_time(long post_action_end_time) {
-		this.post_action_end_time = post_action_end_time;
-	}
+	// public long getPost_action_start_time() {
+	// return post_action_start_time;
+	// }
+	//
+	// public void setPost_action_start_time(long post_action_start_time) {
+	// this.post_action_start_time = post_action_start_time;
+	// }
+	//
+	// public long getPost_action_end_time() {
+	// return post_action_end_time;
+	// }
+	//
+	// public void setPost_action_end_time(long post_action_end_time) {
+	// this.post_action_end_time = post_action_end_time;
+	// }
 
 	public long getDlg_show_time() {
 		return dlg_show_time;
@@ -78,31 +78,31 @@ public class ImageLoadRelTimeNode {
 		this.dlg_show_time = dlg_show_time;
 	}
 
-	/**
-	 * 将时刻节点转换成时间段
-	 * 
-	 * @time 2014年6月30日 下午2:41:56
-	 * @return
-	 */
-	public ImageLoadTimeCycle getImageLoadTimeCycle() {
-
-		ImageLoadTimeCycle timeCycle = new ImageLoadTimeCycle();
-		// timeCycle.setDlg_show_cycle(dlg_show_time - dlg_open_time);
-		// timeCycle.setBg_img_start_cycle(bg_img_start_time - dlg_open_time);
-		// timeCycle.setSlice_bg_img_start_cycle(slice_bg_img_start_time
-		// - dlg_open_time);
-		// timeCycle
-		// .setSlice_img_start_cycle(slice_img_start_time - dlg_open_time);
-
-		// 从请求图片开始
-		timeCycle.setBg_img_cycle(bg_img_end_time - bg_img_start_time);
-		timeCycle.setSlice_bg_img_cycle(slice_bg_img_end_time
-				- slice_bg_img_start_time);
-		timeCycle.setSlice_img_cycle(slice_img_end_time - slice_img_start_time);
-		timeCycle.setTotal_abs_img_cycle(getAbsTotalLoadTime());
-
-		return timeCycle;
-	}
+	// /**
+	// * 将时刻节点转换成时间段
+	// *
+	// * @time 2014年6月30日 下午2:41:56
+	// * @return
+	// */
+	// public ImageLoadTimeCycle getImageLoadTimeCycle() {
+	//
+	// ImageLoadTimeCycle timeCycle = new ImageLoadTimeCycle();
+	// // timeCycle.setDlg_show_cycle(dlg_show_time - dlg_open_time);
+	// // timeCycle.setBg_img_start_cycle(bg_img_start_time - dlg_open_time);
+	// // timeCycle.setSlice_bg_img_start_cycle(slice_bg_img_start_time
+	// // - dlg_open_time);
+	// // timeCycle
+	// // .setSlice_img_start_cycle(slice_img_start_time - dlg_open_time);
+	//
+	// // 从请求图片开始
+	// timeCycle.setBg_img_cycle(bg_img_end_time - bg_img_start_time);
+	// timeCycle.setSlice_bg_img_cycle(slice_bg_img_end_time
+	// - slice_bg_img_start_time);
+	// timeCycle.setSlice_img_cycle(slice_img_end_time - slice_img_start_time);
+	// timeCycle.setTotal_abs_img_cycle(getAbsTotalLoadTime());
+	//
+	// return timeCycle;
+	// }
 
 	// public void setTotalLoadTime(long totalLoadTime) {
 	// this.totalLoadTime = totalLoadTime;

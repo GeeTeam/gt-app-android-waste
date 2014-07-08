@@ -385,6 +385,11 @@ public class GtAppDialog extends Dialog {
 		imgv_skb_anim_tip.startAnimation(anim_skb_finger_tip);
 
 		picRequestSucceed = true;
+
+		// 将通讯相关的性能参数值上传
+		slogger.s_v(LogMsgTag.imageLoadCycle,
+				imgLoadTimeStamp.getImageLoadTimeCycle());
+
 		postSdkRunInfo();
 	}
 
@@ -473,8 +478,6 @@ public class GtAppDialog extends Dialog {
 		// 这是第一次加载时的元素信息
 		slogger.s_v(LogMsgTag.elementFirstLoadTime,
 				imgLoadTimeStamp.getRelativeTimeNode());
-		slogger.s_v(LogMsgTag.imageLoadCycle,
-				imgLoadTimeStamp.getImageLoadTimeCycle());
 
 	}
 
@@ -1417,17 +1420,14 @@ public class GtAppDialog extends Dialog {
 		String param = cdtParams(cdtObjectToMap(getPhp_GreqVo));
 		String url = genernateApiUrl(relApiPath, param);
 
-		// String url =
-		// "http://api.geetest.com/get.php?gt=a40fd3b0d712165c5d13e6f747e948d4&product=embed";
-
-		// setImageViewDisplayWhenRefresh();
-
 		StringRequest option_Request = new StringRequest(url,
 				new Response.Listener<String>() {
 
 					@Override
 					public void onResponse(String response) {
 
+						imgLoadTimeStamp.setOption_end_time(System
+								.currentTimeMillis());
 						slogger.d("response:" + response);
 
 						// 硬解码抽取出JSON格式
@@ -1463,6 +1463,7 @@ public class GtAppDialog extends Dialog {
 				});
 
 		mQueue.add(option_Request);
+		imgLoadTimeStamp.setOption_start_time(System.currentTimeMillis());
 	}
 
 	/**
@@ -1707,7 +1708,7 @@ public class GtAppDialog extends Dialog {
 
 		// 使用的是内部的测试数据服务器
 		// optionApiUrl = genernateTestApiUrl("/gtapp_ajax", param);
-
+		imgLoadTimeStamp.setPost_action_start_time(System.currentTimeMillis());
 		StringRequest option_Request = new StringRequest(optionApiUrl,
 				new Response.Listener<String>() {
 
@@ -1715,6 +1716,8 @@ public class GtAppDialog extends Dialog {
 					public void onResponse(String response) {
 
 						try {
+							imgLoadTimeStamp.setPost_action_end_time(System
+									.currentTimeMillis());
 							GtLogger.v("userBehaviourUpload_StringRequest   response:   "
 									+ response);
 

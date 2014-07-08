@@ -17,7 +17,7 @@ public class ImageLoadTimeCycle {
 	// 下面是从图片加载的时候开始算的时间
 
 	private long option_cycle;// 初始化请求的周期
-	private long post_action_cycle;// 上传行为数据的周期
+	// private long post_action_cycle;// 上传行为数据的周期
 	private long bg_img_cycle; // 背景图加载时间（完毕时间-开始时间）（ms）
 	private long slice_bg_img_cycle;// 切图背景加载时间（ms）
 	private long slice_img_cycle;// 切图加载时间（ms）
@@ -75,13 +75,13 @@ public class ImageLoadTimeCycle {
 		this.option_cycle = option_cycle;
 	}
 
-	public long getPost_action_cycle() {
-		return post_action_cycle;
-	}
-
-	public void setPost_action_cycle(long post_action_cycle) {
-		this.post_action_cycle = post_action_cycle;
-	}
+	// public long getPost_action_cycle() {
+	// return post_action_cycle;
+	// }
+	//
+	// public void setPost_action_cycle(long post_action_cycle) {
+	// this.post_action_cycle = post_action_cycle;
+	// }
 
 	public void setTotal_abs_img_cycle(long total_abs_img_cycle) {
 		this.total_abs_img_cycle = total_abs_img_cycle;
