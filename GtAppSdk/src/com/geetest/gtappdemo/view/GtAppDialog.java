@@ -161,6 +161,8 @@ public class GtAppDialog extends Dialog {
 	private final int MSG_FULL_BG_DISPLAY = 1;// 完整图片显示
 	private final int MSG_SLICE_BG_DISPLAY = 2;// 切片图显示
 	private final int MSG_SLICE_BG_ALPHA_MISS = 3;// 切片图渐变消失
+	private final int MSG_OPTION_DATA = 4;// 初次请求数据
+	private final int MSG_BIND_DATA = 5;// 将数据绑定到界面
 
 	// 滑块坐标位置
 	private GtPoint sliderStartLeftTopPosition = new GtPoint();// 滑块左上角坐标
@@ -260,14 +262,13 @@ public class GtAppDialog extends Dialog {
 			initViewDisplayParameter();
 			initListeners();
 
-			// bindOptionDataToLocalViews();
 			// setTitle("GtDialog");
 
 			setLocation();
 			show();
 			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
-			// 向服务器请求初始化信息
-			requestOptionDataFromGtServer();
+			sendMsgToUpdateUI(MSG_OPTION_DATA);
+
 		} catch (Exception e) {
 			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
@@ -286,30 +287,27 @@ public class GtAppDialog extends Dialog {
 		String url = GtApiEnv.sdkNewestVersionInfoLink + "?randomNum="
 				+ randomNum;
 
-		StringRequest option_Request = new StringRequest(url,
+		StringRequest sdkVersion_Request = new StringRequest(url,
 				new Response.Listener<String>() {
 
 					@Override
 					public void onResponse(String response) {
 
 						try {
-							GtLogger.v("requestSdkVersionFromServer: "
+							// GtLogger.v("requestSdkVersionFromServer: "
+							// + response);
+							// 解码抽取出JSON格式
+							slogger.d("requestSdkVersionFromServer: "
 									+ response);
-							// TODO 解码抽取出JSON格式
 							GtSdkVersionInfo serverSdkVersionInfo = new GtSdkVersionInfo();
-
 							// 解析成对象
 							serverSdkVersionInfo = gson.fromJson(response,
 									GtSdkVersionInfo.class);
-
 							// 判断当前的版本问题
 							if (serverSdkVersionInfo.getVerCode() > GtApiEnv.sdkVersionCode) {
 								// 做一次服务器比对
 								GtLogger.e("当前SDK版本比较落后,请到极验官网服务器下载并集成GtApp最新版本");
 							}
-
-							GtLogger.v("requestSdkVersionFromServer : "
-									+ serverSdkVersionInfo.getVerCode());
 						} catch (Exception e) {
 							slogger.ex(LoggerString.getFileLineMethod()
 									+ e.getMessage());
@@ -325,7 +323,7 @@ public class GtAppDialog extends Dialog {
 					}
 				});
 
-		mQueue.add(option_Request);
+		mQueue.add(sdkVersion_Request);
 
 	}
 
@@ -1298,7 +1296,8 @@ public class GtAppDialog extends Dialog {
 								* bm_zoom_scale);
 						bm_slice = zoomImage(response, bm_zoom_scale);
 
-						bindOptionDataToLocalViews();
+						sendMsgToUpdateUI(MSG_BIND_DATA);
+						// bindOptionDataToLocalViews();
 
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
@@ -1819,6 +1818,13 @@ public class GtAppDialog extends Dialog {
 				// 刷新视图
 				imgv_slice.invalidate();
 
+				break;
+			case MSG_OPTION_DATA:
+				// 向服务器请求初始化信息
+				requestOptionDataFromGtServer();
+				break;
+			case MSG_BIND_DATA:
+				bindOptionDataToLocalViews();
 				break;
 
 			default:
