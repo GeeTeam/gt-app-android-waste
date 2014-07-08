@@ -202,6 +202,7 @@ public class GtAppDialog extends Dialog {
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
 	private UiElementSize uiSize = new UiElementSize();// 界面元素的高度收集--方便做一些适配工作
 	private GtSlogger slogger;// 向服务器提交运行日志数据的类
+	private Gson gson = new Gson();// 第三方的JSON解析和打包库
 
 	// TODO 下拉刷新加载效果
 	// private ScrollView mScrollView;// 可以滑动操作的视图
@@ -298,7 +299,6 @@ public class GtAppDialog extends Dialog {
 							GtSdkVersionInfo serverSdkVersionInfo = new GtSdkVersionInfo();
 
 							// 解析成对象
-							Gson gson = new Gson();
 							serverSdkVersionInfo = gson.fromJson(response,
 									GtSdkVersionInfo.class);
 
@@ -470,7 +470,6 @@ public class GtAppDialog extends Dialog {
 		sdkRunInfo.setUiSize(uiSize);
 
 		// 如果是上传成字符串到字段中，则使用下面的语句
-		// Gson gson = new Gson();
 		// String strMsg = gson.toJson(sdkRunInfo);
 		slogger.s_v(LogMsgTag.sdkRunInfo, sdkRunInfo);
 
@@ -1153,9 +1152,7 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void fullbg_ImageRequest(String relativeUrl) {
 
-		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
-
-		GtLogger.v(imgUrl);
+		String imgUrl = getFullUrl(relativeUrl);
 
 		ImageRequest bg_imageRequest = new ImageRequest(imgUrl,
 				new Response.Listener<Bitmap>() {
@@ -1237,13 +1234,22 @@ public class GtAppDialog extends Dialog {
 	}
 
 	/**
+	 * 根据相对路径获取完整路径
+	 * 
+	 * @time 2014年7月8日 下午7:19:13
+	 * @param relativeUrl
+	 * @return
+	 */
+	private String getFullUrl(String relativeUrl) {
+		return GtApiEnv.imgServerBase + relativeUrl;
+	}
+
+	/**
 	 * 切掉后的大的背景图
 	 */
 	private void slice_bg_ImageRequest(String relativeUrl) {
 
-		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
-
-		GtLogger.v(imgUrl);
+		String imgUrl = getFullUrl(relativeUrl);
 
 		ImageRequest bg_imageRequest = new ImageRequest(imgUrl,
 				new Response.Listener<Bitmap>() {
@@ -1251,7 +1257,6 @@ public class GtAppDialog extends Dialog {
 					public void onResponse(Bitmap response) {
 						imgLoadTimeStamp.setSlice_bg_img_end_time(System
 								.currentTimeMillis());
-
 						// 对图片进行缩放
 						bm_slice_bg = zoomImage(response, bm_zoom_scale);
 						slice_ImageRequest(initCaptchaOption.getSliceurl());// 再请求小切图
@@ -1276,9 +1281,7 @@ public class GtAppDialog extends Dialog {
 	 */
 	private void slice_ImageRequest(String relativeUrl) {
 
-		String imgUrl = GtApiEnv.imgServerBase + relativeUrl;
-
-		GtLogger.v(imgUrl);
+		String imgUrl = getFullUrl(relativeUrl);
 
 		// String url_fullbg =
 		// "http://geetest-jordan2.b0.upaiyun.com/pictures/gt/b2cbb350/slice/63328333.png";
@@ -1290,34 +1293,11 @@ public class GtAppDialog extends Dialog {
 						imgLoadTimeStamp.setSlice_img_end_time(System
 								.currentTimeMillis());
 
-						// Gson gson = new Gson();
-						// String strMsg = gson.toJson(imgLoadTimeStamp
-						// .getImageLoadTimeCycle());
-
-						// 将图片 信息收集进去
-
-						// GtLogger.s_v(context, LogMsgTag.imageLoadTime,
-						// strMsg);
-						// String postJsonString =
-						// gson.toJson(imgLoadTimeStamp);
-
 						GtLogger.v("切片图 Width: " + response.getWidth());
 						GtLogger.v("切片图 放大 后Width: " + response.getWidth()
 								* bm_zoom_scale);
-						// slice_img_width = (int) (response.getWidth() *
-						// bm_zoom_scale);
-
 						bm_slice = zoomImage(response, bm_zoom_scale);
 
-						// bgImgLoadEndTime = System.currentTimeMillis();//
-						// 背景图加载截止时间
-
-						// 缩放图片数据源
-
-						// bm_zoom_scale = (intScreenX - 80) /
-						// response.getWidth();
-						// imgv_slice.setImageBitmap(zoomImage(response,
-						// bm_zoom_scale));
 						bindOptionDataToLocalViews();
 
 					}
@@ -1344,7 +1324,6 @@ public class GtAppDialog extends Dialog {
 				* bm_zoom_scale + imgv_slice_bg.getTop()));
 
 		return scaledYpos;
-
 	}
 
 	/**
@@ -1432,10 +1411,8 @@ public class GtAppDialog extends Dialog {
 						String webJsFunction[] = response.split("=");
 						String optionValues[] = webJsFunction[1].split(";");
 						String optionValue = optionValues[0];
-						// GtLogger.v(optionValue);
 
 						// 解析成对象
-						Gson gson = new Gson();
 						initCaptchaOption = gson.fromJson(optionValue,
 								CaptchaOption.class);
 
@@ -1444,12 +1421,6 @@ public class GtAppDialog extends Dialog {
 
 						// 开始连锁的串行向服务器请求图片
 						fullbg_ImageRequest(initCaptchaOption.getFullbg());
-
-						// // 重置SeekBar
-						// skb_dragCaptcha.setProgress(0);
-						// tv_validateStatus.setText("等待验证：拖动滑块使悬浮图像正确拼合");
-						// clientCaptchaResult = false;// 最开始状态是为不通过的。
-						// skb_dragCaptcha.setEnabled(true);
 
 					}
 				}, new Response.ErrorListener() {
@@ -1726,7 +1697,7 @@ public class GtAppDialog extends Dialog {
 
 							AjaxPhp_GresVo ajaxPhp_GresVo = new AjaxPhp_GresVo();
 
-							Gson gson = new Gson();
+							// Gson gson = new Gson();
 							ajaxPhp_GresVo = gson.fromJson(resultAry[1],
 									AjaxPhp_GresVo.class);
 
@@ -2039,7 +2010,7 @@ public class GtAppDialog extends Dialog {
 					gtCustomerSubmit.setGeetest_seccode(messageResult + "\\|"
 							+ GtApiEnv.captChaType);
 
-					Gson gson = new Gson();
+					// Gson gson = new Gson();
 					String postJsonString = gson.toJson(gtCustomerSubmit);
 
 					// 将客户端的信息编码成一个Json串，然后上传到客户服务器
