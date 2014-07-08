@@ -15,12 +15,14 @@ public class ImageLoadTimeCycle {
 	// private long slice_bg_img_start_cycle;
 
 	// 下面是从图片加载的时候开始算的时间
+
+	private long option_cycle;// 初始化请求的周期
+	private long post_action_cycle;// 上传行为数据的周期
 	private long bg_img_cycle; // 背景图加载时间（完毕时间-开始时间）（ms）
 	private long slice_bg_img_cycle;// 切图背景加载时间（ms）
 	private long slice_img_cycle;// 切图加载时间（ms）
 	private long total_abs_img_cycle;// 三张图片载的总时间
 
-	
 	// public long getBg_img_start_cycle() {
 	// return bg_img_start_cycle;
 	// }
@@ -53,16 +55,32 @@ public class ImageLoadTimeCycle {
 	// this.dlg_show_cycle = dlg_show_cycle;
 	// }
 
-//	public long getTotal_img_cycle() {
-//		return total_img_cycle;
-//	}
-//
-//	public void setTotal_img_cycle(long total_img_cycle) {
-//		this.total_img_cycle = total_img_cycle;
-//	}
+	// public long getTotal_img_cycle() {
+	// return total_img_cycle;
+	// }
+	//
+	// public void setTotal_img_cycle(long total_img_cycle) {
+	// this.total_img_cycle = total_img_cycle;
+	// }
 
 	public long getTotal_abs_img_cycle() {
 		return total_abs_img_cycle;
+	}
+
+	public long getOption_cycle() {
+		return option_cycle;
+	}
+
+	public void setOption_cycle(long option_cycle) {
+		this.option_cycle = option_cycle;
+	}
+
+	public long getPost_action_cycle() {
+		return post_action_cycle;
+	}
+
+	public void setPost_action_cycle(long post_action_cycle) {
+		this.post_action_cycle = post_action_cycle;
 	}
 
 	public void setTotal_abs_img_cycle(long total_abs_img_cycle) {

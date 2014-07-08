@@ -15,12 +15,23 @@ public class ImageLoadTimeNode {
 	// 软件行为参数收集
 	private long dlg_open_time = 0;// 对话框打开的时间
 	private long dlg_show_time = 0;// 对话框显示的时刻点
+	// 初始化参数通讯
+	private long option_start_time = 0;
+	private long option_end_time = 0;
+
+	// 大背景图通讯
 	private long bg_img_start_time = 0;
 	private long bg_img_end_time = 0;
+	// 切图背景通讯
 	private long slice_bg_img_start_time = 0;
 	private long slice_bg_img_end_time = 0;
+	// 切图通讯
 	private long slice_img_start_time = 0;
 	private long slice_img_end_time = 0;
+
+	// 上传行为数据
+	private long post_action_start_time = 0;
+	private long post_action_end_time = 0;
 
 	// private long totalLoadTime = 0;// 所有的图片的加载时间
 
@@ -34,6 +45,15 @@ public class ImageLoadTimeNode {
 
 		ImageLoadRelTimeNode relativeTimeNode = new ImageLoadRelTimeNode();
 		relativeTimeNode.setDlg_show_time(dlg_show_time - dlg_open_time);
+
+		relativeTimeNode
+				.setOption_start_time(option_start_time - dlg_open_time);
+		relativeTimeNode.setOption_end_time(option_end_time - dlg_open_time);
+		relativeTimeNode.setPost_action_start_time(post_action_start_time
+				- dlg_open_time);
+		relativeTimeNode.setPost_action_end_time(post_action_end_time
+				- dlg_open_time);
+
 		relativeTimeNode
 				.setBg_img_start_time(bg_img_start_time - dlg_open_time);
 		relativeTimeNode.setBg_img_end_time(bg_img_end_time - dlg_open_time);
@@ -48,6 +68,38 @@ public class ImageLoadTimeNode {
 
 		return relativeTimeNode;
 
+	}
+
+	public long getOption_start_time() {
+		return option_start_time;
+	}
+
+	public void setOption_start_time(long option_start_time) {
+		this.option_start_time = option_start_time;
+	}
+
+	public long getOption_end_time() {
+		return option_end_time;
+	}
+
+	public void setOption_end_time(long option_end_time) {
+		this.option_end_time = option_end_time;
+	}
+
+	public long getPost_action_start_time() {
+		return post_action_start_time;
+	}
+
+	public void setPost_action_start_time(long post_action_start_time) {
+		this.post_action_start_time = post_action_start_time;
+	}
+
+	public long getPost_action_end_time() {
+		return post_action_end_time;
+	}
+
+	public void setPost_action_end_time(long post_action_end_time) {
+		this.post_action_end_time = post_action_end_time;
 	}
 
 	/**
@@ -67,6 +119,9 @@ public class ImageLoadTimeNode {
 		// .setSlice_img_start_cycle(slice_img_start_time - dlg_open_time);
 
 		// 从请求图片开始
+		timeCycle.setOption_cycle(option_start_time - option_end_time);
+		timeCycle.setPost_action_cycle(post_action_end_time
+				- post_action_start_time);
 		timeCycle.setBg_img_cycle(bg_img_end_time - bg_img_start_time);
 		timeCycle.setSlice_bg_img_cycle(slice_bg_img_end_time
 				- slice_bg_img_start_time);

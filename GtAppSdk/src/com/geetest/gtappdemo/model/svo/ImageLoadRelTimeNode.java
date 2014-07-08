@@ -23,11 +23,51 @@ public class ImageLoadRelTimeNode {
 	private long slice_img_start_time = 0;
 	private long slice_img_end_time = 0;
 
+	// 初始化参数通讯
+	private long option_start_time = 0;
+	private long option_end_time = 0;
+
+	// 上传行为数据
+	private long post_action_start_time = 0;
+	private long post_action_end_time = 0;
+
 	// private long totalLoadTime = 0;// 所有的图片的加载时间
 
 	// 串行的通讯 方式导致的通讯时间
 	public long getAbsTotalLoadTime() {
 		return (slice_img_end_time - bg_img_start_time);
+	}
+
+	public long getOption_start_time() {
+		return option_start_time;
+	}
+
+	public void setOption_start_time(long option_start_time) {
+		this.option_start_time = option_start_time;
+	}
+
+	public long getOption_end_time() {
+		return option_end_time;
+	}
+
+	public void setOption_end_time(long option_end_time) {
+		this.option_end_time = option_end_time;
+	}
+
+	public long getPost_action_start_time() {
+		return post_action_start_time;
+	}
+
+	public void setPost_action_start_time(long post_action_start_time) {
+		this.post_action_start_time = post_action_start_time;
+	}
+
+	public long getPost_action_end_time() {
+		return post_action_end_time;
+	}
+
+	public void setPost_action_end_time(long post_action_end_time) {
+		this.post_action_end_time = post_action_end_time;
 	}
 
 	public long getDlg_show_time() {
