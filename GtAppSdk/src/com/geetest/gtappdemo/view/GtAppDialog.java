@@ -1,8 +1,14 @@
 package com.geetest.gtappdemo.view;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -214,9 +220,16 @@ public class GtAppDialog extends Dialog {
 
 	private float mX, mY;// 触点的位置
 
-	public GtAppDialog(GtAppDialogOption option) {
+	public GtAppDialog(GtAppDialogOption option, RequestQueue mQueue) {
 		super(option.getContext());
+
+		imgLoadTimeStamp.setDlg_open_time(getCurTimeTag());
+
 		this.context = option.getContext();
+		this.mQueue = mQueue;// 必须多activity中传递进来
+		// mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
+		slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
+
 		this.gt_public_key = option.getGt_public_key();
 		this.gtAppDlgLayoutResId = option.getGtAppDlgLayoutResId();
 		this.dm = option.getDm();
@@ -224,7 +237,7 @@ public class GtAppDialog extends Dialog {
 		this.gtAppCallback = option.getGtAppCallback();
 
 		getHostInfo();
-		imgLoadTimeStamp.setDlg_open_time(System.currentTimeMillis());
+		requestSdkVersionFromServer();
 	}
 
 	/**
@@ -250,24 +263,52 @@ public class GtAppDialog extends Dialog {
 	public void setDisplay() {
 
 		try {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
-			setCanceledOnTouchOutside(false);// 在外面点击不会消失
-			mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-			slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
+			if (true) {
+				requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
+				setCanceledOnTouchOutside(false);// 在外面点击不会消失
 
-			requestSdkVersionFromServer();
+				setContentView(gtAppDlgLayoutResId);// 设置资源内容
+				initViews();
+				initViewDisplayParameter();
+				initListeners();
 
-			setContentView(gtAppDlgLayoutResId);// 设置资源内容
-			initViews();
-			initViewDisplayParameter();
-			initListeners();
+				// setTitle("GtDialog");
 
-			// setTitle("GtDialog");
+				setLocation();
+				show();
+				imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
 
-			setLocation();
-			show();
-			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
-			sendMsgToUpdateUI(MSG_OPTION_DATA);
+				sendMsgToUpdateUI(MSG_OPTION_DATA);
+
+				// Android 4.0 之后不能在主线程中请求HTTP请求
+				// new Thread(new Runnable() {
+				// @Override
+				// public void run() {
+				// String response = getOption();
+				// // 硬解码抽取出JSON格式
+				// String webJsFunction[] = response.split("=");
+				// String optionValues[] = webJsFunction[1].split(";");
+				// String optionValue = optionValues[0];
+				//
+				// // 解析成对象
+				// initCaptchaOption = gson.fromJson(optionValue,
+				// CaptchaOption.class);
+				//
+				// slogger.d("getFullbg : " + initCaptchaOption.getFullbg());
+				//
+				// new Thread(new Runnable() {
+				// @Override
+				// public void run() {
+				// fullbg_ImageRequest(initCaptchaOption.getFullbg());
+				//
+				// }
+				// }).start();
+				// // 开始连锁的串行向服务器请求图片
+				// // fullbg_ImageRequest(initCaptchaOption.getFullbg());
+				//
+				// }
+				// }).start();
+			}
 
 		} catch (Exception e) {
 			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
@@ -276,11 +317,23 @@ public class GtAppDialog extends Dialog {
 	}
 
 	/**
+	 * 获取当前时间tag
+	 * 
+	 * @time 2014年7月9日 上午10:58:45
+	 * @return
+	 */
+	private long getCurTimeTag() {
+		return System.currentTimeMillis();
+	}
+
+	/**
 	 * 检查SDK的版本
 	 * 
 	 * @time 2014年6月17日 下午3:17:36
 	 */
-	private void requestSdkVersionFromServer() {
+	public void requestSdkVersionFromServer() {
+		final long start_time = getCurTimeTag();
+		// mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
 
 		int randomNum = new Random().nextInt(1000) + 1;// 访问静态资源时需要随机数,避免缓存
 
@@ -294,11 +347,9 @@ public class GtAppDialog extends Dialog {
 					public void onResponse(String response) {
 
 						try {
-							// GtLogger.v("requestSdkVersionFromServer: "
-							// + response);
 							// 解码抽取出JSON格式
-							slogger.d("requestSdkVersionFromServer: "
-									+ response);
+							slogger.s_v("201479_142023", getCurTimeTag()
+									- start_time);
 							GtSdkVersionInfo serverSdkVersionInfo = new GtSdkVersionInfo();
 							// 解析成对象
 							serverSdkVersionInfo = gson.fromJson(response,
@@ -1376,6 +1427,123 @@ public class GtAppDialog extends Dialog {
 		return newbm;
 	}
 
+	public String getOption() {
+
+		StringBuffer sBuffer = new StringBuffer();
+		long start_time = System.currentTimeMillis();
+		imgLoadTimeStamp.setOption_start_time(System.currentTimeMillis());
+		try {
+			URL u = new URL(getOptionUrl());
+			InputStream in = null;
+			HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+			conn.setDoInput(true);
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-Type",
+					"application/json; charset=utf-8");
+			if (conn.getResponseCode() == 400) {
+				InputStream erris = conn.getErrorStream();
+				// MyFileOut.writeOutputStrem(erris);
+			} else if (conn.getResponseCode() == 200) {
+				byte[] buf = new byte[1024];
+				in = conn.getInputStream();
+				for (int n; (n = in.read(buf)) != -1;) {
+					sBuffer.append(new String(buf, 0, n, "UTF-8"));
+				}
+			}
+			in.close();
+			conn.disconnect();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		long userTime = System.currentTimeMillis() - start_time;
+		imgLoadTimeStamp.setOption_end_time(System.currentTimeMillis());
+		GtLogger.v("userTime:" + userTime);
+		GtLogger.v("sBuffer.toString():" + sBuffer.toString());
+
+		return sBuffer.toString();
+	}
+
+	/**
+	 * 获取option的url信息
+	 * 
+	 * @time 2014年7月9日 上午10:21:07
+	 * @return
+	 */
+	private String getOptionUrl() {
+		GetPhp_GreqVo getPhp_GreqVo = new GetPhp_GreqVo();
+		getPhp_GreqVo.setGt(gt_public_key);
+		getPhp_GreqVo.setProduct(GtApiEnv.gt_product_type);
+
+		String relApiPath = GtApiEnv.getOptionApi;
+		String param = cdtParams(cdtObjectToMap(getPhp_GreqVo));
+		String urlStr = genernateApiUrl(relApiPath, param);
+
+		return urlStr;
+	}
+
+	/**
+	 * 解决首次请求时时间太长的问题
+	 * 
+	 * @time 2014年7月8日 下午9:43:46
+	 */
+	private void firstRequestOption() {
+
+		String resultData = "";
+
+		long start_time = System.currentTimeMillis();
+
+		try {
+
+			URL url = new URL(getOptionUrl());
+			HttpURLConnection urlConn = (HttpURLConnection) url
+					.openConnection();
+
+			// 得到读取的内容(流)
+			InputStreamReader in = new InputStreamReader(
+					urlConn.getInputStream());
+			// 为输出创建BufferedReader
+			BufferedReader buffer = new BufferedReader(in);
+			String inputLine = null;
+			// 使用循环来读取获得的数据
+			while (((inputLine = buffer.readLine()) != null)) {
+				// 我们在每一行后面加上一个"\n"来换行
+				resultData += inputLine + "\n";
+			}
+			// 关闭InputStreamReader
+			in.close();
+			// 关闭http连接
+			urlConn.disconnect();
+
+			long userTime = System.currentTimeMillis() - start_time;
+
+			GtLogger.v("userTime:" + userTime);
+			GtLogger.v("resultData:" + resultData);
+			// TODO
+
+		} catch (Exception e) {
+			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+		}
+
+	}
+
+	/**
+	 * 解码option，然后得到一个josn串
+	 * 
+	 * @time 2014年7月8日 下午11:18:33
+	 * @param response
+	 * @return
+	 */
+	private String decodeOptionValue(String response) {
+		// 硬解码抽取出JSON格式
+		String webJsFunction[] = response.split("=");
+		String optionValues[] = webJsFunction[1].split(";");
+		String optionValue = optionValues[0];
+		return optionValue;
+	}
+
 	/**
 	 * 从GT服务器上获取验证码控件初始化的内容元素
 	 */
@@ -1420,6 +1588,11 @@ public class GtAppDialog extends Dialog {
 
 						// 开始连锁的串行向服务器请求图片
 						fullbg_ImageRequest(initCaptchaOption.getFullbg());
+						// slogger.s_v(
+						// "debug_optionTime_thread",
+						// imgLoadTimeStamp.getOption_end_time()
+						// - imgLoadTimeStamp
+						// .getOption_start_time());
 
 					}
 				}, new Response.ErrorListener() {
@@ -1822,6 +1995,24 @@ public class GtAppDialog extends Dialog {
 			case MSG_OPTION_DATA:
 				// 向服务器请求初始化信息
 				requestOptionDataFromGtServer();
+
+				// new Thread(new Runnable() {
+				// @Override
+				// public void run() {
+				//
+				// new Thread(new Runnable() {
+				// @Override
+				// public void run() {
+				// requestOptionDataFromGtServer();
+				//
+				// }
+				// }).start();
+				// }
+				// }).start();
+
+				// firstRequestOption();
+				// getOption();
+
 				break;
 			case MSG_BIND_DATA:
 				bindOptionDataToLocalViews();
@@ -1855,10 +2046,7 @@ public class GtAppDialog extends Dialog {
 	class SetImgStatusAfterSucceed implements Runnable {
 		public void run() {
 			try {
-
-				// int gapTime = 300;
-				//
-				//
+			
 
 				while (isrung) {
 					try {
@@ -1877,7 +2065,7 @@ public class GtAppDialog extends Dialog {
 
 				// TODO 设置一个动画的事件，在动画结束后停止 关闭对话框
 
-				// 后面要做一个回调的函数。
+				// 做一个回调的函数。
 				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
 				cbResponse.setResCode(1);
 				cbResponse.setResMsg("succeed");
