@@ -33,12 +33,12 @@ public class GtSlogger {
 	 * 要向服务器提交
 	 */
 	private Context context;
+	private RequestQueue mQueue;// Google的通讯框架
 	private MobileInfo mobileInfo = new MobileInfo();// 手机的静态固件信息
 	private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
 
-	private String loggerServerApi = "http://192.168.2.66:80/local_log_msg/";
-	// private final String loggerServerApi =
-	// "http://192.168.1.100:80/local_log_msg/";
+	// private String loggerServerApi = "http://192.168.2.66:80/local_log_msg/";
+	private final String loggerServerApi = "http://192.168.1.100:80/local_log_msg/";
 
 	// private final String loggerServerApi =
 	// "http://logmsg.duapp.com/debug_msg/";// 公网的服务
@@ -46,49 +46,38 @@ public class GtSlogger {
 
 	public GtSlogger(Context context) {
 		this.context = context;
-		setMobileInfo();
 	}
 
-	public GtSlogger(Context context, HostInfo hostInfo) {
-		this.context = context;
-		this.hostInfo = hostInfo;
-
-		// // 做一个发布/调试的切换开关
-		// if (GtApiEnv.DEBUG_STATE) {
-		// loggerServerApi = "http://192.168.1.100:80/local_log_msg/";// 本地运行的程序
-		// // loggerServerApi =
-		// // "http://192.168.2.66:80/local_log_msg/";//本地运行的程序
-		// } else {
-		// loggerServerApi = "http://logmsg.duapp.com/debug_msg/";// 公网
-		// }
-
-		setMobileInfo();
+	public GtSlogger() {
+		this.hostInfo = GtRunEnv.getHostInfo();
+		this.mobileInfo = GtRunEnv.getMobileInfo();
 	}
 
-	/**
-	 * 获取IMEI号，IESI号，手机型号
-	 */
-	private void setMobileInfo() {
-		TelephonyManager mTm = (TelephonyManager) context
-				.getSystemService(context.TELEPHONY_SERVICE);
-
-		mobileInfo.setImei(mTm.getDeviceId());
-		mobileInfo.setImsi(mTm.getSubscriberId());
-
-		mobileInfo.setNumer(mTm.getLine1Number());
-		mobileInfo.setNetWorkType(mTm.getNetworkType());
-
-		mobileInfo.setMtyb(android.os.Build.MODEL);
-		mobileInfo.setMtyb(android.os.Build.BRAND);
-		mobileInfo.setBuildVersionSdk(android.os.Build.VERSION.SDK);
-		mobileInfo.setBuildVersionRelease(android.os.Build.VERSION.RELEASE);
-		mobileInfo.setBuildVersionSdkInt(android.os.Build.VERSION.SDK_INT);
-
-		// Gson gson = new Gson();
-		// String strMsg = gson.toJson(mobileInfo);
-		// GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
-		// mobileInfo.v();
-	}
+	// /**
+	// * 获取IMEI号，IESI号，手机型号
+	// */
+	// private void setMobileInfo() {
+	// @SuppressWarnings("static-access")
+	// TelephonyManager mTm = (TelephonyManager) context
+	// .getSystemService(context.TELEPHONY_SERVICE);
+	//
+	// mobileInfo.setImei(mTm.getDeviceId());
+	// mobileInfo.setImsi(mTm.getSubscriberId());
+	//
+	// mobileInfo.setNumer(mTm.getLine1Number());
+	// mobileInfo.setNetWorkType(mTm.getNetworkType());
+	//
+	// mobileInfo.setMtyb(android.os.Build.MODEL);
+	// mobileInfo.setMtyb(android.os.Build.BRAND);
+	// mobileInfo.setBuildVersionSdk(android.os.Build.VERSION.SDK);
+	// mobileInfo.setBuildVersionRelease(android.os.Build.VERSION.RELEASE);
+	// mobileInfo.setBuildVersionSdkInt(android.os.Build.VERSION.SDK_INT);
+	//
+	// // Gson gson = new Gson();
+	// // String strMsg = gson.toJson(mobileInfo);
+	// // GtLogger.s_v(context, LogMsgTag.mobileInfo, strMsg);
+	// // mobileInfo.v();
+	// }
 
 	public void v(Object msgObj) {
 		if (GtApiEnv.DEBUG_STATE) {
@@ -149,12 +138,25 @@ public class GtSlogger {
 		debugMsg.setLogMsg(msgObj);
 
 		Gson gson = new Gson();
-		String strMsg = gson.toJson(debugMsg);
-		postMsgToServer(context, strMsg);
+		final String strMsg = gson.toJson(debugMsg);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+
+				try {
+					HttpInvoker.readContentFromPost(strMsg);
+				} catch (Exception e) {
+					GtLogger.e(e.getMessage());
+				}
+			}
+		}).start();
+
+		// postMsgToServer(context, strMsg);
 	}
 
 	/**
-	 * 向服务器提交数据--2014年5月28日 10:31:46
+	 * 向服务器提交数据--2014年5月28日 10:31:46 因为这个需要额外的依赖框架，不具备普遍性，故逐渐舍弃掉。
 	 */
 	private void postMsgToServer(Context ctx, final String jsonMsg) {
 

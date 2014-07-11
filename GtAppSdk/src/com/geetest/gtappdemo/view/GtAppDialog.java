@@ -63,6 +63,7 @@ import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.R;
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.logger.vo.LogMsgTag;
+import com.geetest.gtapp.slogger.GtRunEnv;
 import com.geetest.gtapp.slogger.GtSlogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
@@ -228,7 +229,6 @@ public class GtAppDialog extends Dialog {
 		this.context = option.getContext();
 		this.mQueue = mQueue;// 必须多activity中传递进来
 		// mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-		slogger = new GtSlogger(context, getHostInfo());// 向服务器提交数据的类
 
 		this.gt_public_key = option.getGt_public_key();
 		this.gtAppDlgLayoutResId = option.getGtAppDlgLayoutResId();
@@ -236,7 +236,11 @@ public class GtAppDialog extends Dialog {
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
 
-		getHostInfo();
+		
+		GtRunEnv.setMobileInfo(context);
+		GtRunEnv.setHostInfo(getHostInfo());
+		slogger = new GtSlogger();// 向服务器提交数据的类
+
 		requestSdkVersionFromServer();
 	}
 
@@ -253,7 +257,6 @@ public class GtAppDialog extends Dialog {
 		hostInfo.setVerName("1.0");
 		hostInfo.setGt_public_key(gt_public_key);
 		hostInfo.setGtapp_sdk_version(GtApiEnv.getSdkVersionInfo());
-
 		return hostInfo;
 	}
 
@@ -2046,7 +2049,6 @@ public class GtAppDialog extends Dialog {
 	class SetImgStatusAfterSucceed implements Runnable {
 		public void run() {
 			try {
-			
 
 				while (isrung) {
 					try {

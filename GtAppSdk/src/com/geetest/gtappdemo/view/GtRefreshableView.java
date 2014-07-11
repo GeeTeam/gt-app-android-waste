@@ -195,7 +195,7 @@ public class GtRefreshableView extends LinearLayout {
 	 * @param context
 	 */
 	private void initGtDebugSys(Context context) {
-		slogger = new GtSlogger(context);
+		slogger = new GtSlogger();
 		runSeqMsg = new ArrayList<String>();// 运行的时序
 		logMsg = new HashMap<String, Object>();
 	}
