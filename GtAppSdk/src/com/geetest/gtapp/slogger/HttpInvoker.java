@@ -78,6 +78,8 @@ public class HttpInvoker {
 		URL postUrl = new URL(POST_URL);
 		HttpURLConnection connection = (HttpURLConnection) postUrl
 				.openConnection();
+		connection.setConnectTimeout(1000);// 设置连接主机超时（单位：毫秒）
+		connection.setReadTimeout(2000);// 设置从主机读取数据超时（单位：毫秒）
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
 		connection.setRequestMethod("POST");
