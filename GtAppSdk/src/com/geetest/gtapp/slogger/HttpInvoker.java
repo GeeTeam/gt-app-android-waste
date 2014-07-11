@@ -14,13 +14,15 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 
 public class HttpInvoker {
-	public static final String GET_URL = "http://localhost:8080/welcome1";
+	// public static final String GET_URL = "http://localhost:8080/welcome1";
 
 	// public static final String POST_URL = "http://localhost:8080/welcome1";
 
-	private static final String POST_URL = "http://192.168.1.100:80/local_log_msg/";
+	// private static final String POST_URL =
+	// "http://192.168.1.100:80/local_log_msg/";
 
-	public static void readContentFromGet() throws IOException {
+	// 还没有修改的一个网上COPY过来的代码
+	public static void readContentFromGet(String GET_URL) throws IOException {
 		// 拼凑get请求的URL字串，使用URLEncoder.encode对特殊和不可见字符进行编码
 		String getURL = GET_URL + "?username="
 				+ URLEncoder.encode("fat man", "utf-8");
@@ -46,7 +48,8 @@ public class HttpInvoker {
 
 	/**
 	 * 将key/value对转换成post的表单格式
-	 * @time 2014年7月11日  下午11:48:42
+	 * 
+	 * @time 2014年7月11日 下午11:48:42
 	 * @param params
 	 * @return
 	 * @throws UnsupportedEncodingException
@@ -70,8 +73,8 @@ public class HttpInvoker {
 		return result.toString();
 	}
 
-	public static void readContentFromPost(String postStringData)
-			throws IOException {
+	public static void readContentFromPost(String POST_URL,
+			String postStringData) throws IOException {
 		URL postUrl = new URL(POST_URL);
 		HttpURLConnection connection = (HttpURLConnection) postUrl
 				.openConnection();
