@@ -106,66 +106,6 @@ public class GtSlogger {
 			}
 		}).start();
 
-		// postMsgToServer(context, strMsg);
 	}
-
-	// /**
-	// * 向服务器提交数据--2014年5月28日 10:31:46 因为这个需要额外的依赖框架，不具备普遍性，故逐渐舍弃掉。
-	// */
-	// private void postMsgToServer(Context ctx, final String jsonMsg) {
-	//
-	// try {
-	//
-	// final RequestQueue mQueue;// 用于Volley的通讯内容
-	// mQueue = Volley.newRequestQueue(ctx);// 必须在界面初始化之后才有此声明
-	//
-	// String customServerGtApiUrl = loggerServerApi;
-	//
-	// StringRequest stringRequest = new StringRequest(
-	// Request.Method.POST, customServerGtApiUrl,
-	// new Response.Listener<String>() {
-	//
-	// public void onResponse(String response) {
-	//
-	// try {
-	// // 安卓客户端接收到消息后进行相应的处理
-	// GtLogger.i("gtLoggerResponse: " + response);
-	// } catch (Exception e) {
-	// GtLogger.exception(LoggerString
-	// .getFileLineMethod() + e.getMessage());
-	// }
-	//
-	// }
-	// }, new Response.ErrorListener() {
-	//
-	// public void onErrorResponse(VolleyError arg0) {
-	//
-	// GtLogger.v(LoggerString.getFileLineMethod()
-	// + arg0.getMessage());
-	// }
-	// }) {
-	//
-	// @Override
-	// protected Map<String, String> getParams() {
-	// Map<String, String> params = new HashMap<String, String>();
-	//
-	// // 将客户端的信息编码成一个Json串，然后上传到客户服务器
-	// params.put("debug_msg", jsonMsg);
-	//
-	// return params;
-	// }
-	//
-	// };
-	//
-	// // 设置请求超时时间5s：http://blog.csdn.net/xyz_lmn/article/details/12177005
-	// stringRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1,
-	// 1.0f));
-	// mQueue.add(stringRequest);
-	//
-	// } catch (Exception e) {
-	// GtLogger.exception(LoggerString.getFileLineMethod()
-	// + e.getMessage());
-	// }
-	// }
 
 }

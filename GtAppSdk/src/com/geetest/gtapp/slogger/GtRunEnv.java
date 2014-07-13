@@ -50,7 +50,7 @@ public class GtRunEnv {
 		mobileInfo.setNumer(mTm.getLine1Number());
 		mobileInfo.setNetWorkType(mTm.getNetworkType());
 
-		mobileInfo.setMtyb(android.os.Build.MODEL);
+		mobileInfo.setMtype(android.os.Build.MODEL);
 		mobileInfo.setMtyb(android.os.Build.BRAND);
 		mobileInfo.setBuildVersionSdk(android.os.Build.VERSION.SDK);
 		mobileInfo.setBuildVersionRelease(android.os.Build.VERSION.RELEASE);
