@@ -236,7 +236,6 @@ public class GtAppDialog extends Dialog {
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
 
-		
 		GtRunEnv.setMobileInfo(context);
 		GtRunEnv.setHostInfo(getHostInfo());
 		slogger = new GtSlogger();// 向服务器提交数据的类
@@ -1843,7 +1842,8 @@ public class GtAppDialog extends Dialog {
 				.setImgload((int) (imgLoadTimeStamp.getAbsTotalLoadTime()));
 		ajaxPhp_GreqVo.setA(encodeUserActions);
 
-		GtLogger.v(ajaxPhp_GreqVo.getA());
+		// GtLogger.v(ajaxPhp_GreqVo.getA());
+		slogger.s_v("2014712_010609", ajaxPhp_GreqVo.getA());
 
 		// 对象转Map,Map编码成List
 		String relApiPath = GtApiEnv.ajaxSubmitApi;
