@@ -3,8 +3,8 @@ package com.geetest.gtapp.slogger;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import com.geetest.gtapp.slogger.vo.MobileInfo;
 import com.geetest.gtappdemo.model.svo.HostInfo;
-import com.geetest.gtappdemo.model.svo.MobileInfo;
 
 /**
  * 运行的环境--全局变量，一次读取，终身受用

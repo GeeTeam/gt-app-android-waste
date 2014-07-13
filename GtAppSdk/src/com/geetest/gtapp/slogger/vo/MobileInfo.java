@@ -1,4 +1,4 @@
-package com.geetest.gtappdemo.model.svo;
+package com.geetest.gtapp.slogger.vo;
 
 import com.geetest.gtapp.logger.GtLogger;
 

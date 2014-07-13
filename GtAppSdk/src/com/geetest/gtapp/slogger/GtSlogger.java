@@ -2,9 +2,9 @@ package com.geetest.gtapp.slogger;
 
 import com.geetest.gtapp.logger.GtLogger;
 import com.geetest.gtapp.logger.vo.ServerDebugMsg;
+import com.geetest.gtapp.slogger.vo.MobileInfo;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.svo.HostInfo;
-import com.geetest.gtappdemo.model.svo.MobileInfo;
 import com.google.gson.Gson;
 
 /**
