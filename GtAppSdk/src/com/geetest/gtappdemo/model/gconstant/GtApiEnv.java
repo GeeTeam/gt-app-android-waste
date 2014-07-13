@@ -1,6 +1,6 @@
 package com.geetest.gtappdemo.model.gconstant;
 
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 import com.geetest.gtapp.utils.LoggerString;
 
 /**

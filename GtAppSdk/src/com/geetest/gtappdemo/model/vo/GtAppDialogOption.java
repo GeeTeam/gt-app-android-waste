@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 
 /**

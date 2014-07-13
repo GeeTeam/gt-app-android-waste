@@ -20,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.geetest.gtapp.R;
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 import com.geetest.gtapp.slogger.GtSlogger;
 
 /**

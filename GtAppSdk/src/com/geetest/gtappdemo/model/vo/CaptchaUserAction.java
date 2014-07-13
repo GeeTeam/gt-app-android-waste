@@ -1,6 +1,6 @@
 package com.geetest.gtappdemo.model.vo;
 
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 
 /**
  * 用户在使用验证码时的交互行为

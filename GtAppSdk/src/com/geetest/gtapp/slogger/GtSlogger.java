@@ -1,10 +1,9 @@
 package com.geetest.gtapp.slogger;
 
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 import com.geetest.gtapp.logger.vo.ServerDebugMsg;
 import com.geetest.gtapp.slogger.vo.MobileInfo;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
-import com.geetest.gtappdemo.model.svo.HostInfo;
 import com.google.gson.Gson;
 
 /**
@@ -19,18 +18,18 @@ public class GtSlogger {
 	 * 要向服务器提交
 	 */
 	private MobileInfo mobileInfo = new MobileInfo();// 手机的静态固件信息
-	private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
+	// private HostInfo hostInfo = new HostInfo();// 宿主程序的信息
 
 	// private String loggerServerApi = "http://192.168.2.66:80/local_log_msg/";
-	private final String loggerServerApi = "http://192.168.1.100:80/local_log_msg/";
-
 	// private final String loggerServerApi =
-	// "http://logmsg.duapp.com/debug_msg/";// 公网的服务
+	// "http://192.168.1.100:80/local_log_msg/";
+
+	private final String loggerServerApi = "http://logmsg.duapp.com/debug_msg/";// 公网的服务
 	private final String osType = "android";
 
 	public GtSlogger() {
-		this.hostInfo = GtRunEnv.getHostInfo();
-		this.mobileInfo = GtRunEnv.getMobileInfo();
+		// this.hostInfo = GtRunEnv.getHostInfo();
+		// this.mobileInfo = GtRunEnv.getMobileInfo();
 	}
 
 	public void v(Object msgObj) {
@@ -87,7 +86,7 @@ public class GtSlogger {
 		ServerDebugMsg debugMsg = new ServerDebugMsg();
 		debugMsg.setOsType(osType);
 		debugMsg.setOsDetail(mobileInfo);
-		debugMsg.setHostInfo(hostInfo);
+		// debugMsg.setHostInfo(hostInfo);
 		debugMsg.setMsgTag(msgTag);
 		debugMsg.setLogMsg(msgObj);
 

@@ -1,18 +1,41 @@
-package com.geetest.gtapp.logger;
+package com.geetest.gtapp.gtlog;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.geeksfit.ftapp.slog.FtSlog;
+import com.geetest.gtapp.gtlog.vo.SdkInfo;
 import com.geetest.gtapp.logger.data.LoggerState;
-import com.geetest.gtapp.utils.WriteMsgToLocalFile;
 
 public abstract class GtLogger {
 	private static final String COMMON_TAG = "GtAppTag";// 打的通用的TAG
 
-	public static boolean DEBUG_STATE = true;
+	private static boolean DEBUG_STATE = true;
+
+	private static Context context;// 用于获取程序信息的上下文
+	private static SdkInfo sdkInfo;// SDK的版本信息
 
 	public static int loggerState = LoggerState.TO_LOGCAT;// log输出的状态值
+
+	public static void setContext(Context context) {
+		GtLogger.context = context;
+		FtSlog.setMobileInfo(context);
+	}
+
+	public static void setSdkInfo(SdkInfo sdkInfo) {
+		GtLogger.sdkInfo = sdkInfo;
+		FtSlog.setNoteMsg(sdkInfo);
+	}
+
+	public static void s_v(String tag, Object msg) {
+
+		// Log.v(tag, msg);// 本地调试状态
+
+		// TODO 网络调试状态
+		FtSlog.s_v(tag, msg);
+
+	}
 
 	/**
 	 * 出现异常的时候，输出异常信息
@@ -84,29 +107,7 @@ public abstract class GtLogger {
 
 	public static void v(String tag, String msg) {
 
-		switch (loggerState) {
-		case LoggerState.NO_OUTPUT:
-			// do nothing
-			break;
-		case LoggerState.TO_LOGCAT:
-			Log.v(COMMON_TAG, "[" + tag + "] " + msg);
-			break;
-		case LoggerState.TO_TXT_FILE:
-			// TODO:将内容写本地的的文件里面去。--黄煜
-			/* WriteMsgToLocalFile1 Oncreat=new WriteMsgToLocalFile1(); */
-			// Log.v(COMMON_TAG, "[" + tag + "] " + msg);
-			String log = COMMON_TAG + "[" + tag + "] " + msg;
-			log += "\r\n";
-			WriteMsgToLocalFile.setLogcatToText(log);/*
-													 * = new
-													 * WriteMsgToLocalFile()
-													 */
-
-			break;
-
-		default:
-			break;
-		}
+		Log.v(tag, msg);// 本地调试状态
 
 	}
 

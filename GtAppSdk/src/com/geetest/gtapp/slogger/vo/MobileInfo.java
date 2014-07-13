@@ -1,6 +1,6 @@
 package com.geetest.gtapp.slogger.vo;
 
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 
 /**
  * 手机信息
@@ -22,7 +22,24 @@ public class MobileInfo {
 
 	private int buildVersionSdkInt = 0;// android.os.Build.VERSION.SDK_INT
 
-	
+	private int appVerCode = 0;// 应用程序版本编号
+	private String appVerName = "";// 应用程序版本名称
+
+	public int getAppVerCode() {
+		return appVerCode;
+	}
+
+	public void setAppVerCode(int appVerCode) {
+		this.appVerCode = appVerCode;
+	}
+
+	public String getAppVerName() {
+		return appVerName;
+	}
+
+	public void setAppVerName(String appVerName) {
+		this.appVerName = appVerName;
+	}
 
 	public int getBuildVersionSdkInt() {
 		return buildVersionSdkInt;

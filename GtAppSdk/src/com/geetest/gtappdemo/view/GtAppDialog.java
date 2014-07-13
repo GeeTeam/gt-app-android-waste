@@ -59,17 +59,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.geetest.gtapp.R;
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
+import com.geetest.gtapp.gtlog.vo.SdkInfo;
 import com.geetest.gtapp.logger.vo.LogMsgTag;
-import com.geetest.gtapp.slogger.GtRunEnv;
 import com.geetest.gtapp.slogger.GtSlogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
-import com.geetest.gtappdemo.model.svo.HostInfo;
 import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
 import com.geetest.gtappdemo.model.svo.SdkRunInfo;
 import com.geetest.gtappdemo.model.svo.UiElementSize;
@@ -236,8 +234,9 @@ public class GtAppDialog extends Dialog {
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
 
-		GtRunEnv.setMobileInfo(context);
-		GtRunEnv.setHostInfo(getHostInfo());
+		// 收集一些测试信息
+		GtLogger.setContext(context);
+		GtLogger.setSdkInfo(getSdkInfo());
 		slogger = new GtSlogger();// 向服务器提交数据的类
 
 		requestSdkVersionFromServer();
@@ -249,14 +248,11 @@ public class GtAppDialog extends Dialog {
 	 * @time 2014年7月2日 下午11:57:20
 	 * @return
 	 */
-	private HostInfo getHostInfo() {
-		// TODO 需要从宿主信息里面获取 版本号，需要传递过来
-		HostInfo hostInfo = new HostInfo();
-		hostInfo.setVerCode(1);
-		hostInfo.setVerName("1.0");
-		hostInfo.setGt_public_key(gt_public_key);
-		hostInfo.setGtapp_sdk_version(GtApiEnv.getSdkVersionInfo());
-		return hostInfo;
+	private SdkInfo getSdkInfo() {
+		SdkInfo sdkInfo = new SdkInfo();
+		sdkInfo.setGt_public_key(gt_public_key);
+		sdkInfo.setGtapp_sdk_version(GtApiEnv.getSdkVersionInfo());
+		return sdkInfo;
 	}
 
 	/**

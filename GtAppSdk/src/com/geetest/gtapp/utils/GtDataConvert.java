@@ -3,7 +3,7 @@ package com.geetest.gtapp.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.geetest.gtapp.logger.GtLogger;
+import com.geetest.gtapp.gtlog.GtLogger;
 import com.geetest.gtappdemo.model.vo.CaptchaUserAction;
 import com.geetest.gtappdemo.model.vo.DecodedChallenge;
 
