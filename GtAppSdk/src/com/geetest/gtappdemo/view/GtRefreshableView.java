@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.geetest.gtapp.R;
 import com.geetest.gtapp.gtlog.GtLogger;
-import com.geetest.gtapp.slogger.GtSlogger;
 
 /**
  * 可进行下拉刷新的自定义控件。
@@ -186,7 +185,6 @@ public class GtRefreshableView extends LinearLayout {
 	// private ArrayList<String> logMsg = new ArrayList<String>();
 	private ArrayList<String> runSeqMsg;// 运行的时序
 	private HashMap<String, Object> logMsg;
-	private GtSlogger slogger;// 向服务器提交运行日志数据的类
 
 	/**
 	 * 初始化调试系统
@@ -195,7 +193,7 @@ public class GtRefreshableView extends LinearLayout {
 	 * @param context
 	 */
 	private void initGtDebugSys(Context context) {
-		slogger = new GtSlogger();
+		// 收集一些测试信息--用于打印中间字段
 		runSeqMsg = new ArrayList<String>();// 运行的时序
 		logMsg = new HashMap<String, Object>();
 	}
@@ -207,8 +205,8 @@ public class GtRefreshableView extends LinearLayout {
 	 */
 	private void postLoggerToServer() {
 		Log.e("", "postLoggerToServer");
-		slogger.s_v("gtFresh-runSeqMsg", runSeqMsg);
-		slogger.s_v("gtFresh-logMsg", logMsg);
+		GtLogger.s_v("gtFresh-runSeqMsg", runSeqMsg);
+		GtLogger.s_v("gtFresh-logMsg", logMsg);
 	}
 
 	/**

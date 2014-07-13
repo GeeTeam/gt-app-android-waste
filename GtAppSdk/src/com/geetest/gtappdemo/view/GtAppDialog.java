@@ -62,13 +62,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.geetest.gtapp.R;
 import com.geetest.gtapp.gtlog.GtLogger;
 import com.geetest.gtapp.gtlog.vo.SdkInfo;
-import com.geetest.gtapp.logger.vo.LogMsgTag;
-import com.geetest.gtapp.slogger.GtSlogger;
 import com.geetest.gtapp.utils.GtDataConvert;
 import com.geetest.gtapp.utils.LoggerString;
 import com.geetest.gtapp.utils.itface.GtAppCallback;
 import com.geetest.gtappdemo.model.gconstant.GtApiEnv;
 import com.geetest.gtappdemo.model.svo.ImageLoadTimeNode;
+import com.geetest.gtappdemo.model.svo.LogMsgTag;
 import com.geetest.gtappdemo.model.svo.SdkRunInfo;
 import com.geetest.gtappdemo.model.svo.UiElementSize;
 import com.geetest.gtappdemo.model.vo.CaptchaOption;
@@ -208,7 +207,7 @@ public class GtAppDialog extends Dialog {
 	// private HostInfo hostInfo = new HostInfo();
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
 	private UiElementSize uiSize = new UiElementSize();// 界面元素的高度收集--方便做一些适配工作
-	private GtSlogger slogger;// 向服务器提交运行日志数据的类
+	// private GtLogger GtLogger;// 向服务器提交运行日志数据的类
 	private Gson gson = new Gson();// 第三方的JSON解析和打包库
 
 	// TODO 下拉刷新加载效果
@@ -233,11 +232,10 @@ public class GtAppDialog extends Dialog {
 		this.dm = option.getDm();
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
-
-		// 收集一些测试信息
+		// 收集一些测试信息--用于打印中间字段--一个app中只需要设置一次就OK了
 		GtLogger.setContext(context);
 		GtLogger.setSdkInfo(getSdkInfo());
-		slogger = new GtSlogger();// 向服务器提交数据的类
+		
 
 		requestSdkVersionFromServer();
 	}
@@ -292,7 +290,7 @@ public class GtAppDialog extends Dialog {
 				// initCaptchaOption = gson.fromJson(optionValue,
 				// CaptchaOption.class);
 				//
-				// slogger.d("getFullbg : " + initCaptchaOption.getFullbg());
+				// GtLogger.d("getFullbg : " + initCaptchaOption.getFullbg());
 				//
 				// new Thread(new Runnable() {
 				// @Override
@@ -309,7 +307,7 @@ public class GtAppDialog extends Dialog {
 			}
 
 		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -346,7 +344,7 @@ public class GtAppDialog extends Dialog {
 
 						try {
 							// 解码抽取出JSON格式
-							slogger.s_v("201479_142023", getCurTimeTag()
+							GtLogger.s_v("201479_142023", getCurTimeTag()
 									- start_time);
 							GtSdkVersionInfo serverSdkVersionInfo = new GtSdkVersionInfo();
 							// 解析成对象
@@ -358,7 +356,7 @@ public class GtAppDialog extends Dialog {
 								GtLogger.e("当前SDK版本比较落后,请到极验官网服务器下载并集成GtApp最新版本");
 							}
 						} catch (Exception e) {
-							slogger.ex(LoggerString.getFileLineMethod()
+							GtLogger.ex(LoggerString.getFileLineMethod()
 									+ e.getMessage());
 						}
 
@@ -367,7 +365,7 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 					}
 				});
@@ -433,7 +431,7 @@ public class GtAppDialog extends Dialog {
 		picRequestSucceed = true;
 
 		// 将通讯相关的性能参数值上传
-		slogger.s_v(LogMsgTag.imageLoadCycle,
+		GtLogger.s_v(LogMsgTag.imageLoadCycle,
 				imgLoadTimeStamp.getImageLoadTimeCycle());
 
 		postSdkRunInfo();
@@ -485,7 +483,7 @@ public class GtAppDialog extends Dialog {
 			// 26);
 
 		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -518,10 +516,10 @@ public class GtAppDialog extends Dialog {
 
 		// 如果是上传成字符串到字段中，则使用下面的语句
 		// String strMsg = gson.toJson(sdkRunInfo);
-		slogger.s_v(LogMsgTag.sdkRunInfo, sdkRunInfo);
+		GtLogger.s_v(LogMsgTag.sdkRunInfo, sdkRunInfo);
 
 		// 这是第一次加载时的元素信息
-		slogger.s_v(LogMsgTag.elementFirstLoadTime,
+		GtLogger.s_v(LogMsgTag.elementFirstLoadTime,
 				imgLoadTimeStamp.getRelativeTimeNode());
 
 	}
@@ -1011,7 +1009,7 @@ public class GtAppDialog extends Dialog {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					slogger.ex(LoggerString.getFileLineMethod()
+					GtLogger.ex(LoggerString.getFileLineMethod()
 							+ e.getMessage());
 					e.printStackTrace();
 				}// 停留一段时间，自动关闭
@@ -1119,7 +1117,7 @@ public class GtAppDialog extends Dialog {
 					+ "  thumbBmpSize.getHeight()： " + thumbBmpSize.getHeight());
 
 		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -1187,7 +1185,7 @@ public class GtAppDialog extends Dialog {
 					R.anim.gtapp_anim_flashlight);// 闪电图。
 
 		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -1220,7 +1218,7 @@ public class GtAppDialog extends Dialog {
 							slice_bg_ImageRequest(initCaptchaOption.getImgurl());// 再请求切图背景
 							// igv_slicebg.setImageBitmap(response);
 						} catch (Exception e) {
-							slogger.ex(LoggerString.getFileLineMethod()
+							GtLogger.ex(LoggerString.getFileLineMethod()
 									+ e.getMessage());
 						}
 
@@ -1228,7 +1226,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 					}
 				});
@@ -1312,7 +1310,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 						// imgv_slice.setImageResource(R.drawable.ic_launcher);
 					}
@@ -1352,7 +1350,7 @@ public class GtAppDialog extends Dialog {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 					}
 				});
@@ -1522,7 +1520,7 @@ public class GtAppDialog extends Dialog {
 			// TODO
 
 		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -1570,8 +1568,6 @@ public class GtAppDialog extends Dialog {
 						imgLoadTimeStamp.setOption_end_time(System
 								.currentTimeMillis());
 
-						slogger.d("response:" + response);
-
 						// 硬解码抽取出JSON格式
 						String webJsFunction[] = response.split("=");
 						String optionValues[] = webJsFunction[1].split(";");
@@ -1581,12 +1577,12 @@ public class GtAppDialog extends Dialog {
 						initCaptchaOption = gson.fromJson(optionValue,
 								CaptchaOption.class);
 
-						slogger.d("getFullbg : "
-								+ initCaptchaOption.getFullbg());
+						GtLogger.s_v("2014713_233715",
+								initCaptchaOption.getFullbg());
 
 						// 开始连锁的串行向服务器请求图片
 						fullbg_ImageRequest(initCaptchaOption.getFullbg());
-						// slogger.s_v(
+						// GtLogger.s_v(
 						// "debug_optionTime_thread",
 						// imgLoadTimeStamp.getOption_end_time()
 						// - imgLoadTimeStamp
@@ -1597,7 +1593,7 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 					}
 				});
@@ -1705,11 +1701,9 @@ public class GtAppDialog extends Dialog {
 					GtApiEnv.gtApiBaseUrl, GtApiEnv.gtApiPort, relApiPath,
 					param, null);
 
-			slogger.d("ApiFullUrl: " + url.toString());
-
 			return url.toString();
 		} catch (URISyntaxException e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -1729,11 +1723,9 @@ public class GtAppDialog extends Dialog {
 			URI url = URIUtils.createURI(GtApiEnv.httpType, localBaseUrl,
 					GtApiEnv.gtApiPort, relApiPath, param, null);
 
-			slogger.d("ApiFullUrl: " + url.toString());
-
 			return url.toString();
 		} catch (URISyntaxException e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -1760,8 +1752,9 @@ public class GtAppDialog extends Dialog {
 
 			userAction.setTimeIncrement(10 * (i + 1));
 
-			slogger.d(userAction.getxPos() + "," + userAction.getyPos() + ","
-					+ userAction.getTimeIncrement());
+			GtLogger.s_v("2014713_233824",
+					userAction.getxPos() + "," + userAction.getyPos() + ","
+							+ userAction.getTimeIncrement());
 
 			userActions.add(userAction);
 		}
@@ -1839,7 +1832,7 @@ public class GtAppDialog extends Dialog {
 		ajaxPhp_GreqVo.setA(encodeUserActions);
 
 		// GtLogger.v(ajaxPhp_GreqVo.getA());
-		slogger.s_v("2014712_010609", ajaxPhp_GreqVo.getA());
+		GtLogger.s_v("2014712_010609", ajaxPhp_GreqVo.getA());
 
 		// 对象转Map,Map编码成List
 		String relApiPath = GtApiEnv.ajaxSubmitApi;
@@ -1919,7 +1912,7 @@ public class GtAppDialog extends Dialog {
 							}
 						} catch (Exception e) {
 							setImgStatusAfterCaptchaFailed();
-							slogger.ex(LoggerString.getFileLineMethod()
+							GtLogger.ex(LoggerString.getFileLineMethod()
 									+ e.getMessage());
 						}
 
@@ -1928,7 +1921,7 @@ public class GtAppDialog extends Dialog {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ error.getMessage());
 					}
 				});
@@ -2052,7 +2045,7 @@ public class GtAppDialog extends Dialog {
 						// 更新Alpha值
 						updateAlpha();
 					} catch (InterruptedException e) {
-						slogger.ex(LoggerString.getFileLineMethod()
+						GtLogger.ex(LoggerString.getFileLineMethod()
 								+ e.getMessage());
 						e.printStackTrace();
 					}
@@ -2072,7 +2065,7 @@ public class GtAppDialog extends Dialog {
 				GtLogger.v("验证成功后的图片线程");
 				// System.out.println(Thread.currentThread().getName());
 			} catch (Exception e) {
-				slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+				GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -2141,7 +2134,7 @@ public class GtAppDialog extends Dialog {
 				GtLogger.v("验证失败后的图片线程");
 				System.out.println(Thread.currentThread().getName());
 			} catch (InterruptedException e) {
-				slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+				GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -2169,7 +2162,7 @@ public class GtAppDialog extends Dialog {
 										+ response);
 
 							} catch (Exception e) {
-								slogger.ex(LoggerString.getFileLineMethod()
+								GtLogger.ex(LoggerString.getFileLineMethod()
 										+ e.getMessage());
 							}
 
@@ -2178,7 +2171,7 @@ public class GtAppDialog extends Dialog {
 
 						public void onErrorResponse(VolleyError error) {
 
-							slogger.ex(LoggerString.getFileLineMethod()
+							GtLogger.ex(LoggerString.getFileLineMethod()
 									+ error.getMessage());
 						}
 					}) {
@@ -2221,7 +2214,7 @@ public class GtAppDialog extends Dialog {
 			mQueue.add(stringRequest);
 
 		} catch (Exception e) {
-			slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 
 	}
@@ -2250,7 +2243,7 @@ public class GtAppDialog extends Dialog {
 	// + response);
 	//
 	// } catch (Exception e) {
-	// slogger.ex(LoggerString.getFileLineMethod()
+	// GtLogger.ex(LoggerString.getFileLineMethod()
 	// + e.getMessage());
 	// }
 	//
@@ -2281,7 +2274,7 @@ public class GtAppDialog extends Dialog {
 	// mQueue.add(stringRequest);
 	//
 	// } catch (Exception e) {
-	// slogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+	// GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 	// }
 	//
 	// }

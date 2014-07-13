@@ -92,7 +92,7 @@ public class GtDataConvert {
 
 			// return "aaaaaa";
 		} catch (Exception e) {
-			GtLogger.exception(LoggerString.getFileLineMethod()
+			GtLogger.ex(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 		}
 		return null;
@@ -176,7 +176,7 @@ public class GtDataConvert {
 			// return
 			// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
 		} catch (Exception e) {
-			GtLogger.exception(LoggerString.getFileLineMethod()
+			GtLogger.ex(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 		}
 		return null;
@@ -272,7 +272,7 @@ public class GtDataConvert {
 
 			// return null;
 		} catch (Exception e) {
-			GtLogger.exception(LoggerString.getFileLineMethod()
+			GtLogger.ex(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 			return null;
 		}
@@ -315,7 +315,7 @@ public class GtDataConvert {
 
 			return diffCaptchaUserActions;
 		} catch (Exception e) {
-			GtLogger.exception(LoggerString.getFileLineMethod()
+			GtLogger.ex(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 			return null;
 		}
@@ -364,7 +364,7 @@ public class GtDataConvert {
 			}
 
 		} catch (Exception e) {
-			GtLogger.exception(LoggerString.getFileLineMethod()
+			GtLogger.ex(LoggerString.getFileLineMethod()
 					+ e.getMessage());
 			return result;
 		}

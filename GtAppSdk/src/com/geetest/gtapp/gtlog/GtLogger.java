@@ -6,25 +6,24 @@ import android.widget.Toast;
 
 import com.geeksfit.ftapp.slog.FtSlog;
 import com.geetest.gtapp.gtlog.vo.SdkInfo;
-import com.geetest.gtapp.logger.data.LoggerState;
 
 public abstract class GtLogger {
 	private static final String COMMON_TAG = "GtAppTag";// 打的通用的TAG
 
 	private static boolean DEBUG_STATE = true;
 
-	private static Context context;// 用于获取程序信息的上下文
-	private static SdkInfo sdkInfo;// SDK的版本信息
+	// private static Context context;// 用于获取程序信息的上下文
+	// private static SdkInfo sdkInfo;// SDK的版本信息
 
-	public static int loggerState = LoggerState.TO_LOGCAT;// log输出的状态值
+	// public static int loggerState = LoggerState.TO_LOGCAT;// log输出的状态值
 
 	public static void setContext(Context context) {
-		GtLogger.context = context;
+		// TODO 发布时可以删除
 		FtSlog.setMobileInfo(context);
 	}
 
 	public static void setSdkInfo(SdkInfo sdkInfo) {
-		GtLogger.sdkInfo = sdkInfo;
+		// TODO 发布时可以删除
 		FtSlog.setNoteMsg(sdkInfo);
 	}
 
@@ -42,8 +41,8 @@ public abstract class GtLogger {
 	 * 
 	 * @param msg
 	 */
-	public static void exception(String msg) {
-		GtLogger.e("Exception:	" + msg);
+	public static void ex(String msg) {
+		s_v("exception", msg);
 	}
 
 	public static void i(String msg) {
@@ -58,7 +57,6 @@ public abstract class GtLogger {
 	 * @param msg
 	 */
 	public static void toastExpection(Context ctx, String msg) {
-		GtLogger.exception(msg);
 		Toast.makeText(ctx, "" + msg, Toast.LENGTH_SHORT).show();
 	}
 
@@ -85,7 +83,6 @@ public abstract class GtLogger {
 	 * @author zheng dreamzsm@gmail.com
 	 */
 	public static void toastToolTip(Context ctx, String msg) {
-		GtLogger.exception(msg);
 		Toast.makeText(ctx, "" + msg, Toast.LENGTH_SHORT).show();
 	}
 

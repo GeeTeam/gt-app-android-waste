@@ -1,7 +1,5 @@
 package com.geetest.gtappdemo.model.gconstant;
 
-import com.geetest.gtapp.gtlog.GtLogger;
-import com.geetest.gtapp.utils.LoggerString;
 
 /**
  * 极验的API的环境变量
@@ -58,20 +56,20 @@ public class GtApiEnv {
 		return "Vc" + sdkVersionCode + "Vn" + sdkVersionName;
 	}
 
-	/**
-	 * @param apiRelativePath
-	 *            API的相对路径
-	 * @return
-	 */
-	public static String GetGtApiUrl(String apiRelativePath) {
-		try {
-
-		} catch (Exception e) {
-			GtLogger.exception(LoggerString.getFileLineMethod()
-					+ e.getMessage());
-		}
-
-		return null;
-	}
+	// /**
+	// * @param apiRelativePath
+	// * API的相对路径
+	// * @return
+	// */
+	// public static String GetGtApiUrl(String apiRelativePath) {
+	// try {
+	//
+	// } catch (Exception e) {
+	// GtLogger.exception(LoggerString.getFileLineMethod()
+	// + e.getMessage());
+	// }
+	//
+	// return null;
+	// }
 
 }

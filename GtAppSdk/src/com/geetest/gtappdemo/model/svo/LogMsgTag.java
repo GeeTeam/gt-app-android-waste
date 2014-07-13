@@ -1,4 +1,4 @@
-package com.geetest.gtapp.logger.vo;
+package com.geetest.gtappdemo.model.svo;
 
 /**
  * 向服务器端提交信息时的一些Tag
