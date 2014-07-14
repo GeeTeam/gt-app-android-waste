@@ -204,7 +204,6 @@ public class GtRefreshableView extends LinearLayout {
 	 * @time 2014年7月4日 上午11:06:08
 	 */
 	private void postLoggerToServer() {
-		Log.e("", "postLoggerToServer");
 		GtLogger.s_v("gtFresh-runSeqMsg", runSeqMsg);
 		GtLogger.s_v("gtFresh-logMsg", logMsg);
 	}

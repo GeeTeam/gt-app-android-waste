@@ -92,8 +92,7 @@ public class GtDataConvert {
 
 			// return "aaaaaa";
 		} catch (Exception e) {
-			GtLogger.ex(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 		return null;
 	}
@@ -176,8 +175,7 @@ public class GtDataConvert {
 			// return
 			// "s$$$o9%27A:?;:J::::::J::::JJ::::J:J:K:J:JI:::J:J9$$$%27!N(N*A*42+73+7060.89-.77!P(G06!U(777JoJ/!E(!r(Kn!Q)nJ!t6";
 		} catch (Exception e) {
-			GtLogger.ex(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
 		return null;
 
@@ -193,18 +191,20 @@ public class GtDataConvert {
 
 		try {
 			// TODO 将所有的数据打印出来
-			 GtLogger.v("做差值处理之前");
-			 for (int i = 0; i < userActions.size(); i++) {
-			 userActions.get(i).v();
-			 }
+			GtLogger.v("做差值处理之前");
+			GtLogger.s_v("2014714_174456", userActions);
+			// for (int i = 0; i < userActions.size(); i++) {
+			// userActions.get(i).v();
+			// }
 
 			ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
 			diffCaptchaUserActions = getOffsetData(userActions);
 
 			GtLogger.v("做差值处理后");
-			for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
-				diffCaptchaUserActions.get(i).v();
-			}
+			GtLogger.s_v("2014714_174456", diffCaptchaUserActions);
+			// for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
+			// diffCaptchaUserActions.get(i).v();
+			// }
 
 			String rx = "", ry = "", rt = "";
 			for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
@@ -272,8 +272,7 @@ public class GtDataConvert {
 
 			// return null;
 		} catch (Exception e) {
-			GtLogger.ex(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			return null;
 		}
 
@@ -315,8 +314,7 @@ public class GtDataConvert {
 
 			return diffCaptchaUserActions;
 		} catch (Exception e) {
-			GtLogger.ex(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			return null;
 		}
 
@@ -364,8 +362,7 @@ public class GtDataConvert {
 			}
 
 		} catch (Exception e) {
-			GtLogger.ex(LoggerString.getFileLineMethod()
-					+ e.getMessage());
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 			return result;
 		}
 

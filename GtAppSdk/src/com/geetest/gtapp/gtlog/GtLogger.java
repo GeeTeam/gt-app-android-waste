@@ -31,7 +31,7 @@ public abstract class GtLogger {
 
 		// Log.v(tag, msg);// 本地调试状态
 
-		// TODO 网络调试状态
+		// TODO 发布时可以删除
 		FtSlog.s_v(tag, msg);
 
 	}

@@ -167,6 +167,7 @@ public class GtAppDialog extends Dialog {
 	private final int MSG_SLICE_BG_ALPHA_MISS = 3;// 切片图渐变消失
 	private final int MSG_OPTION_DATA = 4;// 初次请求数据
 	private final int MSG_BIND_DATA = 5;// 将数据绑定到界面
+	private final int MSG_ANIM_FLASH = 6;// 闪动图片
 
 	// 滑块坐标位置
 	private GtPoint sliderStartLeftTopPosition = new GtPoint();// 滑块左上角坐标
@@ -235,7 +236,6 @@ public class GtAppDialog extends Dialog {
 		// 收集一些测试信息--用于打印中间字段--一个app中只需要设置一次就OK了
 		GtLogger.setContext(context);
 		GtLogger.setSdkInfo(getSdkInfo());
-		
 
 		requestSdkVersionFromServer();
 	}
@@ -259,52 +259,22 @@ public class GtAppDialog extends Dialog {
 	public void setDisplay() {
 
 		try {
-			if (true) {
-				requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
-				setCanceledOnTouchOutside(false);// 在外面点击不会消失
 
-				setContentView(gtAppDlgLayoutResId);// 设置资源内容
-				initViews();
-				initViewDisplayParameter();
-				initListeners();
+			requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
+			setCanceledOnTouchOutside(false);// 在外面点击不会消失
 
-				// setTitle("GtDialog");
+			setContentView(gtAppDlgLayoutResId);// 设置资源内容
+			initViews();
+			initViewDisplayParameter();
+			initListeners();
 
-				setLocation();
-				show();
-				imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
+			// setTitle("GtDialog");
 
-				sendMsgToUpdateUI(MSG_OPTION_DATA);
+			setLocation();
+			show();
+			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
 
-				// Android 4.0 之后不能在主线程中请求HTTP请求
-				// new Thread(new Runnable() {
-				// @Override
-				// public void run() {
-				// String response = getOption();
-				// // 硬解码抽取出JSON格式
-				// String webJsFunction[] = response.split("=");
-				// String optionValues[] = webJsFunction[1].split(";");
-				// String optionValue = optionValues[0];
-				//
-				// // 解析成对象
-				// initCaptchaOption = gson.fromJson(optionValue,
-				// CaptchaOption.class);
-				//
-				// GtLogger.d("getFullbg : " + initCaptchaOption.getFullbg());
-				//
-				// new Thread(new Runnable() {
-				// @Override
-				// public void run() {
-				// fullbg_ImageRequest(initCaptchaOption.getFullbg());
-				//
-				// }
-				// }).start();
-				// // 开始连锁的串行向服务器请求图片
-				// // fullbg_ImageRequest(initCaptchaOption.getFullbg());
-				//
-				// }
-				// }).start();
-			}
+			sendMsgToUpdateUI(MSG_OPTION_DATA);
 
 		} catch (Exception e) {
 			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
@@ -761,12 +731,9 @@ public class GtAppDialog extends Dialog {
 				switch (event.getAction()) {
 
 				case MotionEvent.ACTION_DOWN:
-					GtLogger.v("按下拖动条");
-
 					tv_slider_tip_msg.setVisibility(View.INVISIBLE);// 拖动的提示文字消失
-					imgv_skb_anim_tip.setVisibility(View.GONE);// 好像没效果
-																// 2014年6月23日
-																// 17:51:17
+					imgv_skb_anim_tip.clearAnimation();// 清除动画
+					imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 
 					GtLogger.v("skb_dragCaptcha.getLeft(): "
 							+ skb_dragCaptcha.getLeft()
@@ -1001,19 +968,34 @@ public class GtAppDialog extends Dialog {
 			 */
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				// System.out.println("动画结束...");
-
+				// 设置一个动画的事件，在动画结束后停止 关闭对话框
 				imgv_flashlight.setVisibility(View.INVISIBLE);
 				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					GtLogger.ex(LoggerString.getFileLineMethod()
-							+ e.getMessage());
-					e.printStackTrace();
-				}// 停留一段时间，自动关闭
-				dismiss();// 当前对话框关闭
+				// 对话框需要在动画之后关闭，必须要放在线程里面，否则会报异常
+				// 做一个回调的函数。
+				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
+				cbResponse.setResCode(1);
+				cbResponse.setResMsg("succeed");
+				gtAppCallback.gtAppResponse(cbResponse);
+
+				Handler handler = new Handler();// 必须重新new一个，否则会出现问题
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						dismiss();
+					}
+				}, 500);
+
+				// dismiss();// 当前对话框关闭
+
+				// mHandler.postDelayed(new Runnable() {
+				// @Override
+				// public void run() {
+				//
+				// }
+				// }, 500);// 500ms后关闭对话框
+
 			}
 		});
 
@@ -1982,8 +1964,11 @@ public class GtAppDialog extends Dialog {
 				// + Integer.toString(slice_img_alpha));
 				// 刷新视图
 				imgv_slice.invalidate();
-
 				break;
+			case MSG_ANIM_FLASH:
+				imgv_flashlight.startAnimation(anim_flashlight);
+				break;
+
 			case MSG_OPTION_DATA:
 				// 向服务器请求初始化信息
 				requestOptionDataFromGtServer();
@@ -2031,7 +2016,7 @@ public class GtAppDialog extends Dialog {
 	}
 
 	/**
-	 * 设置 验证失败后的图片显示设置的线程
+	 * 验证成功后的线程
 	 * 
 	 * @author Zheng 2014年5月22日 上午9:34:39
 	 */
@@ -2051,22 +2036,11 @@ public class GtAppDialog extends Dialog {
 					}
 				}
 
-				// 设计单独的动画
-				imgv_flashlight.startAnimation(anim_flashlight);
+				sendMsgToUpdateUI(MSG_ANIM_FLASH);// 设计单独的动画
+				// imgv_flashlight.startAnimation(anim_flashlight);
 
-				// TODO 设置一个动画的事件，在动画结束后停止 关闭对话框
-
-				// 做一个回调的函数。
-				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
-				cbResponse.setResCode(1);
-				cbResponse.setResMsg("succeed");
-				gtAppCallback.gtAppResponse(cbResponse);
-
-				GtLogger.v("验证成功后的图片线程");
-				// System.out.println(Thread.currentThread().getName());
 			} catch (Exception e) {
 				GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
-				e.printStackTrace();
 			}
 		}
 	}
@@ -2081,9 +2055,8 @@ public class GtAppDialog extends Dialog {
 
 		}
 
-		GtLogger.v("alpha: " + slice_img_alpha);
+		// GtLogger.v("alpha: " + slice_img_alpha);
 		// 发送需要更新imageview视图的消息-->这里是发给主线程
-		// mHandler.sendMessage(mHandler.obtainMessage());
 		sendMsgToUpdateUI(MSG_SLICE_BG_ALPHA_MISS);
 	}
 
