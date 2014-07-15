@@ -1847,6 +1847,8 @@ public class GtAppDialog extends Dialog {
 							ajaxPhp_GresVo = gson.fromJson(resultAry[1],
 									AjaxPhp_GresVo.class);
 
+							GtLogger.s_v("2014715_110148", ajaxPhp_GresVo);
+							
 							// 如果返回的是成功的验证结果
 							if (ajaxPhp_GresVo.getSuccess().equals("1")) {
 
@@ -1859,9 +1861,7 @@ public class GtAppDialog extends Dialog {
 										.setToSucceedStatus(getSucceedToolTip(ajaxPhp_GresVo
 												.getMessage()));
 
-								// 如果客户端已经验证成功了，那么再向客户服务器提交请求，进行服务器再查询验证请求
-								// postCaptchaInfoToCustomServer();
-								// 在GtApp端好像不需要二次验证，因为App源码不可见
+							
 
 							} else if (ajaxPhp_GresVo.getSuccess().equals("0")) {
 
