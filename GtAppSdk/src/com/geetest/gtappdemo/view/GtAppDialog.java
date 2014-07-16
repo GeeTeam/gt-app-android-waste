@@ -107,7 +107,8 @@ public class GtAppDialog extends Dialog {
 	// private Animation animation;
 
 	private RelativeLayout firstReLayoutView;// 最外层布局
-	private FrameLayout reLayoutView;// 相框的相对布局
+	private FrameLayout flView_ImageFrame;// 相框的相对布局
+	private FrameLayout flView_self_slider;// 自定义滑块布局
 	// private RelativeLayout reLayoutView;// 相框的相对布局
 	private LinearLayout fl_slider_string_tip;// 提示滑动布局
 	private GtAppNeonLightTip gtAppNeonLightTip;// 滑动霓虹灯
@@ -119,6 +120,7 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 	private ImageView imgv_flashlight;// 闪电图
+	private ImageView imgv_self_touch_slice;// 自定义的图片
 
 	private ImageView imgv_skb_anim_tip;// 滑动条操作提示
 	private ImageView imgv_change_image;// 换图按钮
@@ -718,6 +720,70 @@ public class GtAppDialog extends Dialog {
 			}
 		});
 
+		
+		//自定义的图片
+		imgv_self_touch_slice.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View arg0, MotionEvent event) {
+
+				float curX, curY;// 鼠标的即时位置
+
+				curX = event.getX();
+				curY = event.getY();
+
+				switch (event.getAction()) {
+
+				case MotionEvent.ACTION_DOWN:
+					// 获取当前的位置
+					mX = event.getX();
+					mY = event.getY();
+
+					changeImageButtonStartPosition.setX(imgv_change_image
+							.getTop());
+					changeImageButtonStartPosition.setX(imgv_change_image
+							.getLeft());// 获取起始的位置
+					// actionDown_X = event.getX();
+					// actionDown_Y = event.getY();
+
+					break;
+				case MotionEvent.ACTION_MOVE:
+					curX = event.getX();// 当前x
+					curY = event.getY();// 当前y
+
+					// igv_slice.scrollBy((int) (mX - curX), (int) (mY -
+					// curY));// 进行偏移
+					// imgv_change_image.scrollBy((int) (mX - curX), 0);//
+					// 只进行水平方向行偏移
+					sendMsgToUpdateUI(MSG_SLICE_BG_DISPLAY);
+					// imgv_slice.scrollBy((int) (mX - curX), 0);
+					imgv_slice.scrollTo((int) (-mX), 0);
+					imgv_self_touch_slice.scrollBy((int) (mX - curX), 0);
+					mX = curX;
+					mY = curY;
+					break;
+				case MotionEvent.ACTION_UP:
+					GtLogger.v("Images Change Action_Up");
+
+					curX = event.getX();
+					curY = event.getY();
+
+					// imgv_change_image.scrollBy((int) (mX - curX), 0);
+					imgv_change_image.scrollTo(0,
+							(int) (changeImageButtonStartPosition.getY()));// 归位
+
+					if ((curY - changeImageButtonStartPosition.getY()) > 100) {
+						// 开始刷新图片
+						captchaInitialOption_StringRequest();
+					}
+
+					break;
+				}
+
+				return true;
+			}
+		});
+
+	
 		// 拖动条的touch事件
 		skb_dragCaptcha.setOnTouchListener(new View.OnTouchListener() {
 
@@ -1132,15 +1198,22 @@ public class GtAppDialog extends Dialog {
 					tv_validateStatus, tv_validateMsg);// 状态条
 
 			// 图片框布局--好像相对布局必须要这样弄
-			reLayoutView = (FrameLayout) firstReLayoutView
+			flView_ImageFrame = (FrameLayout) firstReLayoutView
 					.findViewById(R.id.rl_view_image_frame);
-			imgv_full_bg = (ImageView) reLayoutView
+			imgv_full_bg = (ImageView) flView_ImageFrame
 					.findViewById(R.id.imgv_full_bg);
-			imgv_slice = (ImageView) reLayoutView.findViewById(R.id.imgv_slice);
-			imgv_slice_bg = (ImageView) reLayoutView
+			imgv_slice = (ImageView) flView_ImageFrame
+					.findViewById(R.id.imgv_slice);
+			imgv_slice_bg = (ImageView) flView_ImageFrame
 					.findViewById(R.id.imgv_slice_bg);
-			imgv_flashlight = (ImageView) reLayoutView
+			imgv_flashlight = (ImageView) flView_ImageFrame
 					.findViewById(R.id.imgv_flashlight);
+
+			// 自定义的滑块布局
+			flView_self_slider = (FrameLayout) firstReLayoutView
+					.findViewById(R.id.fl_self_seekbar);
+			imgv_self_touch_slice = (ImageView) flView_self_slider
+					.findViewById(R.id.imgv_self_touch_slice);// 滑动条
 
 			imgv_skb_anim_tip = (ImageView) findViewById(R.id.imgv_skb_anim_tip);
 			imgv_change_image = (ImageView) findViewById(R.id.imgv_change_image);
@@ -1848,7 +1921,7 @@ public class GtAppDialog extends Dialog {
 									AjaxPhp_GresVo.class);
 
 							GtLogger.s_v("2014715_110148", ajaxPhp_GresVo);
-							
+
 							// 如果返回的是成功的验证结果
 							if (ajaxPhp_GresVo.getSuccess().equals("1")) {
 
@@ -1860,8 +1933,6 @@ public class GtAppDialog extends Dialog {
 								gtStatusBar
 										.setToSucceedStatus(getSucceedToolTip(ajaxPhp_GresVo
 												.getMessage()));
-
-							
 
 							} else if (ajaxPhp_GresVo.getSuccess().equals("0")) {
 

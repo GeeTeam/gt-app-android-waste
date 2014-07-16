@@ -102,6 +102,72 @@
             android:visibility="visible" />
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/fl_self_seekbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#99999999" >
+
+        <!-- 自定义滑块 -->
+
+        <!-- <LinearLayout -->
+        <!-- android:layout_width="fill_parent" -->
+        <!-- android:layout_height="80dp" -->
+        <!-- android:layout_margin="0dp" -->
+        <!-- android:background="#99999999" -->
+        <!-- android:orientation="vertical" > -->
+        <!-- </LinearLayout> -->
+
+
+        <SeekBar
+            android:id="@+id/skb_self_seekbar_def"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="100"
+            android:maxHeight="56dp"
+            android:minHeight="56dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
+            android:thumb="@drawable/gtapp_skb_thumb_state_define"
+            android:thumbOffset="-8dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/imgv_self_touch_slice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:scaleType="matrix"
+            android:src="@drawable/gtapp_skb_drag_normal"
+            android:visibility="visible" />
+        <!-- 提示滑动动画 -->
+
+        <TextView
+            android:id="@+id/tv_self_slider_tip_msg"
+            style="@style/statusTextShadow"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right"
+            android:layout_marginRight="12dp"
+            android:gravity="center"
+            android:text=">>> 向右拖动完成验证   >>>"
+            android:textColor="#A2A497"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imgv_self_skb_anim_tip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:scaleType="matrix"
+            android:src="@drawable/gtapp_skb_drag_normal_finger"
+            android:visibility="gone" />
+    </FrameLayout>
+
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
