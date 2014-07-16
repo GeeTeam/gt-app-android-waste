@@ -93,10 +93,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="6dp"
+            android:clickable="true"
+            android:focusable="true"
             android:scaleType="matrix"
-            android:src="@drawable/gtapp_skb_drag_normal"
+            android:src="@drawable/gtapp_skb_slice_image_state_define"
             android:visibility="visible" />
         <!-- 自定义滑块 -->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:background="@drawable/gtapp_skb_slice_image_state_define" 
+            android:visibility="gone"/>
+        <!-- 实验改变背景图 -->
+
 
         <ImageView
             android:id="@+id/imgv_skb_anim_tip"
