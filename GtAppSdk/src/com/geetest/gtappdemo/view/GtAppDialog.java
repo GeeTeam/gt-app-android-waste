@@ -217,7 +217,9 @@ public class GtAppDialog extends Dialog {
 	// private HostInfo hostInfo = new HostInfo();
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
 	private UiElementSize uiSize = new UiElementSize();// 界面元素的高度收集--方便做一些适配工作
-	private ArrayList<int[]> actionArrayList = new ArrayList<int[]>();// 一个数组
+	private HashMap<String, Object> userActionDataExpData = new HashMap<String, Object>();// 用户实验数据
+	// private ArrayList<int[]> actionArrayList = new ArrayList<int[]>();// 一个数组
+
 	// private GtLogger GtLogger;// 向服务器提交运行日志数据的类
 	private Gson gson = new Gson();// 第三方的JSON解析和打包库
 
@@ -791,8 +793,9 @@ public class GtAppDialog extends Dialog {
 					int slice_img_X = (int) (curX - bm_slice.getWidth() / 2);
 					int touch_X = (int) (curX - thumbBmpSize.getWidth() / 2);
 
-					GtLogger.s_v("2014716_192724", bm_slice.getWidth() + " , "
-							+ thumbBmpSize.getWidth());
+					// GtLogger.s_v("2014716_192724", bm_slice.getWidth() +
+					// " , "
+					// + thumbBmpSize.getWidth());
 
 					imgv_self_touch_slice.scrollTo((int) (-touch_X), 0);// 进行偏移
 					imgv_slice.scrollTo((int) (-slice_img_X),
@@ -1911,7 +1914,6 @@ public class GtAppDialog extends Dialog {
 				initCaptchaOption.getChallenge());// 解码原始的challenge
 
 		int userXpos = getSliderBarOffset();
-
 		String encodeUserResponse = GtDataConvert.EnCryptUserResponse(userXpos,
 				decodedChallenge);
 
@@ -1919,24 +1921,42 @@ public class GtAppDialog extends Dialog {
 
 		GtLogger.v("进行缩放，比例：bm_zoom_scale: " + bm_zoom_scale);
 
+		ArrayList<String> actionArrayListExpData = new ArrayList<String>();// 将数据转换成一种比较好的展现方式
 		// 用户行为数据的x,y值都除掉一个放大系数
 		for (int i = 0; i < userActions.size(); i++) {
 
-			CaptchaUserAction temp = userActions.get(i);
+			CaptchaUserAction tempAction = userActions.get(i);
 
 			// 进行一次坐标系统转换--原点转换
-			temp.setxPos((int) (temp.getxPos() - sliderStartPressTouchPosition
-					.getX()));
-			temp.setyPos((int) (temp.getyPos() - sliderStartPressTouchPosition
-					.getY()));
+			tempAction
+					.setxPos((int) (tempAction.getxPos() - sliderStartPressTouchPosition
+							.getX()));
+			tempAction
+					.setyPos((int) (tempAction.getyPos() - sliderStartPressTouchPosition
+							.getY()));
 
 			// 坐标刻度缩放
-			temp.setxPos((int) (temp.getxPos() / bm_zoom_scale));
-			temp.setyPos((int) (temp.getyPos() / bm_zoom_scale));
+			tempAction.setxPos((int) (tempAction.getxPos() / bm_zoom_scale));
+			tempAction.setyPos((int) (tempAction.getyPos() / bm_zoom_scale));
 			// 时间增量是不是缩放的
-		}
 
+			// TODO 做测试用的代码,配合测试的工具
+			int[] userActionArray = new int[3];
+			userActionArray[0] = tempAction.getxPos();
+			userActionArray[1] = tempAction.getyPos();
+			userActionArray[2] = tempAction.getTimeIncrement();
+			String actionString = tempAction.getxPos() + ","
+					+ tempAction.getyPos() + ","
+					+ tempAction.getTimeIncrement();
+			actionArrayListExpData.add(actionString);
+		}
 		String encodeUserActions = GtDataConvert.EncryptUserAction(userActions);
+
+		userActionDataExpData.put("orgin_userXpos", userXpos);
+		userActionDataExpData.put("encodeUserResponse", encodeUserResponse);
+		userActionDataExpData.put("orgin_userActions", actionArrayListExpData);
+		userActionDataExpData.put("encodeUserActions", encodeUserActions);
+		GtLogger.s_v("2014716_234559", userActionDataExpData);
 
 		GtLogger.v("userResponse:  " + encodeUserResponse);
 		GtLogger.v("a:  " + encodeUserActions);
