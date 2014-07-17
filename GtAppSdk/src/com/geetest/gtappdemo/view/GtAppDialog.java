@@ -213,14 +213,11 @@ public class GtAppDialog extends Dialog {
 	private int leftMargin = 0;// dp
 	private int rightMargin = 0;// dp
 
-	// 软件行为参数收集
+	// 软件行为参数收集--用于调试
 	// private HostInfo hostInfo = new HostInfo();
 	private ImageLoadTimeNode imgLoadTimeStamp = new ImageLoadTimeNode();// 中间时间节点记录
 	private UiElementSize uiSize = new UiElementSize();// 界面元素的高度收集--方便做一些适配工作
 	private HashMap<String, Object> userActionDataExpData = new HashMap<String, Object>();// 用户实验数据
-	// private ArrayList<int[]> actionArrayList = new ArrayList<int[]>();// 一个数组
-
-	// private GtLogger GtLogger;// 向服务器提交运行日志数据的类
 	private Gson gson = new Gson();// 第三方的JSON解析和打包库
 
 	// TODO 下拉刷新加载效果
@@ -755,6 +752,9 @@ public class GtAppDialog extends Dialog {
 				curX = event.getX();
 				curY = event.getY();
 
+				int slice_img_X = (int) (curX - bm_slice.getWidth() / 2);
+				int touch_X = (int) (curX - thumbBmpSize.getWidth() / 2);
+
 				switch (event.getAction()) {
 
 				case MotionEvent.ACTION_DOWN:
@@ -766,6 +766,10 @@ public class GtAppDialog extends Dialog {
 					mX = event.getX();
 					mY = event.getY();
 					setSliderStartPressTouchPosition(mX, mY);
+
+					imgv_self_touch_slice.scrollTo((int) (-touch_X), 0);
+					imgv_slice.scrollTo((int) (-slice_img_X),
+							getSliceYposAfterSalced());//
 
 					userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
 					// 滑块的左上角值
@@ -790,16 +794,31 @@ public class GtAppDialog extends Dialog {
 					curX = event.getX();// 当前x
 					curY = event.getY();// 当前y
 
-					int slice_img_X = (int) (curX - bm_slice.getWidth() / 2);
-					int touch_X = (int) (curX - thumbBmpSize.getWidth() / 2);
-
 					// GtLogger.s_v("2014716_192724", bm_slice.getWidth() +
 					// " , "
 					// + thumbBmpSize.getWidth());
 
-					imgv_self_touch_slice.scrollTo((int) (-touch_X), 0);// 进行偏移
+					imgv_self_touch_slice.scrollTo((int) (-touch_X), 0);
 					imgv_slice.scrollTo((int) (-slice_img_X),
 							getSliceYposAfterSalced());//
+					// RelativeLayout.LayoutParams MarginLayoutParams
+
+					// FrameLayout.LayoutParams mParams =
+					// (FrameLayout.LayoutParams) imgv_self_touch_slice
+					// .getLayoutParams();
+					// mParams.leftMargin = (int) (curX);
+					// // mParams.topMargin =curY - 50;
+					// imgv_self_touch_slice.setLayoutParams(mParams);
+					// Log.e("", "Move");
+
+					// imgv_self_touch_slice.scrollBy((int) (-touch_X), 0);//
+					// 进行偏移
+					// imgv_slice.scrollBy((int) (-slice_img_X),
+					// getSliceYposAfterSalced());//
+
+					// imgv_self_touch_slice.scrollBy((int) (mX - curX), 0);//
+					// 进行偏移
+					// imgv_slice.scrollBy((int) (mX - curX), 0);//
 
 					// imgv_self_touch_slice.scrollTo((int) (-curX), 0);// 进行偏移
 					// imgv_slice.scrollTo((int) (-curX),
@@ -836,7 +855,8 @@ public class GtAppDialog extends Dialog {
 					Log.v("seekbar", "拖动停止");
 
 					// sliderOffsetX = (int) curX;// 获取偏移量
-					sliderOffsetX = (int) curX - bm_slice.getWidth() / 2;// 获取偏移量
+					sliderOffsetX = (int) curX - bm_slice.getWidth() / 2;//
+					// 获取偏移量
 
 					// 向服务器提交行为数据
 					userBehaviourUpload_StringRequest();
@@ -1940,7 +1960,7 @@ public class GtAppDialog extends Dialog {
 			tempAction.setyPos((int) (tempAction.getyPos() / bm_zoom_scale));
 			// 时间增量是不是缩放的
 
-			// TODO 做测试用的代码,配合测试的工具
+			// TestCode-Start 做测试用的代码,配合测试的工具
 			int[] userActionArray = new int[3];
 			userActionArray[0] = tempAction.getxPos();
 			userActionArray[1] = tempAction.getyPos();
@@ -1949,6 +1969,7 @@ public class GtAppDialog extends Dialog {
 					+ tempAction.getyPos() + ","
 					+ tempAction.getTimeIncrement();
 			actionArrayListExpData.add(actionString);
+			// TestCode-End 做测试用的代码,配合测试的工具
 		}
 		String encodeUserActions = GtDataConvert.EncryptUserAction(userActions);
 
@@ -1958,8 +1979,8 @@ public class GtAppDialog extends Dialog {
 		userActionDataExpData.put("encodeUserActions", encodeUserActions);
 		GtLogger.s_v("2014716_234559", userActionDataExpData);
 
-		GtLogger.v("userResponse:  " + encodeUserResponse);
-		GtLogger.v("a:  " + encodeUserActions);
+		// GtLogger.v("userResponse:  " + encodeUserResponse);
+		// GtLogger.v("a:  " + encodeUserActions);
 
 		ajaxPhp_GreqVo = new AjaxPhp_GreqVo();
 		ajaxPhp_GreqVo.setApi(GtApiEnv.ajaxApiName);
@@ -1970,8 +1991,7 @@ public class GtAppDialog extends Dialog {
 				.setImgload((int) (imgLoadTimeStamp.getAbsTotalLoadTime()));
 		ajaxPhp_GreqVo.setA(encodeUserActions);
 
-		// GtLogger.v(ajaxPhp_GreqVo.getA());
-		GtLogger.s_v("2014712_010609", ajaxPhp_GreqVo.getA());
+		// GtLogger.s_v("2014712_010609", ajaxPhp_GreqVo.getA());
 
 		// 对象转Map,Map编码成List
 		String relApiPath = GtApiEnv.ajaxSubmitApi;

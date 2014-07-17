@@ -341,7 +341,7 @@ public class GtRefreshableView extends LinearLayout {
 
 			runSeqMsg.add("onLayout changed && !loadOnce");
 			logMsg.put("hideHeaderHeight", hideHeaderHeight);
-			GtLogger.e("loadOnce 首次加载");
+			// GtLogger.e("loadOnce 首次加载");
 
 			headerLayoutParams = (MarginLayoutParams) header.getLayoutParams();
 			headerLayoutParams.topMargin = hideHeaderHeight;

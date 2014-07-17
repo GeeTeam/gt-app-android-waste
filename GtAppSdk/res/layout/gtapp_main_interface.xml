@@ -61,7 +61,8 @@
     <FrameLayout
         android:id="@+id/fl_seekbar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
 
         <SeekBar
             android:id="@+id/seekbar_def"
@@ -85,7 +86,7 @@
         android:id="@+id/fl_self_seekbar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#EEEEEEEE" >
+        android:background="#FFFFFFFF" >
 
         <ImageView
             android:id="@+id/imgv_self_touch_slice"
@@ -104,10 +105,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="160dp"
-            android:background="@drawable/gtapp_skb_slice_image_state_define" 
-            android:visibility="gone"/>
+            android:background="@drawable/gtapp_skb_slice_image_state_define"
+            android:visibility="gone" />
         <!-- 实验改变背景图 -->
-
 
         <ImageView
             android:id="@+id/imgv_skb_anim_tip"
@@ -130,7 +130,8 @@
             android:gravity="center"
             android:text=">>> 向右拖动完成验证   >>>"
             android:textColor="#A2A497"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="visible" />
         <!-- 自定义提示文字 -->
 
     </FrameLayout>
