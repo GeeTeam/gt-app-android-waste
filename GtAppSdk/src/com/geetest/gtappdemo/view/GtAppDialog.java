@@ -1060,7 +1060,7 @@ public class GtAppDialog extends Dialog {
 			 */
 			@Override
 			public void onAnimationStart(Animation animation) {
-				System.out.println("动画开始...");
+				GtLogger.v("动画开始...");
 				imgv_skb_anim_tip.setVisibility(View.VISIBLE);
 			}
 
@@ -1077,7 +1077,7 @@ public class GtAppDialog extends Dialog {
 			 */
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				System.out.println("动画结束...");
+				GtLogger.v("动画结束...");
 				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 			}
 		});
@@ -1090,7 +1090,6 @@ public class GtAppDialog extends Dialog {
 			 */
 			@Override
 			public void onAnimationStart(Animation animation) {
-				System.out.println("动画开始...");
 				imgv_flashlight.setVisibility(View.VISIBLE);
 			}
 

@@ -1,4 +1,4 @@
-﻿# gt-app
-移动上的验证安全SDK
+gt-app-android
+==============
 
-`2014年5月5日 17:51:57`
+The Geetest SDK in Android
