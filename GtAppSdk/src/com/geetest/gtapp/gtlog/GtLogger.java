@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.geeksfit.ftapp.slog.FtSlog;
 import com.geetest.gtapp.gtlog.vo.SdkInfo;
 
 public abstract class GtLogger {
 	private static final String COMMON_TAG = "GtAppTag";// 打的通用的TAG
 
+	// TODO 发布时修改
 	private static boolean DEBUG_STATE = false;
 
 	// private static Context context;// 用于获取程序信息的上下文
@@ -18,12 +20,12 @@ public abstract class GtLogger {
 
 	public static void setContext(Context context) {
 		// TODO 发布时可以删除
-		// FtSlog.setMobileInfo(context);
+		FtSlog.setMobileInfo(context);
 	}
 
 	public static void setSdkInfo(SdkInfo sdkInfo) {
 		// TODO 发布时可以删除
-		// FtSlog.setNoteMsg(sdkInfo);
+		FtSlog.setNoteMsg(sdkInfo);
 	}
 
 	public static void s_v(String tag, Object msg) {
