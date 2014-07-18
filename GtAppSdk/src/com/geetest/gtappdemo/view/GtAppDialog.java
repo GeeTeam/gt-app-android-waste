@@ -852,7 +852,6 @@ public class GtAppDialog extends Dialog {
 							(int) (seekbarEndTime - seekbarStartTime));
 					lastAction.v();
 					userActions.add(lastAction);
-					Log.v("seekbar", "拖动停止");
 
 					// sliderOffsetX = (int) curX;// 获取偏移量
 					sliderOffsetX = (int) curX - bm_slice.getWidth() / 2;//
