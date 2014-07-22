@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
-        android:contentDescription="验证状态图"
+        android:contentDescription="@string/image_description" 
         android:gravity="center"
         android:src="@drawable/gtapp_status_wait" />
     <!-- 验证状态 -->
@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:layout_margin="2dp"
         android:gravity="center"
-        android:text="等待验证："
+        android:text="@string/wait_for_action"
         android:textColor="#F1BD60" />
 
     <TextView
@@ -45,7 +45,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="拖动滑块使悬浮图像正确拼合"
+        android:text="@string/gtapp_action_tip"
         android:textColor="#FF9F9D92" />
     <!-- 验证状态描述 -->
 

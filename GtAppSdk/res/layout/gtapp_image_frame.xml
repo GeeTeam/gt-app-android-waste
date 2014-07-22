@@ -24,7 +24,7 @@
         android:id="@+id/imgv_slice_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="切图背景"
+        android:contentDescription="@string/image_description" 
         android:scaleType="matrix"
         android:visibility="visible" />
     <!-- 切图背景 -->
@@ -33,7 +33,7 @@
         android:id="@+id/imgv_slice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="切片小图"
+        android:contentDescription="@string/image_description"
         android:gravity="right"
         android:scaleType="matrix"
         android:visibility="visible" />
@@ -44,7 +44,7 @@
         android:id="@+id/imgv_flashlight"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="闪电图"
+        android:contentDescription="@string/image_description"
         android:gravity="right"
         android:scaleType="fitXY"
         android:src="@drawable/gtapp_flashlight"

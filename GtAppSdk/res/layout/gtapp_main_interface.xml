@@ -95,7 +95,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="6dp"
             android:clickable="true"
-            android:contentDescription="自定义滑块"
+            android:contentDescription="@string/image_description"
             android:focusable="true"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_slice_image_state_define"
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="160dp"
             android:background="@drawable/gtapp_skb_slice_image_state_define"
-            android:contentDescription="自定义的滑块"
+            android:contentDescription="@string/image_description"
             android:visibility="gone" />
         <!-- 实验改变背景图 -->
 
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="6dp"
-            android:contentDescription="拖动的提示动画"
+            android:contentDescription="@string/image_description"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_drag_normal_finger"
             android:visibility="visible" />
@@ -131,7 +131,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="12dp"
             android:gravity="center"
-            android:text=">>> 向右拖动完成验证   >>>"
+            android:text="@string/drag_text_tip"
             android:textColor="#A2A497"
             android:textSize="14sp"
             android:visibility="visible" />

@@ -28,7 +28,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:background="#EEEEEE"
-        android:text="拖动滑块以完成验证" />
+        android:text="@string/drag_part_tip" />
 
     <TextView
         android:id="@+id/View05"
