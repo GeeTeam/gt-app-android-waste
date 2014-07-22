@@ -95,6 +95,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="6dp"
             android:clickable="true"
+            android:contentDescription="自定义滑块"
             android:focusable="true"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_slice_image_state_define"
@@ -106,6 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="160dp"
             android:background="@drawable/gtapp_skb_slice_image_state_define"
+            android:contentDescription="自定义的滑块"
             android:visibility="gone" />
         <!-- 实验改变背景图 -->
 
@@ -115,6 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="6dp"
+            android:contentDescription="拖动的提示动画"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_drag_normal_finger"
             android:visibility="visible" />

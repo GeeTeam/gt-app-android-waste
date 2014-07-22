@@ -14,9 +14,9 @@
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
+        android:contentDescription="验证状态图"
         android:gravity="center"
         android:src="@drawable/gtapp_status_wait" />
-
     <!-- 验证状态 -->
 
     <TextView

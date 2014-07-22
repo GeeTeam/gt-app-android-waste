@@ -14,8 +14,11 @@
         android:background="#DD001826"
         android:scaleType="center"
         android:src="@drawable/gtapp_downarrow_unactive"
-        android:visibility="visible" />
+        android:visibility="visible" 
+        android:contentDescription="下拉的按钮"/>
+    <!-- 下拉的按钮 -->
 
+    
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="40dp"

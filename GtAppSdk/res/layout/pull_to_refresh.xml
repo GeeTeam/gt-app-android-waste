@@ -13,22 +13,22 @@
         <RelativeLayout
             android:layout_width="0dip"
             android:layout_height="60dip"
-            android:layout_weight="3"
-            >
-            <ImageView 
+            android:layout_weight="3" >
+
+            <ImageView
                 android:id="@+id/arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/arrow"
-                />
-            <ProgressBar 
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/arrow" />
+
+            <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="30dip"
                 android:layout_height="30dip"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="color1">#FFFFFFFF</color>
-    <color name="color2">#FF000000</color>
-    <color name="color3">#FF000000</color>
-    <color name="color4">#FF000000</color>
-    <color name="color5">#FF000000</color>
-    <color name="color6">#FF000000</color>
-    <color name="color7">#FFFFFFFF</color>
+    <!-- <color name="color1">#FFFFFFFF</color> -->
+    <!-- <color name="color2">#FF000000</color> -->
+    <!-- <color name="color3">#FF000000</color> -->
+    <!-- <color name="color4">#FF000000</color> -->
+    <!-- <color name="color5">#FF000000</color> -->
+    <!-- <color name="color6">#FF000000</color> -->
+    <!-- <color name="color7">#FFFFFFFF</color> -->
+
     <!-- 状态栏一种状态文字的颜色 START -->
     <color name="gtapp_status_wait">#FF5899e6</color>
     <color name="gtapp_status_succeed">#FF40c135</color>
