@@ -53,7 +53,6 @@
             android:layout_below="@id/login_password_input"
             android:background="#FFFFFFFF"
             android:inputType="textPassword"
-            android:password="true"
             android:singleLine="true" />
         <!-- 登录button -->
 
@@ -62,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/password_edit"
-            android:layout_marginTop="6dp"
             android:layout_below="@id/password_edit"
+            android:layout_marginTop="6dp"
             android:background="@drawable/select_blue_button"
             android:text="@string/login_label_signin" />
     </RelativeLayout>

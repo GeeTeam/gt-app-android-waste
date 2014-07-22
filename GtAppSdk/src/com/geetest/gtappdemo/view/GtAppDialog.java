@@ -1563,6 +1563,12 @@ public class GtAppDialog extends Dialog {
 		return newbm;
 	}
 
+	/**
+	 * 不使用volley进行的网络通讯
+	 * 
+	 * @time 2014年7月22日 下午4:27:00
+	 * @return
+	 */
 	public String getOption() {
 
 		StringBuffer sBuffer = new StringBuffer();
@@ -1586,7 +1592,10 @@ public class GtAppDialog extends Dialog {
 					sBuffer.append(new String(buf, 0, n, "UTF-8"));
 				}
 			}
-			in.close();
+			if (in != null) {
+				in.close();
+			}
+
 			conn.disconnect();
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();

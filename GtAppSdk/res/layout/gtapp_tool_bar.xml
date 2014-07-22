@@ -1,109 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:id="@+id/ll_toolsbar"
+    android:layout_width="fill_parent"
+    android:layout_height="24dp"
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:background="#F5F5F5"
+    android:orientation="horizontal" >
+
+    <!-- 工具栏区 -->
+
+    <View style="@style/gtapp_vertical_dividing_line" />
 
     <LinearLayout
-        android:id="@+id/ll_toolsbar"
-        android:layout_width="fill_parent"
-        android:layout_height="24dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:background="#F5F5F5"
-        android:orientation="horizontal" >
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_margin="2dp" >
 
-        <!-- 工具栏区 -->
-
-        <View style="@style/gtapp_vertical_dividing_line" />
-
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_refresh"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_margin="2dp" >
-
-            <Button
-                android:id="@+id/btn_refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/ic_dialog_email"
-                android:text="" />
-            <!-- android:background="@android:drawable/stat_notify_sync" -->
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_dialog_email"
+            android:text="" />
+        <!-- android:background="@android:drawable/stat_notify_sync" -->
 
 
-            <!-- 刷新按钮 -->
-        </LinearLayout>
-
-        <View style="@style/gtapp_vertical_dividing_line" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_margin="2dp" >
-
-            <Button
-                android:id="@+id/btn_help"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/ic_dialog_email"
-                android:text="" />
-            <!-- 使用帮助 -->
-
-        </LinearLayout>
-
-        <View style="@style/gtapp_vertical_dividing_line" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent" >
-
-            <Button
-                android:id="@+id/btn_feedback"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/stat_notify_chat"
-                android:text=""
-                android:visibility="gone" />
-
-            <!-- 用户反馈  上行类的数据暂时不管 -->
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_margin="2dp" >
-
-            <Button
-                android:id="@+id/btn_about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/ic_dialog_email"
-                android:text="" />
-            <!-- SDK信息 -->
-
-        </LinearLayout>
-
-        <View style="@style/gtapp_vertical_dividing_line" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="8"
-            android:visibility="invisible" >
-
-            <!-- 反馈 -->
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_margin="2dp"
-            android:background="@android:drawable/ic_dialog_email" >
-        </LinearLayout>
-
-        <View style="@style/gtapp_vertical_dividing_line" />
+        <!-- 刷新按钮 -->
     </LinearLayout>
+
+    <View style="@style/gtapp_vertical_dividing_line" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_margin="2dp" >
+
+        <Button
+            android:id="@+id/btn_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_dialog_email"
+            android:text="" />
+        <!-- 使用帮助 -->
+
+    </LinearLayout>
+
+    <View style="@style/gtapp_vertical_dividing_line" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/btn_feedback"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/stat_notify_chat"
+            android:text=""
+            android:visibility="gone" />
+
+        <!-- 用户反馈  上行类的数据暂时不管 -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_margin="2dp" >
+
+        <Button
+            android:id="@+id/btn_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_dialog_email"
+            android:text="" />
+        <!-- SDK信息 -->
+
+    </LinearLayout>
+
+    <View style="@style/gtapp_vertical_dividing_line" />
+
+    <!-- <LinearLayout -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="fill_parent" -->
+    <!-- android:layout_weight="8" -->
+    <!-- android:visibility="invisible" > -->
+
+
+    <!-- 反馈 -->
+    <!-- </LinearLayout> -->
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="2dp"
+        android:background="@android:drawable/ic_dialog_email" >
+    </LinearLayout>
+
+    <View style="@style/gtapp_vertical_dividing_line" />
 
 </LinearLayout>
