@@ -23,13 +23,11 @@ import org.apache.http.message.BasicNameValuePair;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -94,7 +92,7 @@ public class GtAppDialog extends Dialog {
 
 	// 传递进来的参数
 	private Context context;// 父窗口
-	private int gtAppDlgLayoutResId = 0;// 对话框的而已文件
+	// private int gtAppDlgLayoutResId = 0;// 对话框的而已文件
 	private DisplayMetrics dm;// 显示屏幕
 	private Resources res;
 	private GtAppCallback gtAppCallback;// 回调函数
@@ -236,7 +234,7 @@ public class GtAppDialog extends Dialog {
 		this.context = option.getContext();
 		this.mQueue = mQueue;// 必须多activity中传递进来
 		this.gt_public_key = option.getGt_public_key();
-		this.gtAppDlgLayoutResId = option.getGtAppDlgLayoutResId();
+		// this.gtAppDlgLayoutResId = option.getGtAppDlgLayoutResId();
 		this.dm = option.getDm();
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
@@ -271,7 +269,7 @@ public class GtAppDialog extends Dialog {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉对话框的标题
 			setCanceledOnTouchOutside(false);// 在外面点击不会消失
 
-			setContentView(gtAppDlgLayoutResId);// 设置资源内容
+			setContentView(R.layout.gtapp_main_dlg);// 设置资源内容
 			initViews();
 			initViewDisplayParameter();
 			initListeners();
@@ -613,105 +611,101 @@ public class GtAppDialog extends Dialog {
 
 	private void initListeners() {
 
-		
 		try {
-			
-		
-		
-		
-		// imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
-		//
-		// public boolean onTouch(View arg0, MotionEvent event) {
-		//
-		// float curX, curY;// 鼠标的即时位置
-		//
-		// curX = event.getX();
-		// curY = event.getY();
-		//
-		// switch (event.getAction()) {
-		//
-		// case MotionEvent.ACTION_DOWN:
-		// // 获取当前的位置
-		// mX = event.getX();
-		// mY = event.getY();
-		//
-		// changeImageButtonStartPosition.setX(imgv_change_image
-		// .getTop());
-		// changeImageButtonStartPosition.setX(imgv_change_image
-		// .getLeft());// 获取起始的位置
-		// // actionDown_X = event.getX();
-		// // actionDown_Y = event.getY();
-		//
-		// break;
-		// case MotionEvent.ACTION_MOVE:
-		// curX = event.getX();// 当前x
-		// curY = event.getY();// 当前y
-		//
-		// // igv_slice.scrollBy((int) (mX - curX), (int) (mY -
-		// // curY));// 进行偏移
-		// // imgv_change_image.scrollBy((int) (mX - curX), 0);//
-		// // 只进行水平方向行偏移
-		// imgv_change_image.scrollBy(0, (int) (mY - curY));
-		// mX = curX;
-		// mY = curY;
-		// break;
-		// case MotionEvent.ACTION_UP:
-		// GtLogger.v("Images Change Action_Up");
-		//
-		// curX = event.getX();
-		// curY = event.getY();
-		//
-		// // imgv_change_image.scrollBy((int) (mX - curX), 0);
-		// imgv_change_image.scrollTo(0,
-		// (int) (changeImageButtonStartPosition.getY()));// 归位
-		//
-		// if ((curY - changeImageButtonStartPosition.getY()) > 100) {
-		// // 开始刷新图片
-		// captchaInitialOption_StringRequest();
-		// }
-		//
-		// break;
-		// }
-		//
-		// return true;
-		// }
-		// });
 
-		refreshableView.setOnRefreshListener(new PullToRefreshListener() {
-			@Override
-			public void onRefresh() {
-				try {
-					// TODO 开始刷新图片
-					picRequestSucceed = false;// 在进行加载前，先设置标志位
+			// imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
+			//
+			// public boolean onTouch(View arg0, MotionEvent event) {
+			//
+			// float curX, curY;// 鼠标的即时位置
+			//
+			// curX = event.getX();
+			// curY = event.getY();
+			//
+			// switch (event.getAction()) {
+			//
+			// case MotionEvent.ACTION_DOWN:
+			// // 获取当前的位置
+			// mX = event.getX();
+			// mY = event.getY();
+			//
+			// changeImageButtonStartPosition.setX(imgv_change_image
+			// .getTop());
+			// changeImageButtonStartPosition.setX(imgv_change_image
+			// .getLeft());// 获取起始的位置
+			// // actionDown_X = event.getX();
+			// // actionDown_Y = event.getY();
+			//
+			// break;
+			// case MotionEvent.ACTION_MOVE:
+			// curX = event.getX();// 当前x
+			// curY = event.getY();// 当前y
+			//
+			// // igv_slice.scrollBy((int) (mX - curX), (int) (mY -
+			// // curY));// 进行偏移
+			// // imgv_change_image.scrollBy((int) (mX - curX), 0);//
+			// // 只进行水平方向行偏移
+			// imgv_change_image.scrollBy(0, (int) (mY - curY));
+			// mX = curX;
+			// mY = curY;
+			// break;
+			// case MotionEvent.ACTION_UP:
+			// GtLogger.v("Images Change Action_Up");
+			//
+			// curX = event.getX();
+			// curY = event.getY();
+			//
+			// // imgv_change_image.scrollBy((int) (mX - curX), 0);
+			// imgv_change_image.scrollTo(0,
+			// (int) (changeImageButtonStartPosition.getY()));// 归位
+			//
+			// if ((curY - changeImageButtonStartPosition.getY()) > 100) {
+			// // 开始刷新图片
+			// captchaInitialOption_StringRequest();
+			// }
+			//
+			// break;
+			// }
+			//
+			// return true;
+			// }
+			// });
 
-					int waitCnt = 0;
-					captchaInitialOption_StringRequest();
+			refreshableView.setOnRefreshListener(new PullToRefreshListener() {
+				@Override
+				public void onRefresh() {
+					try {
+						// TODO 开始刷新图片
+						picRequestSucceed = false;// 在进行加载前，先设置标志位
 
-					// 因为都是异步的，所以需要设置标志位，来进行等待执行完毕
-					while (!picRequestSucceed) {
-						if (waitCnt > 100) {
-							break;
+						int waitCnt = 0;
+						captchaInitialOption_StringRequest();
+
+						// 因为都是异步的，所以需要设置标志位，来进行等待执行完毕
+						while (!picRequestSucceed) {
+							if (waitCnt > 100) {
+								break;
+							}
+							Thread.sleep(100);// 模拟一个耗时为2s的事件
 						}
-						Thread.sleep(100);// 模拟一个耗时为2s的事件
+
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
-
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					refreshableView.finishRefreshing();
 				}
-				refreshableView.finishRefreshing();
-			}
-		}, 0);
+			}, 0);
 
-		btn_dlg_close.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
+			btn_dlg_close.setOnClickListener(new Button.OnClickListener() {
+				public void onClick(View v) {
 
-				GtShapeSize pt_bGtSp = new GtShapeSize();
-				pt_bGtSp.setWidth((btn_dlg_close.getWidth()));
-				pt_bGtSp.setHeight((btn_dlg_close.getHeight()));
-				pt_bGtSp.v();
-				dismiss();// 当前对话框关闭
-			}
-		});
+					GtShapeSize pt_bGtSp = new GtShapeSize();
+					pt_bGtSp.setWidth((btn_dlg_close.getWidth()));
+					pt_bGtSp.setHeight((btn_dlg_close.getHeight()));
+					pt_bGtSp.v();
+					dismiss();// 当前对话框关闭
+				}
+			});
 
 			// // 刷新图片
 			// btn_refresh.setOnClickListener(new Button.OnClickListener() {
@@ -729,424 +723,443 @@ public class GtAppDialog extends Dialog {
 			// }
 			// });
 
-		btn_about.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
+			btn_about.setOnClickListener(new Button.OnClickListener() {
+				public void onClick(View v) {
 
-				String toastMsg = "GtAppSdk_Vc" + GtApiEnv.sdkVersionCode
-						+ "_Vn" + GtApiEnv.sdkVersionName;
-				GtLogger.v(toastMsg);
+					String toastMsg = "GtAppSdk_Vc" + GtApiEnv.sdkVersionCode
+							+ "_Vn" + GtApiEnv.sdkVersionName;
+					GtLogger.v(toastMsg);
 
-				Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT)
+							.show();
 
-				// 转向使用帮助的页面--后面会做一个Web端的页面，详细记录当前的版本的号码，做一个API的URL
-				// 2014年6月9日 16:46:58
-				// Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
-				// Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				// context.startActivity(intent);
+					// 转向使用帮助的页面--后面会做一个Web端的页面，详细记录当前的版本的号码，做一个API的URL
+					// 2014年6月9日 16:46:58
+					// Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
+					// Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+					// context.startActivity(intent);
 
-			}
-		});
+				}
+			});
 
-		// 自定义的图片--采集行为数据
-		imgv_self_touch_slice.setOnTouchListener(new View.OnTouchListener() {
+			// 自定义的图片--采集行为数据
+			imgv_self_touch_slice
+					.setOnTouchListener(new View.OnTouchListener() {
 
-			public boolean onTouch(View arg0, MotionEvent event) {
+						public boolean onTouch(View arg0, MotionEvent event) {
 
-				float curX, curY;// 鼠标的即时位置
+							float curX, curY;// 鼠标的即时位置
 
-				curX = event.getX();
-				curY = event.getY();
+							curX = event.getX();
+							curY = event.getY();
 
-				int slice_img_X = (int) (curX - bm_slice.getWidth() / 2);
-				int touch_X = (int) (curX - thumbBmpSize.getWidth() / 2);
+							int slice_img_X = (int) (curX - bm_slice.getWidth() / 2);
+							int touch_X = (int) (curX - thumbBmpSize.getWidth() / 2);
 
-				switch (event.getAction()) {
+							switch (event.getAction()) {
 
-				case MotionEvent.ACTION_DOWN:
-					sendMsgToUpdateUI(MSG_ANIM_TIP_MISS);// 提示动画消失
-					sendMsgToUpdateUI(MSG_SLICE_BG_DISPLAY);// 通知界面进行控制显示
+							case MotionEvent.ACTION_DOWN:
+								sendMsgToUpdateUI(MSG_ANIM_TIP_MISS);// 提示动画消失
+								sendMsgToUpdateUI(MSG_SLICE_BG_DISPLAY);// 通知界面进行控制显示
 
-					seekbarStartTime = System.currentTimeMillis();// 记录起始时间
-					// 获取当前的位置
-					mX = event.getX();
-					mY = event.getY();
-					setSliderStartPressTouchPosition(mX, mY);
+								seekbarStartTime = System.currentTimeMillis();// 记录起始时间
+								// 获取当前的位置
+								mX = event.getX();
+								mY = event.getY();
+								setSliderStartPressTouchPosition(mX, mY);
 
-					imgv_self_touch_slice.scrollTo((int) (-touch_X), 0);
-					imgv_slice.scrollTo((int) (-slice_img_X),
-							getSliceYposAfterSalced());//
+								imgv_self_touch_slice.scrollTo(
+										(int) (-touch_X), 0);
+								imgv_slice.scrollTo((int) (-slice_img_X),
+										getSliceYposAfterSalced());//
 
-					userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
-					// 滑块的左上角值
-					CaptchaUserAction firstActionTag = new CaptchaUserAction();
-					firstActionTag.bindMemData(
-							(int) (sliderStartLeftTopPosition_self.getX()),
-							(int) (sliderStartLeftTopPosition_self.getY()), 0);
-					userActions.add(firstActionTag);
+								userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
+								// 滑块的左上角值
+								CaptchaUserAction firstActionTag = new CaptchaUserAction();
+								firstActionTag.bindMemData(
+										(int) (sliderStartLeftTopPosition_self
+												.getX()),
+										(int) (sliderStartLeftTopPosition_self
+												.getY()), 0);
+								userActions.add(firstActionTag);
 
-					CaptchaUserAction firstAction = new CaptchaUserAction();
+								CaptchaUserAction firstAction = new CaptchaUserAction();
 
-					// TODO 可能需要做一些转变，坐标全部使用浮点的，最后的时候再转成整形
-					firstAction.bindMemData(
-							(int) (sliderStartPressTouchPosition.getX()),
-							(int) (sliderStartPressTouchPosition.getY()), 0);
+								// TODO 可能需要做一些转变，坐标全部使用浮点的，最后的时候再转成整形
+								firstAction.bindMemData(
+										(int) (sliderStartPressTouchPosition
+												.getX()),
+										(int) (sliderStartPressTouchPosition
+												.getY()), 0);
 
-					firstAction.v();
-					userActions.add(firstAction);
+								firstAction.v();
+								userActions.add(firstAction);
 
-					break;
-				case MotionEvent.ACTION_MOVE:
-					curX = event.getX();// 当前x
-					curY = event.getY();// 当前y
+								break;
+							case MotionEvent.ACTION_MOVE:
+								curX = event.getX();// 当前x
+								curY = event.getY();// 当前y
 
-					// GtLogger.s_v("2014716_192724", bm_slice.getWidth() +
-					// " , "
-					// + thumbBmpSize.getWidth());
+								// GtLogger.s_v("2014716_192724",
+								// bm_slice.getWidth() +
+								// " , "
+								// + thumbBmpSize.getWidth());
 
-					imgv_self_touch_slice.scrollTo((int) (-touch_X), 0);
-					imgv_slice.scrollTo((int) (-slice_img_X),
-							getSliceYposAfterSalced());//
-					// RelativeLayout.LayoutParams MarginLayoutParams
+								imgv_self_touch_slice.scrollTo(
+										(int) (-touch_X), 0);
+								imgv_slice.scrollTo((int) (-slice_img_X),
+										getSliceYposAfterSalced());//
+								// RelativeLayout.LayoutParams
+								// MarginLayoutParams
 
-					// FrameLayout.LayoutParams mParams =
-					// (FrameLayout.LayoutParams) imgv_self_touch_slice
-					// .getLayoutParams();
-					// mParams.leftMargin = (int) (curX);
-					// // mParams.topMargin =curY - 50;
-					// imgv_self_touch_slice.setLayoutParams(mParams);
-					// Log.e("", "Move");
+								// FrameLayout.LayoutParams mParams =
+								// (FrameLayout.LayoutParams)
+								// imgv_self_touch_slice
+								// .getLayoutParams();
+								// mParams.leftMargin = (int) (curX);
+								// // mParams.topMargin =curY - 50;
+								// imgv_self_touch_slice.setLayoutParams(mParams);
+								// Log.e("", "Move");
 
-					// imgv_self_touch_slice.scrollBy((int) (-touch_X), 0);//
-					// 进行偏移
-					// imgv_slice.scrollBy((int) (-slice_img_X),
-					// getSliceYposAfterSalced());//
+								// imgv_self_touch_slice.scrollBy((int)
+								// (-touch_X), 0);//
+								// 进行偏移
+								// imgv_slice.scrollBy((int) (-slice_img_X),
+								// getSliceYposAfterSalced());//
 
-					// imgv_self_touch_slice.scrollBy((int) (mX - curX), 0);//
-					// 进行偏移
-					// imgv_slice.scrollBy((int) (mX - curX), 0);//
+								// imgv_self_touch_slice.scrollBy((int) (mX -
+								// curX), 0);//
+								// 进行偏移
+								// imgv_slice.scrollBy((int) (mX - curX), 0);//
 
-					// imgv_self_touch_slice.scrollTo((int) (-curX), 0);// 进行偏移
-					// imgv_slice.scrollTo((int) (-curX),
-					// getSliceYposAfterSalced());//
+								// imgv_self_touch_slice.scrollTo((int) (-curX),
+								// 0);// 进行偏移
+								// imgv_slice.scrollTo((int) (-curX),
+								// getSliceYposAfterSalced());//
 
-					mX = curX;
-					mY = curY;
+								mX = curX;
+								mY = curY;
 
-					// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
-					long curTimeTag = System.currentTimeMillis();// 当前时间标记
-					CaptchaUserAction curUserAction = new CaptchaUserAction();
+								// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
+								long curTimeTag = System.currentTimeMillis();// 当前时间标记
+								CaptchaUserAction curUserAction = new CaptchaUserAction();
 
-					curUserAction.bindMemData((int) curX, (int) curY,
-							(int) (curTimeTag - seekbarStartTime));
+								curUserAction.bindMemData((int) curX,
+										(int) curY,
+										(int) (curTimeTag - seekbarStartTime));
 
-					userActions.add(curUserAction);
+								userActions.add(curUserAction);
 
-					break;
-				case MotionEvent.ACTION_UP:
+								break;
+							case MotionEvent.ACTION_UP:
 
-					GtLogger.v("Images Change Action_Up");
+								GtLogger.v("Images Change Action_Up");
+
+								curX = event.getX();
+								curY = event.getY();
+
+								setSliderUpTouchPosition(curX, curY);
+
+								seekbarEndTime = System.currentTimeMillis();
+								CaptchaUserAction lastAction = new CaptchaUserAction();
+								lastAction
+										.bindMemData(
+												(int) curX,
+												(int) curY,
+												(int) (seekbarEndTime - seekbarStartTime));
+								lastAction.v();
+								userActions.add(lastAction);
+
+								// sliderOffsetX = (int) curX;// 获取偏移量
+								sliderOffsetX = (int) curX
+										- bm_slice.getWidth() / 2;//
+								// 获取偏移量
+
+								// 向服务器提交行为数据
+								userBehaviourUpload_StringRequest();
+								break;
+							}
+
+							return true;
+						}
+					});
+
+			// 拖动条的touch事件
+			skb_dragCaptcha.setOnTouchListener(new View.OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					float curX, curY;// 鼠标的即时位置
 
 					curX = event.getX();
 					curY = event.getY();
 
-					setSliderUpTouchPosition(curX, curY);
+					switch (event.getAction()) {
 
-					seekbarEndTime = System.currentTimeMillis();
-					CaptchaUserAction lastAction = new CaptchaUserAction();
-					lastAction.bindMemData((int) curX, (int) curY,
-							(int) (seekbarEndTime - seekbarStartTime));
-					lastAction.v();
-					userActions.add(lastAction);
+					case MotionEvent.ACTION_DOWN:
+						sendMsgToUpdateUI(MSG_ANIM_TIP_MISS);// 提示动画消失
+						sendMsgToUpdateUI(MSG_SLICE_BG_DISPLAY);// 通知界面进行控制显示
 
-					// sliderOffsetX = (int) curX;// 获取偏移量
-					sliderOffsetX = (int) curX - bm_slice.getWidth() / 2;//
-					// 获取偏移量
+						seekbarStartTime = System.currentTimeMillis();// 记录起始时间
+						// 获取当前的位置
+						mX = event.getX();
+						mY = event.getY();
+						setSliderStartPressTouchPosition(mX, mY);
 
-					// 向服务器提交行为数据
-					userBehaviourUpload_StringRequest();
-					break;
+						GtLogger.v("skb_dragCaptcha.getLeft(): "
+								+ skb_dragCaptcha.getLeft()
+								+ "   skb_dragCaptcha.getRight(): "
+								+ skb_dragCaptcha.getRight());
+
+						userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
+
+						// 滑块的左上角值
+						CaptchaUserAction firstActionTag = new CaptchaUserAction();
+						firstActionTag.bindMemData(
+								(int) (sliderStartLeftTopPosition.getX()),
+								(int) (sliderStartLeftTopPosition.getY()), 0);
+						userActions.add(firstActionTag);
+
+						CaptchaUserAction firstAction = new CaptchaUserAction();
+
+						// TODO 可能需要做一些转变，坐标全部使用浮点的，最后的时候再转成整形
+						firstAction.bindMemData(
+								(int) (sliderStartPressTouchPosition.getX()),
+								(int) (sliderStartPressTouchPosition.getY()), 0);
+
+						firstAction.v();
+						userActions.add(firstAction);
+
+						break;
+					case MotionEvent.ACTION_MOVE:
+						curX = event.getX();// 当前x
+						curY = event.getY();// 当前y
+
+						mX = curX;
+						mY = curY;
+
+						// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
+						long curTimeTag = System.currentTimeMillis();// 当前时间标记
+						CaptchaUserAction curUserAction = new CaptchaUserAction();
+
+						curUserAction.bindMemData((int) curX, (int) curY,
+								(int) (curTimeTag - seekbarStartTime));
+
+						userActions.add(curUserAction);
+
+						break;
+					case MotionEvent.ACTION_UP:
+
+						GtLogger.v("Images Change Action_Up");
+
+						curX = event.getX();
+						curY = event.getY();
+
+						setSliderUpTouchPosition(curX, curY);
+
+						seekbarEndTime = System.currentTimeMillis();
+						CaptchaUserAction lastAction = new CaptchaUserAction();
+						lastAction.bindMemData((int) curX, (int) curY,
+								(int) (seekbarEndTime - seekbarStartTime));
+						lastAction.v();
+						userActions.add(lastAction);
+
+						break;
+					}
+					return false;
 				}
 
-				return true;
-			}
-		});
+			});
 
-		// 拖动条的touch事件
-		skb_dragCaptcha.setOnTouchListener(new View.OnTouchListener() {
+			skb_dragCaptcha
+					.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+						/**
+						 * 拖动条停止拖动的时候调用
+						 */
+						@Override
+						public void onStopTrackingTouch(SeekBar seekBar) {
+							Log.v("seekbar", "拖动停止");
+							// 向服务器提交行为数据
+							userBehaviourUpload_StringRequest();
+						}
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				float curX, curY;// 鼠标的即时位置
+						/**
+						 * 拖动条开始拖动的时候调用
+						 */
+						@Override
+						public void onStartTrackingTouch(SeekBar seekBar) {
+							Log.v("seekbar", "开始拖动");
 
-				curX = event.getX();
-				curY = event.getY();
+							int[] location = new int[2];
+							skb_dragCaptcha.getLocationOnScreen(location);
+							// int mSeekBarDef_X = location[0];
+							// int mSeekBarDef_Y = location[1];
 
-				switch (event.getAction()) {
+							// GtLogger.v("ImageView Width:" +
+							// igv_slice.getWidth());
+							// // 输出 seekbar的位置：长度
+							// GtLogger.v("Seekbar Width:" +
+							// mSeekBarDef.getWidth());
+							// GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:"
+							// + mSeekBarDef_Y);
 
-				case MotionEvent.ACTION_DOWN:
-					sendMsgToUpdateUI(MSG_ANIM_TIP_MISS);// 提示动画消失
-					sendMsgToUpdateUI(MSG_SLICE_BG_DISPLAY);// 通知界面进行控制显示
+						}
 
-					seekbarStartTime = System.currentTimeMillis();// 记录起始时间
-					// 获取当前的位置
-					mX = event.getX();
-					mY = event.getY();
-					setSliderStartPressTouchPosition(mX, mY);
+						/**
+						 * 拖动条进度改变的时候调用
+						 */
+						@Override
+						public void onProgressChanged(SeekBar seekBar,
+								int progress, boolean fromUser) {
 
-					GtLogger.v("skb_dragCaptcha.getLeft(): "
-							+ skb_dragCaptcha.getLeft()
-							+ "   skb_dragCaptcha.getRight(): "
-							+ skb_dragCaptcha.getRight());
+							// GtLogger.s_v(context, "Hellow On Progress");
 
-					userActions = new ArrayList<CaptchaUserAction>();// 用户行为数据的数组--重新清空初始化一次
+							// GtLogger.v("当前进度：" + progress + "%");
+							// 坐标偏移
+							// igv_slice.scrollTo((int) (-dX * progress), (int)
+							// (0));// 进行偏移
 
-					// 滑块的左上角值
-					CaptchaUserAction firstActionTag = new CaptchaUserAction();
-					firstActionTag.bindMemData(
-							(int) (sliderStartLeftTopPosition.getX()),
-							(int) (sliderStartLeftTopPosition.getY()), 0);
-					userActions.add(firstActionTag);
+							// 目前只能采用硬编码的方式来处理图片的大小问题了
+							// Resources res = getResources();
+							// BitmapDrawable skb_thumb = (BitmapDrawable) res
+							// .getDrawable(R.drawable.gtapp_skb_drag_normal);
 
-					CaptchaUserAction firstAction = new CaptchaUserAction();
+							// GtLogger.v("skb_thumb"+skb_thumb.);
 
-					// TODO 可能需要做一些转变，坐标全部使用浮点的，最后的时候再转成整形
-					firstAction.bindMemData(
-							(int) (sliderStartPressTouchPosition.getX()),
-							(int) (sliderStartPressTouchPosition.getY()), 0);
+							// GtLogger.v("thumb bitmap width: "
+							// + skb_thumb.getBitmap().getWidth());
+							// GtLogger.v("thumb bitmap height: "
+							// + skb_thumb.getBitmap().getHeight());
 
-					firstAction.v();
-					userActions.add(firstAction);
+							// thumb.
+							// Drawable thumb = res
+							// .getDrawable(R.drawable.seekbar_thumb);
+							// thumb.getCurrent().get
+							// GtLogger.v("thumb width: "
+							// + (thumb.getBounds().right -
+							// thumb.getBounds().left));
+							// GtLogger.v("thumb height: "
+							// + (thumb.getBounds().bottom -
+							// thumb.getBounds().top));
 
-					break;
-				case MotionEvent.ACTION_MOVE:
-					curX = event.getX();// 当前x
-					curY = event.getY();// 当前y
+							// 将屏幕的X坐标进行均分
+							int seekbar_width = seekBar.getWidth();
+							// intWidth = skb_thumb.getBitmap().getWidth();
+							// GtLogger.v("seekbar_width: " + seekbar_width
+							// + "   thumbBitmapWidth: " + intWidth);// 720,171
+							// 需要生成其移动空间
+							// float dX = (intScreenX - intWidth) /
+							// 100.0f;//slice_img_width
+							float scrollXRange = seekbar_width - leftMargin
+									- rightMargin - thumbBmpSize.getWidth();// 减去左右的
 
-					mX = curX;
-					mY = curY;
+							float dX = scrollXRange / 100.0f;
+							// GtLogger.v("滑块的移动范围： " + (scrollXRange));
+							// 边缘值距离值。,减去图片的宽度的一半值。
 
-					// TODO 这个数据类型需要后面修复 2014年5月20日 16:55:52
-					long curTimeTag = System.currentTimeMillis();// 当前时间标记
-					CaptchaUserAction curUserAction = new CaptchaUserAction();
+							// sliderOffsetX = (int) (seekbar_server_length *
+							// progress / 100);// 以服务器上的绝对值为准
 
-					curUserAction.bindMemData((int) curX, (int) curY,
-							(int) (curTimeTag - seekbarStartTime));
+							sliderOffsetX = (int) (dX * progress);
 
-					userActions.add(curUserAction);
+							// GtLogger.v("sliderOffsetX new : " + dX *
+							// progress);
 
-					break;
-				case MotionEvent.ACTION_UP:
+							// GtLogger.v("图片移动到： " + (-dX * progress));
+							imgv_slice.scrollTo((int) ((-dX * progress)),// 在前面加一个10即可实现完全一样的同步。
+									getSliceYposAfterSalced());// 进行偏移
+						}
+					});
 
-					GtLogger.v("Images Change Action_Up");
+			// 渐变过程监听
+			anim_skb_finger_tip.setAnimationListener(new AnimationListener() {
 
-					curX = event.getX();
-					curY = event.getY();
-
-					setSliderUpTouchPosition(curX, curY);
-
-					seekbarEndTime = System.currentTimeMillis();
-					CaptchaUserAction lastAction = new CaptchaUserAction();
-					lastAction.bindMemData((int) curX, (int) curY,
-							(int) (seekbarEndTime - seekbarStartTime));
-					lastAction.v();
-					userActions.add(lastAction);
-
-					break;
+				/**
+				 * 动画开始时
+				 */
+				@Override
+				public void onAnimationStart(Animation animation) {
+					GtLogger.v("动画开始...");
+					imgv_skb_anim_tip.setVisibility(View.VISIBLE);
 				}
-				return false;
-			}
 
-		});
+				/**
+				 * 重复动画时
+				 */
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					// System.out.println("动画重复...");
+				}
 
-		skb_dragCaptcha
-				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-					/**
-					 * 拖动条停止拖动的时候调用
-					 */
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-						Log.v("seekbar", "拖动停止");
-						// 向服务器提交行为数据
-						userBehaviourUpload_StringRequest();
-					}
+				/**
+				 * 动画结束时
+				 */
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					GtLogger.v("动画结束...");
+					imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
+				}
+			});
 
-					/**
-					 * 拖动条开始拖动的时候调用
-					 */
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-						Log.v("seekbar", "开始拖动");
+			// 渐变过程监听
+			anim_flashlight.setAnimationListener(new AnimationListener() {
 
-						int[] location = new int[2];
-						skb_dragCaptcha.getLocationOnScreen(location);
-						// int mSeekBarDef_X = location[0];
-						// int mSeekBarDef_Y = location[1];
+				/**
+				 * 动画开始时
+				 */
+				@Override
+				public void onAnimationStart(Animation animation) {
+					imgv_flashlight.setVisibility(View.VISIBLE);
+				}
 
-						// GtLogger.v("ImageView Width:" +
-						// igv_slice.getWidth());
-						// // 输出 seekbar的位置：长度
-						// GtLogger.v("Seekbar Width:" +
-						// mSeekBarDef.getWidth());
-						// GtLogger.v("Seekbar X:" + mSeekBarDef_X + "Y:"
-						// + mSeekBarDef_Y);
+				/**
+				 * 重复动画时
+				 */
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					// System.out.println("动画重复...");
+				}
 
-					}
+				/**
+				 * 动画结束时
+				 */
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					// 设置一个动画的事件，在动画结束后停止 关闭对话框
+					imgv_flashlight.setVisibility(View.INVISIBLE);
+					imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
 
-					/**
-					 * 拖动条进度改变的时候调用
-					 */
-					@Override
-					public void onProgressChanged(SeekBar seekBar,
-							int progress, boolean fromUser) {
+					// 对话框需要在动画之后关闭，必须要放在线程里面，否则会报异常
+					// 做一个回调的函数。
+					GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
+					cbResponse.setResCode(1);
+					cbResponse.setResMsg("succeed");
+					gtAppCallback.gtAppResponse(cbResponse);
 
-						// GtLogger.s_v(context, "Hellow On Progress");
+					Handler handler = new Handler();// 必须重新new一个，否则会出现问题
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							dismiss();
+						}
+					}, 500);
 
-						// GtLogger.v("当前进度：" + progress + "%");
-						// 坐标偏移
-						// igv_slice.scrollTo((int) (-dX * progress), (int)
-						// (0));// 进行偏移
+					// dismiss();// 当前对话框关闭
 
-						// 目前只能采用硬编码的方式来处理图片的大小问题了
-						// Resources res = getResources();
-						// BitmapDrawable skb_thumb = (BitmapDrawable) res
-						// .getDrawable(R.drawable.gtapp_skb_drag_normal);
+					// mHandler.postDelayed(new Runnable() {
+					// @Override
+					// public void run() {
+					//
+					// }
+					// }, 500);// 500ms后关闭对话框
 
-						// GtLogger.v("skb_thumb"+skb_thumb.);
+				}
+			});
 
-						// GtLogger.v("thumb bitmap width: "
-						// + skb_thumb.getBitmap().getWidth());
-						// GtLogger.v("thumb bitmap height: "
-						// + skb_thumb.getBitmap().getHeight());
-
-						// thumb.
-						// Drawable thumb = res
-						// .getDrawable(R.drawable.seekbar_thumb);
-						// thumb.getCurrent().get
-						// GtLogger.v("thumb width: "
-						// + (thumb.getBounds().right -
-						// thumb.getBounds().left));
-						// GtLogger.v("thumb height: "
-						// + (thumb.getBounds().bottom -
-						// thumb.getBounds().top));
-
-						// 将屏幕的X坐标进行均分
-						int seekbar_width = seekBar.getWidth();
-						// intWidth = skb_thumb.getBitmap().getWidth();
-						// GtLogger.v("seekbar_width: " + seekbar_width
-						// + "   thumbBitmapWidth: " + intWidth);// 720,171
-						// 需要生成其移动空间
-						// float dX = (intScreenX - intWidth) /
-						// 100.0f;//slice_img_width
-						float scrollXRange = seekbar_width - leftMargin
-								- rightMargin - thumbBmpSize.getWidth();// 减去左右的
-
-						float dX = scrollXRange / 100.0f;
-						// GtLogger.v("滑块的移动范围： " + (scrollXRange));
-						// 边缘值距离值。,减去图片的宽度的一半值。
-
-						// sliderOffsetX = (int) (seekbar_server_length *
-						// progress / 100);// 以服务器上的绝对值为准
-
-						sliderOffsetX = (int) (dX * progress);
-
-						// GtLogger.v("sliderOffsetX new : " + dX * progress);
-
-						// GtLogger.v("图片移动到： " + (-dX * progress));
-						imgv_slice.scrollTo((int) ((-dX * progress)),// 在前面加一个10即可实现完全一样的同步。
-								getSliceYposAfterSalced());// 进行偏移
-					}
-				});
-
-		// 渐变过程监听
-		anim_skb_finger_tip.setAnimationListener(new AnimationListener() {
-
-			/**
-			 * 动画开始时
-			 */
-			@Override
-			public void onAnimationStart(Animation animation) {
-				GtLogger.v("动画开始...");
-				imgv_skb_anim_tip.setVisibility(View.VISIBLE);
-			}
-
-			/**
-			 * 重复动画时
-			 */
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				// System.out.println("动画重复...");
-			}
-
-			/**
-			 * 动画结束时
-			 */
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				GtLogger.v("动画结束...");
-				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
-			}
-		});
-
-		// 渐变过程监听
-		anim_flashlight.setAnimationListener(new AnimationListener() {
-
-			/**
-			 * 动画开始时
-			 */
-			@Override
-			public void onAnimationStart(Animation animation) {
-				imgv_flashlight.setVisibility(View.VISIBLE);
-			}
-
-			/**
-			 * 重复动画时
-			 */
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				// System.out.println("动画重复...");
-			}
-
-			/**
-			 * 动画结束时
-			 */
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				// 设置一个动画的事件，在动画结束后停止 关闭对话框
-				imgv_flashlight.setVisibility(View.INVISIBLE);
-				imgv_skb_anim_tip.setVisibility(View.INVISIBLE);
-
-				// 对话框需要在动画之后关闭，必须要放在线程里面，否则会报异常
-				// 做一个回调的函数。
-				GtAppCbCaptchaResponse cbResponse = new GtAppCbCaptchaResponse();
-				cbResponse.setResCode(1);
-				cbResponse.setResMsg("succeed");
-				gtAppCallback.gtAppResponse(cbResponse);
-
-				Handler handler = new Handler();// 必须重新new一个，否则会出现问题
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						dismiss();
-					}
-				}, 500);
-
-				// dismiss();// 当前对话框关闭
-
-				// mHandler.postDelayed(new Runnable() {
-				// @Override
-				// public void run() {
-				//
-				// }
-				// }, 500);// 500ms后关闭对话框
-
-			}
-		});
-
-		
 		} catch (Exception e) {
 			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
 		}
-		
+
 	}
 
 	/**

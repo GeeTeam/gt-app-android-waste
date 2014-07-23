@@ -17,19 +17,18 @@ public class GtAppDialogOption {
 
 	private Context context;// 设备上下文###暂无
 	private String gt_public_key;// 公钥###暂无
-	private int gtAppDlgLayoutResId;// 对话框的布局文件###暂无
+	// private int gtAppDlgLayoutResId;// 对话框的布局文件###暂无
 	private DisplayMetrics dm;// 屏幕对象###暂无
 	private Resources res;// 资源对象###暂无
 	private GtAppCallback gtAppCallback;// 回调函数###暂无
 	private float screenDensity;// 获取屏幕的密度
 
 	public GtAppDialogOption(Context context, String gt_public_key,
-			int gtAppDlgLayoutResId, DisplayMetrics dm, Resources res,
-			GtAppCallback gtAppCallback) {
+			DisplayMetrics dm, Resources res, GtAppCallback gtAppCallback) {
 
 		this.context = context;
 		this.gt_public_key = gt_public_key;
-		this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
+		// this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
 		this.dm = dm;
 		this.res = res;
 		this.gtAppCallback = gtAppCallback;
@@ -54,13 +53,13 @@ public class GtAppDialogOption {
 		this.gt_public_key = gt_public_key;
 	}
 
-	public int getGtAppDlgLayoutResId() {
-		return gtAppDlgLayoutResId;
-	}
-
-	public void setGtAppDlgLayoutResId(int gtAppDlgLayoutResId) {
-		this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
-	}
+	// public int getGtAppDlgLayoutResId() {
+	// return gtAppDlgLayoutResId;
+	// }
+	//
+	// public void setGtAppDlgLayoutResId(int gtAppDlgLayoutResId) {
+	// this.gtAppDlgLayoutResId = gtAppDlgLayoutResId;
+	// }
 
 	public DisplayMetrics getDm() {
 		return dm;

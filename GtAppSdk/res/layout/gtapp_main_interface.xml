@@ -42,17 +42,6 @@
         layout="@layout/gtapp_image_frame" />
     <!-- 图片区 -->
 
-
-    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
-
-
-    <!-- <include -->
-    <!-- android:id="@+id/ll_toolsbar" -->
-    <!-- layout="@layout/gtapp_tool_bar" -->
-    <!-- android:visibility="gone" /> -->
-    <!-- 工具区 -->
-
-
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
@@ -147,31 +136,6 @@
     <!-- 霓虹灯效果 -->
 
 
-    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
-    <!-- 水平分隔条 -->
-
-
-    <!-- <RelativeLayout -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="match_parent" > -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/imgv_full_bg_XX" -->
-    <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="24dp" -->
-    <!-- android:layout_below="@+id/tv_view" -->
-    <!-- android:scaleType="fitXY" -->
-    <!-- android:src="@android:drawable/title_bar" /> -->
-
-
-    <!-- <com.geetest.gtappdemo.view.GtRefreshableView -->
-    <!-- android:id="@+id/refreshable_view" -->
-    <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="40dp" -->
-    <!-- android:layout_below="@+id/imgv_full_bg_XX" > -->
-    <!-- </com.geetest.gtappdemo.view.GtRefreshableView> -->
-    <!-- </RelativeLayout> -->
 
     <com.geetest.gtappdemo.view.GtRefreshableView
         android:id="@+id/refreshable_view"

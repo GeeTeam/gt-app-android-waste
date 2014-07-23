@@ -2,9 +2,8 @@
 <resources>
 
     <string name="image_description">GtAppImage</string>
-    <string name="app_name">GtAppDemo</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- <string name="app_name">GtAppDemo</string> -->
+
 
     <!-- 状态栏一种状态文字 START -->
     <string name="gtapp_status_wait">等待验证：</string>
@@ -14,7 +13,8 @@
     <string name="gtapp_status_exception">行为异常：</string>
     <!-- 状态栏一种状态文字  END -->
     <string name="gtapp_status_msg_wait">拖动滑块使悬浮图像正确拼合</string>
-    <string name="gtapp_status_msg_succeed">3.6秒的速度超过90%的用户</string>
+    <!-- <string name="gtapp_status_msg_succeed">3.6秒的速度超过90%的用户</string> -->
+
     <string name="gtapp_status_msg_failed">拖动滑块使悬浮图像正确拼合</string>
     <string name="gtapp_status_msg_too_much">系统正在自动刷新验证图片…</string>
     <string name="gtapp_status_msg_exception">你是来自星星的都敏俊吗？</string>
