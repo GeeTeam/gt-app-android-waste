@@ -21,8 +21,6 @@
             android:id="@+id/ll_status_bar"
             layout="@layout/gtapp_status_bar" />
         <!-- android:layout_centerVertical="true" -->
-
-
         <!-- 状态区 -->
 
         <Button
@@ -33,9 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@drawable/gtapp_btn_close" />
-
         <!-- 按钮悬浮在跑马灯上面 -->
-
     </RelativeLayout>
 
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
@@ -49,10 +45,11 @@
 
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
 
-    <include
-        android:id="@+id/ll_toolsbar"
-        layout="@layout/gtapp_tool_bar"
-        android:visibility="gone" />
+
+    <!-- <include -->
+    <!-- android:id="@+id/ll_toolsbar" -->
+    <!-- layout="@layout/gtapp_tool_bar" -->
+    <!-- android:visibility="gone" /> -->
     <!-- 工具区 -->
 
 

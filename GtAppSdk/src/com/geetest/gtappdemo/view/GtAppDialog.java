@@ -133,8 +133,8 @@ public class GtAppDialog extends Dialog {
 
 	private Button btn_dlg_close;// 对话框关闭按钮
 
-	private Button btn_refresh;// 用于刷新图片的按钮
-	private Button btn_help;// 使用帮助按钮
+	// private Button btn_refresh;// 用于刷新图片的按钮
+	// private Button btn_help;// 使用帮助按钮
 	private Button btn_about;// "关于"按钮
 	private SeekBar skb_dragCaptcha;// 拖动的seekbar
 	private TextView tv_slider_tip_msg;// 滑动提示文字
@@ -613,6 +613,12 @@ public class GtAppDialog extends Dialog {
 
 	private void initListeners() {
 
+		
+		try {
+			
+		
+		
+		
 		// imgv_change_image.setOnTouchListener(new View.OnTouchListener() {
 		//
 		// public boolean onTouch(View arg0, MotionEvent event) {
@@ -707,21 +713,21 @@ public class GtAppDialog extends Dialog {
 			}
 		});
 
-		// 刷新图片
-		btn_refresh.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				captchaInitialOption_StringRequest();
-			}
-		});
-
-		btn_help.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				// 转向使用帮助的页面
-				Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				context.startActivity(intent);
-			}
-		});
+			// // 刷新图片
+			// btn_refresh.setOnClickListener(new Button.OnClickListener() {
+			// public void onClick(View v) {
+			// captchaInitialOption_StringRequest();
+			// }
+			// });
+			//
+			// btn_help.setOnClickListener(new Button.OnClickListener() {
+			// public void onClick(View v) {
+			// // 转向使用帮助的页面
+			// Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
+			// Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			// context.startActivity(intent);
+			// }
+			// });
 
 		btn_about.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
@@ -1136,6 +1142,11 @@ public class GtAppDialog extends Dialog {
 			}
 		});
 
+		
+		} catch (Exception e) {
+			GtLogger.ex(LoggerString.getFileLineMethod() + e.getMessage());
+		}
+		
 	}
 
 	/**
@@ -1291,6 +1302,13 @@ public class GtAppDialog extends Dialog {
 			imgv_flashlight = (ImageView) flView_ImageFrame
 					.findViewById(R.id.imgv_flashlight);
 
+			// flView_ImageFrame = (PlayerView) firstReLayoutView
+			// .findViewById(R.id.rl_view_image_frame);
+			// imgv_full_bg = (ImageView) findViewById(R.id.imgv_full_bg);
+			// imgv_slice = (ImageView) findViewById(R.id.imgv_slice);
+			// imgv_slice_bg = (ImageView) findViewById(R.id.imgv_slice_bg);
+			// imgv_flashlight = (ImageView) findViewById(R.id.imgv_flashlight);
+
 			// 自定义的滑块布局
 			flView_self_slider = (FrameLayout) firstReLayoutView
 					.findViewById(R.id.fl_self_seekbar);
@@ -1313,8 +1331,8 @@ public class GtAppDialog extends Dialog {
 			fl_slider_string_tip = (LinearLayout) findViewById(R.id.fl_slider_string_tip);
 			// gtAppNeonLightTip = new GtAppNeonLightTip(fl_slider_string_tip);
 
-			btn_refresh = (Button) findViewById(R.id.btn_refresh);
-			btn_help = (Button) findViewById(R.id.btn_help);
+			// btn_refresh = (Button) findViewById(R.id.btn_refresh);
+			// btn_help = (Button) findViewById(R.id.btn_help);
 			btn_about = (Button) findViewById(R.id.btn_about_info);
 
 			anim_skb_finger_tip = AnimationUtils.loadAnimation(context,
