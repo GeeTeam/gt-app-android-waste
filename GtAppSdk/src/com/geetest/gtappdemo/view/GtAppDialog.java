@@ -120,7 +120,7 @@ public class GtAppDialog extends Dialog {
 	private ImageView imgv_slice;// 用于拖动的小切片图
 	private ImageView imgv_slice_bg;// 被切掉后的切图背景
 	private ImageView imgv_flashlight;// 闪电图
-	private ImageView imgv_self_touch_slice;// 自定义的图片
+	private ImageView imgv_self_touch_slice;// 自定义的滑块图片
 
 	private ImageView imgv_skb_anim_tip;// 滑动条操作提示
 	private ImageView imgv_change_image;// 换图按钮
@@ -235,13 +235,12 @@ public class GtAppDialog extends Dialog {
 
 		this.context = option.getContext();
 		this.mQueue = mQueue;// 必须多activity中传递进来
-		// mQueue = Volley.newRequestQueue(context);// 必须在界面初始化之后才有此声明
-
 		this.gt_public_key = option.getGt_public_key();
 		this.gtAppDlgLayoutResId = option.getGtAppDlgLayoutResId();
 		this.dm = option.getDm();
 		this.res = option.getRes();
 		this.gtAppCallback = option.getGtAppCallback();
+
 		// 收集一些测试信息--用于打印中间字段--一个app中只需要设置一次就OK了
 		GtLogger.setContext(context);
 		GtLogger.setSdkInfo(getSdkInfo());
@@ -281,8 +280,8 @@ public class GtAppDialog extends Dialog {
 
 			setLocation();
 			show();
-			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
 
+			imgLoadTimeStamp.setDlg_show_time(System.currentTimeMillis());
 			sendMsgToUpdateUI(MSG_OPTION_DATA);
 
 		} catch (Exception e) {
@@ -2128,12 +2127,12 @@ public class GtAppDialog extends Dialog {
 
 			switch (msg.what) {
 			case MSG_FULL_BG_DISPLAY:
-				GtLogger.v("背景");
+				// GtLogger.v("背景");
 				setImageViewDisplayWhenRefresh();
 				break;
 
 			case MSG_SLICE_BG_DISPLAY:
-				GtLogger.v("切图");
+				// GtLogger.v("切图");
 				setImageViewDisplayWhenDragSlider();
 				break;
 			case MSG_ANIM_TIP_MISS:

@@ -3,9 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     android:visibility="visible" >
+
+    <!-- android:background="#FFFFFF" -->
 
     <RelativeLayout
         android:id="@+id/rl_buttons"

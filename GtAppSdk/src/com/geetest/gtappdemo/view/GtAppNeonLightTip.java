@@ -2,13 +2,12 @@ package com.geetest.gtappdemo.view;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.geetest.gtapp.R;
 
 /**
@@ -30,11 +29,13 @@ public class GtAppNeonLightTip {
 			R.id.View04, R.id.View05, R.id.View06, R.id.View07 };
 	TextView[] views = new TextView[7];
 
+	@SuppressLint("HandlerLeak")
 	public GtAppNeonLightTip(LinearLayout fl_tip) {
 
 		for (int i = 0; i < 7; i++) {
 			views[i] = (TextView) fl_tip.findViewById(names[i]);
 		}
+
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {

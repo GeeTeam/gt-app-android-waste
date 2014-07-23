@@ -3,11 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
-    android:background="#c0c00e"
     android:orientation="vertical" >
 
+    <!-- android:background="#c0c00e" -->
+
     <ImageView
-        android:id="@+id/imgv_full_bg"
+        android:id="@+id/imgv_wait_image"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:contentDescription="@string/image_description"

@@ -3,22 +3,22 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     android:visibility="visible" >
+
+    <!-- android:background="#FFFFFF" -->
 
     <ImageView
         android:id="@+id/imgv_change_image"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="#DD001826"
+        android:contentDescription="@string/image_description"
         android:scaleType="center"
         android:src="@drawable/gtapp_downarrow_unactive"
-        android:visibility="visible" 
-        android:contentDescription="@string/image_description" />
+        android:visibility="visible" />
     <!-- 下拉的按钮 -->
 
-    
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="40dp"

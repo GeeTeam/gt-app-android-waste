@@ -4,8 +4,10 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
-    android:layout_marginTop="0dp"
-    android:background="#104D56" >
+    android:layout_marginTop="0dp" >
+
+    <!-- android:background="#104D56" -->
+
 
     <!-- android:layout_alignTop="@+id/ll_viewArea1" -->
 
@@ -24,7 +26,7 @@
         android:id="@+id/imgv_slice_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/image_description" 
+        android:contentDescription="@string/image_description"
         android:scaleType="matrix"
         android:visibility="visible" />
     <!-- 切图背景 -->
