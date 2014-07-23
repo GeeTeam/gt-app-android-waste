@@ -42,6 +42,7 @@
         layout="@layout/gtapp_image_frame" />
     <!-- 图片区 -->
 
+
     <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
     <!-- 水平分隔条 -->
 
@@ -135,12 +136,11 @@
         android:visibility="gone" />
     <!-- 霓虹灯效果 -->
 
-
-
     <com.geetest.gtappdemo.view.GtRefreshableView
         android:id="@+id/refreshable_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="#FFFFFFFF" >
     </com.geetest.gtappdemo.view.GtRefreshableView>
 
     <include
