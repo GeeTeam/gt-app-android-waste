@@ -728,16 +728,9 @@ public class GtAppDialog extends Dialog {
 
 					String toastMsg = "GtAppSdk_Vc" + GtApiEnv.sdkVersionCode
 							+ "_Vn" + GtApiEnv.sdkVersionName;
-					GtLogger.v(toastMsg);
-
+					
 					Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT)
 							.show();
-
-					// 转向使用帮助的页面--后面会做一个Web端的页面，详细记录当前的版本的号码，做一个API的URL
-					// 2014年6月9日 16:46:58
-					// Uri uri = Uri.parse(GtApiEnv.sdkUserHelpLink);
-					// Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-					// context.startActivity(intent);
 
 				}
 			});

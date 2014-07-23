@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -23,6 +24,7 @@ public class GtAppSdkDemoActivity extends Activity {
 	private Button btn_gtapp_dlg;
 
 	private RequestQueue mQueue;// 通讯相关类
+
 	// final int originRequestOritation = getRequestedOrientation();//
 	// 宿主程序原始的屏幕排列模式
 
@@ -40,7 +42,7 @@ public class GtAppSdkDemoActivity extends Activity {
 				try {
 					new GtAppDlgTask().execute();
 				} catch (Exception e) {
-					Log.e("", e.getMessage());
+					Log.e("gtapp", e.getMessage());
 				}
 
 			}
@@ -61,7 +63,8 @@ public class GtAppSdkDemoActivity extends Activity {
 				openGtAppDialog();
 			} else {
 				// TODO 使用自己的验证码体系来进行判断。
-				Log.e("", "极验验证打开失败-请使用自己的备用验证系统");
+				Toast.makeText(context, "极验验证打开失败-请使用自己的备用验证系统",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -72,21 +75,25 @@ public class GtAppSdkDemoActivity extends Activity {
 		String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
 
 		GtAppCallback gtAppCallback = new GtAppCallback() {
-
 			@Override
 			public void gtAppResponse(GtAppCbCaptchaResponse cbResponse) {
 
-				// TODO 在此处书写回调函数
-				Log.v("sdkDemo", "resCode: " + cbResponse.getResCode()
-						+ "   resMsg: " + cbResponse.getResMsg());
+				if (cbResponse.getResCode() == 1) {
+					// TODO 在此处书写验证成功的回调函数
+					String toastMsg = "resCode:" + cbResponse.getResCode()
+							+ " resMsg:" + cbResponse.getResMsg();
+					Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT)
+							.show();
+				} else {
+
+				}
+
 			}
 		};
 
 		GtAppDialogOption gtOption = new GtAppDialogOption(context,
-				gt_public_key, dm, getResources(),
-				gtAppCallback);
+				gt_public_key, dm, getResources(), gtAppCallback);
 
 		new GtAppDialog(gtOption, mQueue).setDisplay();
 	}
-
 }
