@@ -24,14 +24,22 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:background">#E1E1E1</item>
+        <item name="android:background">#A1A1A1</item>
     </style>
-    <!-- 水平分割线 -->
+    <!-- 水平分割线-灰色 -->
+    <style name="gtapp_horizon_dividing_line_white">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">#FFFFFF</item>
+    </style>
+    <!-- 水平分割线-白色 -->
+    
 
     <style name="statusTextShadow">
         <item name="android:shadowColor">#ffFFFFFF</item>
         <item name="android:shadowRadius">1</item>
-        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">2</item>
         <item name="android:textSize">12sp</item>
     </style>

@@ -12,7 +12,7 @@
         android:id="@+id/imgv_change_image"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="#DD001826"
+        android:background="#FFBCBCBC"
         android:contentDescription="@string/image_description"
         android:scaleType="center"
         android:src="@drawable/gtapp_downarrow_unactive"
@@ -22,7 +22,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:background="#DD001826" >
+        android:background="#FFBCBCBC" >
 
         <TextView
             android:id="@+id/tv_change_image_tip_msg"
@@ -31,7 +31,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/change_image_tip"
-            android:textColor="#22FFFFFF"
+            android:textColor="#FFFFFFFF"
             android:textSize="16sp" />
 
         <Button

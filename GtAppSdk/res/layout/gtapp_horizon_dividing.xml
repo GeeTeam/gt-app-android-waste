@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <View style="@style/gtapp_horizon_dividing_line" />
+    <View style="@style/gtapp_horizon_dividing_line_white" />
+    <!-- 在图片预加载时，先不显示 -->
+
+</merge>
