@@ -13,7 +13,7 @@
         android:id="@+id/rl_buttons"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/gtapp_topbar_v3"
         android:gravity="center" >
 
@@ -24,7 +24,7 @@
 
         <include
             android:id="@+id/ll_status_bar"
-            android:layout_width="720dp"
+            android:layout_width="fill_parent"
             layout="@layout/gtapp_status_bar"
             android:paddingLeft="15dp" />
         <!-- android:layout_centerVertical="true" -->
@@ -85,17 +85,29 @@
     <FrameLayout
         android:id="@+id/fl_self_seekbar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/gtapp_seekbar_bg" >
+        android:layout_height="wrap_content" >
 
         <!-- android:background="#FFBFBFBF" -->
+
+        <ImageView
+            android:id="@+id/imgv_skb_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/gtapp_seekbar_bg"
+            android:clickable="true"
+            android:contentDescription="@string/image_description"
+            android:focusable="true"
+            android:scaleType="matrix"
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/imgv_self_touch_slice"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="1dp"
+            android:layout_marginLeft="0dp"
             android:clickable="true"
             android:contentDescription="@string/image_description"
             android:focusable="true"
@@ -118,7 +130,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="1dp"
+            android:layout_marginLeft="0dp"
             android:contentDescription="@string/image_description"
             android:scaleType="matrix"
             android:src="@drawable/gtapp_skb_drag_normal_finger"
