@@ -238,7 +238,7 @@ public class GtRefreshableView extends LinearLayout {
 		// R.layout.pull_region
 		// 动态添加触摸栏
 		touchView = LayoutInflater.from(context).inflate(
-				R.layout.gtapp_tool_interface, null, true);
+				R.layout.gtapp_main_interface_frame, null, true);//gtapp_tool_interface
 		addView(header, 0);
 		addView(touchView, 1);
 

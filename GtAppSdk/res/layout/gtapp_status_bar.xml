@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="24dp"
+    android:layout_height="28dp"
     android:layout_marginBottom="6dp"
-    android:layout_marginLeft="30dp"
+    android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
     android:background="@drawable/gtapp_statusbar_bg"
     android:gravity="center_vertical"

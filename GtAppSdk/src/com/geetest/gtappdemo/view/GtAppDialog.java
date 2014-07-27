@@ -108,7 +108,7 @@ public class GtAppDialog extends Dialog {
 	private FrameLayout flView_ImageFrame;// 相框的相对布局
 	private FrameLayout flView_self_slider;// 自定义滑块布局
 	// private RelativeLayout reLayoutView;// 相框的相对布局
-	private LinearLayout fl_slider_string_tip;// 提示滑动布局
+	// private LinearLayout fl_slider_string_tip;// 提示滑动布局
 	private GtAppNeonLightTip gtAppNeonLightTip;// 滑动霓虹灯
 
 	private LinearLayout beforeGetImageLineraLayout;
@@ -728,7 +728,7 @@ public class GtAppDialog extends Dialog {
 
 					String toastMsg = "GtAppSdk_Vc" + GtApiEnv.sdkVersionCode
 							+ "_Vn" + GtApiEnv.sdkVersionName;
-					
+
 					Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT)
 							.show();
 
@@ -1334,7 +1334,8 @@ public class GtAppDialog extends Dialog {
 			btn_dlg_close = (Button) findViewById(R.id.btn_dlg_close);
 
 			// 滑动提示文字布局
-			fl_slider_string_tip = (LinearLayout) findViewById(R.id.fl_slider_string_tip);
+			// fl_slider_string_tip = (LinearLayout)
+			// findViewById(R.id.fl_slider_string_tip);
 			// gtAppNeonLightTip = new GtAppNeonLightTip(fl_slider_string_tip);
 
 			// btn_refresh = (Button) findViewById(R.id.btn_refresh);

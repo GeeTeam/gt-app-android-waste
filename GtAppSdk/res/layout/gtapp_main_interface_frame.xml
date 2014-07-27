@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:background="#FFBCBCBC"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:paddingBottom="20dp" >
+
+    <!-- android:background="#FFFFFF" -->
+
+    <ImageView
+        android:id="@+id/imgv_drag_tip_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:background="@drawable/gtapp_drag_down"
+        android:contentDescription="@string/image_description"
+        android:scaleType="matrix"
+        android:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/rl_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center" >
+
+        <!-- android:background="#FFDBDBDB" -->
+
+        <ImageView
+            android:id="@+id/imgv_topbar_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/gtapp_topbar_v3"
+            android:contentDescription="@string/image_description"
+            android:scaleType="matrix"
+            android:visibility="visible" />
+        <!-- 背景图 -->
+
+
+        <!-- android:background="@drawable/gtapp_top_bar_repeat_bg -->
+
+        <include
+            android:id="@+id/ll_status_bar"
+            android:layout_width="fill_parent"
+            layout="@layout/gtapp_status_bar" />
+
+        <Button
+            android:id="@+id/btn_dlg_close"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/gtapp_btn_close" />
+        <!-- 按钮悬浮在跑马灯上面 -->
+    </FrameLayout>
+
+    <include layout="@layout/gtapp_horizon_dividing" />
+
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
+    <!-- 在图片预加载时，先不显示 -->
+
+    <include
+        android:id="@+id/rl_view_image_frame"
+        layout="@layout/gtapp_image_frame" />
+
+    <!-- 图片区 -->
+
+
+    <!-- <View style="@style/gtapp_horizon_dividing_line" /> -->
+    <!-- 水平分隔条 -->
+
+    <FrameLayout
+        android:id="@+id/fl_seekbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+        <SeekBar
+            android:id="@+id/seekbar_def"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="100"
+            android:maxHeight="56dp"
+            android:minHeight="56dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:progressDrawable="@drawable/gtapp_skb_progress_define_color"
+            android:thumb="@drawable/gtapp_skb_thumb_state_define"
+            android:thumbOffset="-8dp" />
+
+        <!-- 提示滑动动画 -->
+
+    </FrameLayout>
+
+    <include layout="@layout/gtapp_horizon_dividing" />
+
+    <FrameLayout
+        android:id="@+id/fl_self_seekbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- android:background="#FFBFBFBF" -->
+
+        <ImageView
+            android:id="@+id/imgv_skb_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/gtapp_seekbar_bg"
+            android:clickable="true"
+            android:contentDescription="@string/image_description"
+            android:focusable="true"
+            android:scaleType="matrix"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imgv_self_touch_slice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:clickable="true"
+            android:contentDescription="@string/image_description"
+            android:focusable="true"
+            android:scaleType="matrix"
+            android:src="@drawable/gtapp_skb_slice_image_state_define"
+            android:visibility="visible" />
+        <!-- 自定义滑块 -->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:background="@drawable/gtapp_skb_slice_image_state_define"
+            android:contentDescription="@string/image_description"
+            android:visibility="gone" />
+        <!-- 实验改变背景图-暂时弃用 -->
+
+        <ImageView
+            android:id="@+id/imgv_skb_anim_tip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:contentDescription="@string/image_description"
+            android:scaleType="matrix"
+            android:src="@drawable/gtapp_skb_drag_normal_finger"
+            android:visibility="visible" />
+        <!-- 提示滑动动画 -->
+
+        <TextView
+            android:id="@+id/tv_slider_tip_msg"
+            style="@style/statusTextShadow"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/drag_text_tip"
+            android:textColor="#FF666666"
+            android:textSize="14sp"
+            android:visibility="visible" />
+
+        <!-- android:layout_gravity="right" -->
+
+
+        <!-- android:layout_marginRight="12dp" -->
+
+
+        <!-- 自定义提示文字 -->
+
+    </FrameLayout>
+
+</LinearLayout>
