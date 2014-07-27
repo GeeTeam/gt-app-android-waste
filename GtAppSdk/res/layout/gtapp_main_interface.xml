@@ -9,15 +9,28 @@
 
     <!-- android:background="#FFFFFF" -->
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/rl_buttons"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/gtapp_topbar_v3"
         android:gravity="center" >
 
         <!-- android:background="#FFDBDBDB" -->
+
+        <ImageView
+            android:id="@+id/imgv_topbar_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/gtapp_topbar_v3"
+            android:clickable="true"
+            android:contentDescription="@string/image_description"
+            android:focusable="true"
+            android:scaleType="matrix"
+            android:visibility="visible" />
+        <!-- 背景图 -->
 
 
         <!-- android:background="@drawable/gtapp_top_bar_repeat_bg -->
@@ -25,21 +38,20 @@
         <include
             android:id="@+id/ll_status_bar"
             android:layout_width="fill_parent"
-            layout="@layout/gtapp_status_bar"
-            android:paddingLeft="15dp" />
-        <!-- android:layout_centerVertical="true" -->
-        <!-- 状态区 -->
+            layout="@layout/gtapp_status_bar" />
+
+       
 
         <Button
             android:id="@+id/btn_dlg_close"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center|right"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp"
             android:background="@drawable/gtapp_btn_close" />
         <!-- 按钮悬浮在跑马灯上面 -->
-    </RelativeLayout>
+    </FrameLayout>
 
     <include layout="@layout/gtapp_horizon_dividing" />
 

@@ -191,8 +191,8 @@ public class GtDataConvert {
 
 		try {
 			// TODO 将所有的数据打印出来
-			GtLogger.v("做差值处理之前");
-			GtLogger.s_v("2014714_174456", userActions);
+			// GtLogger.v("做差值处理之前");
+			// GtLogger.s_v("2014714_174456", userActions);
 			// for (int i = 0; i < userActions.size(); i++) {
 			// userActions.get(i).v();
 			// }
@@ -200,8 +200,8 @@ public class GtDataConvert {
 			ArrayList<CaptchaUserAction> diffCaptchaUserActions = new ArrayList<CaptchaUserAction>();
 			diffCaptchaUserActions = getOffsetData(userActions);
 
-			GtLogger.v("做差值处理后");
-			GtLogger.s_v("2014714_174456", diffCaptchaUserActions);
+			// GtLogger.v("做差值处理后");
+			// GtLogger.s_v("2014714_174456", diffCaptchaUserActions);
 			// for (int i = 0; i < diffCaptchaUserActions.size(); i++) {
 			// diffCaptchaUserActions.get(i).v();
 			// }
@@ -259,9 +259,9 @@ public class GtDataConvert {
 
 			}
 
-			GtLogger.v("rx: " + rx);
-			GtLogger.v("ry: " + ry);
-			GtLogger.v("rt: " + rt);
+			// GtLogger.v("rx: " + rx);
+			// GtLogger.v("ry: " + ry);
+			// GtLogger.v("rt: " + rt);
 
 			String finalString = rx + getChar(1) + getChar(1) + getChar(1) + ry
 					+ getChar(1) + getChar(1) + getChar(1) + rt;

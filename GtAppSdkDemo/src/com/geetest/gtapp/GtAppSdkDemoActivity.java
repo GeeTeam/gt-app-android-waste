@@ -36,7 +36,7 @@ public class GtAppSdkDemoActivity extends Activity {
 		mQueue = Volley.newRequestQueue(this);// 必须在界面初始化之后才有此声明
 
 		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_sdk_demo_dlg);
-		// openGtAppDialog();
+		openGtAppDialog();
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				try {
