@@ -11,7 +11,7 @@
         android:id="@+id/refreshable_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFFFF" >
+        android:background="#FFBCBCBC" >
     </com.geetest.gtappdemo.view.GtRefreshableView>
 
     <include

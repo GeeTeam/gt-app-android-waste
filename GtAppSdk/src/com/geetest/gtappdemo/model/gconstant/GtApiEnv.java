@@ -1,6 +1,5 @@
 package com.geetest.gtappdemo.model.gconstant;
 
-
 /**
  * 极验的API的环境变量
  * 
@@ -15,8 +14,7 @@ public class GtApiEnv {
 	// public static String gt_private_key = "";// 私钥
 
 	public static boolean DEBUG_STATE = true;
-	
-	
+
 	// GtApp的版本控制
 	public static final int sdkVersionCode = 3;
 	public static final String sdkVersionName = "2.0";
@@ -32,7 +30,7 @@ public class GtApiEnv {
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式
 	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径--极验的服务器
-	// public static String gtApiBaseUrl = "192.168.1.5";// 黄胜蓝的测试服务器
+	// public static String gtApiBaseUrl = "192.168.1.12";// 黄胜蓝的测试服务器
 	public static int gtApiPort = 80;// 端口
 
 	// GtApp主要使用的Api的服务器端
@@ -50,7 +48,6 @@ public class GtApiEnv {
 
 	// // Gt的地址
 	// public static String gtApiBase = "http://api.geetest.com/";
-
 
 	public static String getSdkVersionInfo() {
 		return "Vc" + sdkVersionCode + "Vn" + sdkVersionName;

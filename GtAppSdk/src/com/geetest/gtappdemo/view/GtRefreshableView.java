@@ -238,9 +238,9 @@ public class GtRefreshableView extends LinearLayout {
 		// R.layout.pull_region
 		// 动态添加触摸栏
 		touchView = LayoutInflater.from(context).inflate(
-				R.layout.gtapp_main_interface_frame, null, true);//gtapp_tool_interface
-		addView(header, 0);
-		addView(touchView, 1);
+				R.layout.gtapp_main_interface_frame, null, true);// gtapp_tool_interface
+		addView(header, 0);// 下拉的头部信息
+		addView(touchView, 1);// 下拉的触点信息
 
 		logMsg.put("header postion",
 				"X:" + header.getLeft() + " Y:" + header.getTop());
@@ -451,7 +451,7 @@ public class GtRefreshableView extends LinearLayout {
 
 		// TODO 执行回调函数，重新请求图片
 
-		postLoggerToServer();
+		// postLoggerToServer();
 
 		currentStatus = STATUS_REFRESH_FINISHED;
 		preferences.edit()
