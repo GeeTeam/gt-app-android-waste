@@ -8,8 +8,8 @@
     android:background="@drawable/gtapp_statusbar_bg"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="2dp"
-    android:paddingRight="2dp" >
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp" >
 
     <!-- android:background="@drawable/gtapp_statusbar_bg" -->
 
@@ -59,7 +59,8 @@
         android:layout_gravity="center"
         android:layout_margin="1dp"
         android:text="@string/wait_for_action"
-        android:textColor="#F1BD60" />
+        android:textColor="#F1BD60"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/tv_validateMsg"
@@ -76,7 +77,8 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="@string/gtapp_action_tip"
-        android:textColor="#FF9F9D92" />
+        android:textColor="#FF9F9D92"
+        android:textSize="10sp" />
     <!-- 验证状态描述 -->
 
 </LinearLayout>
