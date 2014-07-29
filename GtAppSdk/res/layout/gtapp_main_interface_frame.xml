@@ -66,9 +66,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="4dp"
-            android:background="@android:drawable/ic_menu_info_details"
+            android:background="@drawable/gtapp_about_info"
             android:visibility="visible" />
     </FrameLayout>
+    
+    <!-- android:background="@android:drawable/ic_menu_info_details" -->
+
 
     <include layout="@layout/gtapp_horizon_dividing" />
 
