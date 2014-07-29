@@ -258,16 +258,16 @@ public class GtRefreshableView extends LinearLayout {
 
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					Log.v("", "按下");
+					GtLogger.v("按下");
 					yDown = event.getRawY();
 					break;
 				case MotionEvent.ACTION_MOVE:
-					Log.v("", "移动");
+					GtLogger.v("移动");
 
 					float yMove = event.getRawY();
 					int distance = (int) (yMove - yDown);
 
-					Log.v("", "distance:" + distance);
+					GtLogger.v("distance:" + distance);
 
 					// 如果手指是下滑状态，并且下拉头是完全隐藏的，就屏蔽下拉事件
 					if (distance <= 0
@@ -295,7 +295,7 @@ public class GtRefreshableView extends LinearLayout {
 					}
 					break;
 				case MotionEvent.ACTION_UP:
-					Log.v("", "释放");
+					GtLogger.v("释放");
 				default:
 					if (currentStatus == STATUS_RELEASE_TO_REFRESH) {
 						// 松手时如果是释放立即刷新状态，就去调用正在刷新的任务
@@ -307,7 +307,7 @@ public class GtRefreshableView extends LinearLayout {
 					break;
 				}
 
-				Log.v("", "currentStatus:" + currentStatus);
+				GtLogger.v("currentStatus:" + currentStatus);
 
 				// 时刻记得更新下拉头中的信息
 				if (currentStatus == STATUS_PULL_TO_REFRESH
