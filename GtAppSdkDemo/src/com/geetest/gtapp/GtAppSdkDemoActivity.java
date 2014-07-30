@@ -25,18 +25,14 @@ public class GtAppSdkDemoActivity extends Activity {
 
 	private RequestQueue mQueue;// 通讯相关类
 
-	// final int originRequestOritation = getRequestedOrientation();//
-	// 宿主程序原始的屏幕排列模式
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		mQueue = Volley.newRequestQueue(this);// 必须在界面初始化之后才有此声明
-
 		btn_gtapp_dlg = (Button) findViewById(R.id.btn_gtapp_sdk_demo_dlg);
-		openGtAppDialog();
+		// openGtAppDialog();
 		btn_gtapp_dlg.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				try {
@@ -72,7 +68,8 @@ public class GtAppSdkDemoActivity extends Activity {
 	private void openGtAppDialog() {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// 公钥
+		String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// TODO
+																	// 用户自己在www.geetest.com注册申请公钥
 
 		GtAppCallback gtAppCallback = new GtAppCallback() {
 			@Override

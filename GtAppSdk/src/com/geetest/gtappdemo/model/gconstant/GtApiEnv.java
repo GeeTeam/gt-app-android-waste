@@ -16,20 +16,23 @@ public class GtApiEnv {
 	public static boolean DEBUG_STATE = true;
 
 	// GtApp的版本控制
-	public static final int sdkVersionCode = 4;
-	public static final String sdkVersionName = "3.0";
+	public static final int sdkVersionCode = 5;
+	public static final String sdkVersionName = "4.0";
 
 	// 互联网上的Gtapp的操作使用帮助页面
 	public static final String sdkUserHelpLink = "http://www.geetest.com/install/#instruct";
 	// SDK的最新的发布版本信息
-	public static final String sdkNewestVersionInfoLink = "http://www.geetest.com/static/gtapp_sdk_build_info.txt";
+	// public static final String sdkNewestVersionInfoLink =
+	// "http://www.geetest.com/static/gtapp_sdk_build_info.txt";
+	public static final String sdkNewestVersionInfoLink = "https://raw.githubusercontent.com/GeeTeam/gt-app-android/master/gtapp_sdk_build_info.txt";
+
 	// public static final String sdkNewestVersionInfoLink =
 	// "http://192.168.2.66/gtapp_sdk_build_info.txt";
 	public static String gt_product_type = "embed";// 嵌入式的
 
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式
-	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径--极验的服务器
+	public static String gtApiBaseUrl = "mapi.geetest.com";// 基本路径--极验的服务器
 	// public static String gtApiBaseUrl = "192.168.1.12";// 黄胜蓝的测试服务器
 	public static int gtApiPort = 80;// 端口
 

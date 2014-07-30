@@ -1,5 +1,5 @@
 {
-	"verCode": "4",
-	"verName": "3.0",
-	"buildTime": "2014729_143510"
+	"verCode": "5",
+	"verName": "4.0",
+	"buildTime": "2014730_151529"
 }
