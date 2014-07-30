@@ -16,8 +16,8 @@ public class GtApiEnv {
 	public static boolean DEBUG_STATE = true;
 
 	// GtApp的版本控制
-	public static final int sdkVersionCode = 4;
-	public static final String sdkVersionName = "3.0";
+	public static final int sdkVersionCode = 5;
+	public static final String sdkVersionName = "4.0";
 
 	// 互联网上的Gtapp的操作使用帮助页面
 	public static final String sdkUserHelpLink = "http://www.geetest.com/install/#instruct";
