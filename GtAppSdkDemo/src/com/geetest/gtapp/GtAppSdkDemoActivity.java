@@ -68,8 +68,8 @@ public class GtAppSdkDemoActivity extends Activity {
 	private void openGtAppDialog() {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		String gt_public_key = "a40fd3b0d712165c5d13e6f747e948d4";// TODO
-																	// 用户自己在www.geetest.com注册申请公钥
+		String gt_public_key = "b859d74376439f0a80c2c658cbfdfd2a";// TODO 
+		// a40fd3b0d712165c5d13e6f747e948d4 // 用户自己在www.geetest.com注册申请公钥
 
 		GtAppCallback gtAppCallback = new GtAppCallback() {
 			@Override
