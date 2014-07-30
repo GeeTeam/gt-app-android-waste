@@ -32,7 +32,7 @@ public class GtApiEnv {
 
 	// 极验的服务器端API
 	public static String httpType = "http";// 通讯方式
-	public static String gtApiBaseUrl = "api.geetest.com";// 基本路径--极验的服务器
+	public static String gtApiBaseUrl = "mapi.geetest.com";// 基本路径--极验的服务器
 	// public static String gtApiBaseUrl = "192.168.1.12";// 黄胜蓝的测试服务器
 	public static int gtApiPort = 80;// 端口
 
